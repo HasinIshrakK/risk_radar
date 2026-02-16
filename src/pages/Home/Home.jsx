@@ -1,9 +1,14 @@
-function Home() {
+import React from 'react'
+import HeroBanner from '../../components/HeroBanner/HeroBanner'
+import AboutUs from '../../components/AboutUs/AboutUs'
+
+const Home = () => {
   return (
-    <>
-      <h1>This is Home</h1>
-    </>
-  );
+    <div>
+      <HeroBanner></HeroBanner>
+      <AboutUs></AboutUs>
+    </div>
+  )
 }
 
 export default Home;
