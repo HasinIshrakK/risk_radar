@@ -1,3 +1,4 @@
+import { Home } from "lucide-react";
 import { Link } from "react-router";
 
 const Register = () => {
@@ -14,25 +15,34 @@ const Register = () => {
 
         <div className="relative z-10 flex flex-col justify-between p-16 text-white w-full">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#10b981] rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 animate-in fade-in slide-in-from-top-5 duration-700">
+              <div className="h-10 w-10 bg-[#10b981] rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <span className="text-2xl font-bold tracking-tight">
+                Risk Radar
+              </span>
             </div>
-            <span className="text-2xl font-bold tracking-tight">
-              Risk Radar
-            </span>
+            <Link
+              to={"/"}
+              className="underline transition-all text-white/60 hover:bg-white/30 backdrop-blur-md rounded-xl px-5 py-2.5 flex gap-2 items-center"
+            >
+              <Home size={20} />
+              Back to Home
+            </Link>
           </div>
 
           <div>
@@ -84,6 +94,13 @@ const Register = () => {
             <p className="mt-3 text-slate-500 font-medium">
               Join AI.Finance today and start your journey.
             </p>
+            <Link
+              to={"/"}
+              className="underline transition-all text-black hover:bg-[#10b981] backdrop-blur-md rounded-xl hover:text-white px-5 py-3 mt-2 hidden max-lg:flex items-center justify-center gap-2"
+            >
+              <Home size={20} />
+              Back to Home
+            </Link>
           </header>
 
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
