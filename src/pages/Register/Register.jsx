@@ -1,8 +1,9 @@
+import { House } from "lucide-react";
 import { Link } from "react-router";
 
 const Register = () => {
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
+    <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       {/* LEFT SIDE: Brand Image and AI Features Section */}
       <div className="hidden lg:flex lg:w-[60%] relative overflow-hidden bg-[#022c22]">
         {/* High-Quality Abstract Tech Image */}
@@ -14,25 +15,33 @@ const Register = () => {
 
         <div className="relative z-10 flex flex-col justify-between p-16 text-white w-full">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#10b981] rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 bg-[#10b981] rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <span className="text-2xl font-bold tracking-tight">
+                Risk Radar
+              </span>
             </div>
-            <span className="text-2xl font-bold tracking-tight">
-              Risk Radar
-            </span>
+            <Link
+              className="flex items-center gap-2 opacity-90 transition-all hover:bg-white/30 underline text-white/80 backdrop-blur-md py-3 rounded-full px-5"
+              to={"/"}
+            >
+              <House /> Back to Home
+            </Link>
           </div>
 
           <div>
@@ -84,6 +93,12 @@ const Register = () => {
             <p className="mt-3 text-slate-500 font-medium">
               Join AI.Finance today and start your journey.
             </p>
+            <Link
+              className="hidden max-lg:flex items-center justify-center mt-3 gap-2 opacity-90 transition-all hover:bg-[#059669] hover:text-white underline text-black backdrop-blur-md py-3 rounded-2xl px-5"
+              to={"/"}
+            >
+              <House /> Back to Home
+            </Link>
           </header>
 
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
