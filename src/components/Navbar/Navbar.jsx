@@ -8,7 +8,7 @@ const Navbar = () => {
       : "hover:text-blue-400 cursor-pointer";
 
   return (
-    <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
+    <nav className="bg-green-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
       {/* Logo */}
       <h1 className="text-xl font-bold text-blue-400">
         RiskRadar

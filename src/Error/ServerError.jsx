@@ -2,7 +2,7 @@ import React from "react";
 
 const ServerError = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-700 text-white text-center px-6">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-green-950 text-white text-center px-6">
       
       {/* Icon */}
       <div className="text-6xl mb-4">⚠️</div>
