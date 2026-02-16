@@ -12,97 +12,36 @@ const Navbar = () => {
       : "hover:text-blue-400 cursor-pointer";
 
   return (
-    <nav className="bg-green-900 text-white px-6 py-4 shadow-lg">
-      <div className="flex justify-between items-center">
-        <Link to={`/`} className="flex items-center gap-1">
+    <div className="bg-green-900 border border-green-800 sticky top-0 z-50">
+      <nav className="text-white max-w-6xl mx-auto">
+        <div className="flex justify-between items-center lg:px-0 px-6 py-4">
           {/* Logo */}
-          <img src={logo} className="w-10" alt="" />
-          <h1 className="text-xl font-bold text-blue-400">RiskRadar</h1>
-        </Link>
+          <Link to="/" className="flex items-center gap-1">
+            <img src={logo} alt="logo" className="w-10" />
+            <h1 className="text-xl font-bold text-blue-400">RiskRadar</h1>
+          </Link>
 
-        {/* Hamburger button for mobile */}
-        <button
-          className="md:hidden text-white focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? (
-            <FaTimes className="w-6 h-6" /> // Close icon
-          ) : (
-            <FaBars className="w-6 h-6" /> // Hamburger icon
-          )}
-        </button>
+          {/* Desktop Menu */}
+          <ul className="hidden md:flex gap-6 font-medium">
+            <NavLink to="/" className={linkClass}>
+              Home
+            </NavLink>
+            <NavLink to="/dashboard" className={linkClass}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/transaction" className={linkClass}>
+              Transactions
+            </NavLink>
+            <NavLink to="/alerts" className={linkClass}>
+              Alerts
+            </NavLink>
+            <NavLink to="/reports" className={linkClass}>
+              Reports
+            </NavLink>
+          </ul>
 
-        {/* Menu - desktop */}
-        <ul className="hidden md:flex gap-6 font-medium">
-          <NavLink to="/" className={linkClass}>
-            Home
-          </NavLink>
-          <NavLink to="/dashboard" className={linkClass}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/transaction" className={linkClass}>
-            Transactions
-          </NavLink>
-          <NavLink to="/alerts" className={linkClass}>
-            Alerts
-          </NavLink>
-          <NavLink to="/reports" className={linkClass}>
-            Reports
-          </NavLink>
-        </ul>
-
-        {/* Profile */}
-        <div className="hidden md:flex items-center gap-3">
-          <img
-            src="https://i.pravatar.cc/40"
-            alt="user"
-            className="w-10 h-10 rounded-full border-2 border-blue-400"
-          />
-          <span>Admin</span>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <ul className="flex flex-col gap-4 mt-4 md:hidden">
-          <NavLink
-            to="/"
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/dashboard"
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            Dashboard
-          </NavLink>
-          <NavLink
-            to="/transaction"
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            Transactions
-          </NavLink>
-          <NavLink
-            to="/alerts"
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            Alerts
-          </NavLink>
-          <NavLink
-            to="/reports"
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            Reports
-          </NavLink>
-
-          {/* Mobile Profile */}
-          <div className="flex items-center gap-3 mt-2">
+          {/* Profile */}
+          <div className="hidden md:flex items-center gap-3">
             <img
               src="https://i.pravatar.cc/40"
               alt="user"
@@ -110,9 +49,73 @@ const Navbar = () => {
             />
             <span>Admin</span>
           </div>
-        </ul>
-      )}
-    </nav>
+
+          {/* Hamburger */}
+          <button
+            className="md:hidden text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <FaTimes className="w-6 h-6" />
+            ) : (
+              <FaBars className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden px-6 pb-4 bg-green-900">
+            <ul className="flex flex-col gap-4">
+              <NavLink
+                to="/"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/dashboard"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
+                to="/transaction"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Transactions
+              </NavLink>
+              <NavLink
+                to="/alerts"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Alerts
+              </NavLink>
+              <NavLink
+                to="/reports"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Reports
+              </NavLink>
+
+              <div className="flex items-center gap-3 mt-2">
+                <img
+                  src="https://i.pravatar.cc/40"
+                  alt="user"
+                  className="w-10 h-10 rounded-full border-2 border-blue-400"
+                />
+                <span>Admin</span>
+              </div>
+            </ul>
+          </div>
+        )}
+      </nav>
+    </div>
   );
 };
 
