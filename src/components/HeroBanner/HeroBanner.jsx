@@ -4,7 +4,7 @@ import heroBgImage from "../../assets/hero.jpg"
 const HeroBanner = () => {
   return (
     <section
-      className="min-h-[80vh] flex items-center"
+      className="min-h-[80vh] flex items-center py-12"
       style={{
         backgroundImage: `linear-gradient(rgba(3, 55, 61, 0.8), rgba(3, 55, 61, 0.8)), url(${heroBgImage})`,
         backgroundSize: "cover",
