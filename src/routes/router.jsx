@@ -5,11 +5,14 @@ import Dashboard from "../Pages/Dashboard/Dashboard";
 import Transactions from "../Pages/Transactions/Transactions";
 import Alerts from "../Pages/Alerts/Alerts";
 import Reports from "../Pages/Reports/Reports";
+import ServerError from "../Error/ServerError";
+import NotFound from "../Error/NotFound";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout></RootLayout>,
+    errorElement: <ServerError></ServerError>,
     children: [
       {
         path: "/",
@@ -31,7 +34,10 @@ export const router = createBrowserRouter([
         path: "/reports",
         element: <Reports></Reports>,
       },
-      
+      {
+        path: "*",
+        element: <NotFound></NotFound>,
+      },
     ],
   },
 ]);
