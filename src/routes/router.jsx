@@ -1,5 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import Transactions from "../pages/Transactions/Transactions";
+import Alerts from "../pages/Alerts/Alerts";
+import Reports from "../pages/Reports/Reports";
 import Home from "../pages/Home/Home";
 import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
 import Loader from "../components/SharedUi/Loader";
