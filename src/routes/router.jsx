@@ -22,7 +22,25 @@ export const router = createBrowserRouter([
       </>
     ),
     hydrateFallbackElement: <Loader />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>,
+      },
+      {
+        path: "/transaction",
+        element: <Transactions></Transactions>,
+      },
+      {
+        path: "/alerts",
+        element: <Alerts></Alerts>,
+      },
+      {
+        path: "/reports",
+        element: <Reports></Reports>,
+      },
+    ],
   },
   {
     path: "/auth",
