@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
@@ -12,7 +12,7 @@ import { auth } from "../../firebase/firebase.init";
 
 const googleProvider = new GoogleAuthProvider();
 
-const AuthProvider = () => {
+const AuthProvider = ({children}) => {
   const registerUSer = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -46,7 +46,7 @@ const AuthProvider = () => {
     logOut,
   };
 
-  return <AuthContext value={authInfo}>{Children}</AuthContext>;
+  return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
 
 export default AuthProvider;
