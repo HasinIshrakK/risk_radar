@@ -10,7 +10,8 @@ import Loader from "../components/SharedUi/Loader";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import ServerError from "../Error/ServerError";
+import NotFound from "../Error/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       </>
     ),
     hydrateFallbackElement: <Loader />,
+      errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
       {
@@ -39,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "/reports",
         element: <Reports></Reports>,
+      },
+      {
+        path: "*",
+        element: <NotFound></NotFound>,
       },
     ],
   },
@@ -58,5 +64,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/*", element: <ErrorPage /> },
+  { path: "/*", element: <NotFound /> },
 ]);

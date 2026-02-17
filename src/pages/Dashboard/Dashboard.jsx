@@ -1,3 +1,5 @@
+import AlertsPanel from "../../components/SharedUi/AlertsPanel";
+import RecentTransactionsTable from "../../components/SharedUi/RecentTransactionsTable";
 import TransactionVolumeBarChart from "../../components/SharedUi/TransactionVolumeBarChart";
 
 export default function Dashboard() {
@@ -30,6 +32,8 @@ export default function Dashboard() {
 
       {/* Bar Chart Section */}
       <TransactionVolumeBarChart />
+      <AlertsPanel></AlertsPanel>
+      <RecentTransactionsTable></RecentTransactionsTable>
     </div>
   );
 }
