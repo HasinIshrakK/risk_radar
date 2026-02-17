@@ -9,8 +9,8 @@ const AboutUs = () => {
         {/* Section Title & Subtitle */}
         <div className="text-center mb-12">
           <h2 
-            className="text-4xl font-bold mb-4"
-            style={{ color: '#03373D' }}
+            className="text-2xl md:text-3xl font-bold text-green-700"
+            // style={{ color: '#03373D' }}
           >
             About Our System
           </h2>

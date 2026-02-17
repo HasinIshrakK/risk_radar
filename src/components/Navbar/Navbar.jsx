@@ -35,12 +35,16 @@ const Navbar = () => {
         <NavLink to="/reports" className={linkClass}>
           Reports
         </NavLink>
+
+         <NavLink to="/auth/register" className={linkClass}>
+          Register
+        </NavLink>
       </ul>
 
       {/* Profile */}
       <div className="flex items-center gap-3">
         <img
-          src="https://i.pravatar.cc/40"
+          src="https://i.ibb.co.com/hxy9n78v/a.jpg"
           alt="user"
           className="w-10 h-10 rounded-full border-2 border-blue-400"
         />
