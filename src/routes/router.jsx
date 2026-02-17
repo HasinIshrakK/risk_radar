@@ -12,7 +12,6 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ServerError from "../Error/ServerError";
 import NotFound from "../Error/NotFound";
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -65,5 +64,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/*", element: <ErrorPage /> },
+  { path: "/*", element: <NotFound /> },
 ]);
