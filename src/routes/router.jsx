@@ -1,23 +1,32 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
-import Home from "../Pages/Home/Home";
-import Dashboard from "../Pages/Dashboard/Dashboard";
-import Transactions from "../Pages/Transactions/Transactions";
-import Alerts from "../Pages/Alerts/Alerts";
-import Reports from "../Pages/Reports/Reports";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import Transactions from "../pages/Transactions/Transactions";
+import Alerts from "../pages/Alerts/Alerts";
+import Reports from "../pages/Reports/Reports";
+import Home from "../pages/Home/Home";
+import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
+import Loader from "../components/SharedUi/Loader";
+import AuthLayout from "../layouts/AuthLayout";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
 import ServerError from "../Error/ServerError";
 import NotFound from "../Error/NotFound";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout></RootLayout>,
-    errorElement: <ServerError></ServerError>,
+    element: (
+      <>
+        <ScrollToTop />
+        <RootLayout />
+      </>
+    ),
+    hydrateFallbackElement: <Loader />,
+      errorElement: <ServerError></ServerError>,
     children: [
-      {
-        path: "/",
-        element: <Home></Home>,
-      },
+      { index: true, element: <Home /> },
       {
         path: "/dashboard",
         element: <Dashboard></Dashboard>,
@@ -40,4 +49,21 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/auth",
+    element: (
+      <>
+        <ScrollToTop />
+        <AuthLayout />
+      </>
+    ),
+    children: [
+      { path: "login", element: <Login /> },
+      {
+        path: "register",
+        element: <Register />,
+      },
+    ],
+  },
+  { path: "/*", element: <ErrorPage /> },
 ]);
