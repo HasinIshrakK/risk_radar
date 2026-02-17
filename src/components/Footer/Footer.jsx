@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 px-6 py-6 mt-10">
-      <div className="grid md:grid-cols-3 gap-6">
+    <footer className="bg-green-900 text-gray-300 py-8 mt-2">
+      <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto lg:px-0 px-6 ">
         
         {/* About */}
         <div>
@@ -39,7 +39,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom */}
-      <div className="text-center text-sm mt-6 border-t border-gray-700 pt-4">
+      <div className="text-center text-sm mt-6 border-t border-green-700 pt-4">
         © 2026 FraudGuard. All rights reserved.
       </div>
     </footer>
