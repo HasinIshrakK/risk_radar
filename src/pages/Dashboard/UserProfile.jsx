@@ -52,6 +52,7 @@ const UserProfile = () => {
 
         {/* Info Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
           {/* Phone */}
           <div className="bg-green-700 hover:shadow-lg hover:scale-105 transition transform p-5 rounded-2xl">
             <div className="flex items-center gap-3">
@@ -71,7 +72,7 @@ const UserProfile = () => {
                     duration: 0.6,
                     ease: "easeInOut",
                   }}
-                  className="bg-white/20 p-3 rounded-full text-white shadow-lg relative z-10 flex items-center justify-center"
+                  className="bg-white/20 p-3 rounded-full text-orange-900 shadow-lg relative z-10 flex items-center justify-center"
                 >
                   <FaPhoneVolume className="text-lg" />
                 </motion.div>
@@ -101,7 +102,7 @@ const UserProfile = () => {
                     duration: 1,
                     ease: "easeInOut",
                   }}
-                  className="bg-white/20 p-2 rounded-full text-white shadow relative z-10 flex items-center justify-center"
+                  className="bg-white/20 p-2 rounded-full text-green-950 shadow relative z-10 flex items-center justify-center"
                 >
                   <IoLocation className="text-sm" />
                 </motion.div>
@@ -140,7 +141,7 @@ const UserProfile = () => {
                   }}
                   className="bg-white/20 p-2 rounded-full flex items-center justify-center"
                 >
-                  <HiUserGroup className="text-sm text-white" />
+                  <HiUserGroup className="text-sm text-blue-900" />
                 </motion.div>
               </motion.div>
 
@@ -164,7 +165,7 @@ const UserProfile = () => {
               active and secure
             </p>
 
-            <button className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition cursor-pointer">
+            <button className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-600 transition cursor-pointer">
               Change Password
             </button>
           </div>
