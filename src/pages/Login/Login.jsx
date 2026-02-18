@@ -1,7 +1,39 @@
 import { House } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const { signinUser, signinGoogle } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const result = await signinUser(email, password);
+      console.log(result.user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signinGoogle();
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900 overflow-hidden">
       {/* LEFT SIDE: Brand Image and AI Financial Insights Section */}
@@ -104,7 +136,7 @@ const Login = () => {
             </Link>
           </header>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleLogin}>
             {/* Input fields with transition on focus */}
             <div className="space-y-2 group">
               <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1 group-focus-within:text-emerald-500 transition-colors">
@@ -112,6 +144,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="Enter Your Email"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all duration-300 placeholder:text-slate-300"
               />
@@ -125,6 +158,7 @@ const Login = () => {
               </div>
               <input
                 type="password"
+                name="password"
                 placeholder="••••••••••••"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all duration-300 placeholder:text-slate-300"
               />
@@ -137,6 +171,10 @@ const Login = () => {
             >
               Login
             </button>
+            {/*  ERROR SHOW */}
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
 
             <p className="text-center">
               Don't have an account?
@@ -160,6 +198,7 @@ const Login = () => {
             {/* Google Login with Hover effect */}
             <button
               type="button"
+              onClick={handleGoogleLogin}
               className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 font-bold py-4 rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
