@@ -1,6 +1,6 @@
 const SectionHeader = ({ subtitle, title, peraTitle }) => {
   return (
-    <div className="py-16 px-6">
+    <div data-aos="fade-up" data-aos-duration="1000" className="py-16 px-6">
       <div className="max-w-6xl mx-auto text-center">
         <span className="px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold tracking-wide uppercase">
           {subtitle}

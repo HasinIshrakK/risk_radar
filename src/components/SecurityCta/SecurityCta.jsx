@@ -1,3 +1,5 @@
+import { ArrowRight, PlayCircle, ShieldCheck } from "lucide-react";
+
 const SecurityCta = () => {
   return (
     <section className="relative max-w-7xl mx-auto overflow-hidden">

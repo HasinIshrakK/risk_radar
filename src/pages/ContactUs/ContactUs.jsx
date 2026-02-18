@@ -2,6 +2,11 @@ import React from "react";
 import { Mail, Phone, MapPin, MessageSquare, ShieldCheck } from "lucide-react";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
 
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
+// ..
+AOS.init();
+
 const ContactUs = () => {
   return (
     <section
@@ -20,7 +25,11 @@ const ContactUs = () => {
       <div className="max-w-7xl mx-auto py-14  md:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Column: Info */}
-          <div className="space-y-12">
+          <div
+            data-aos="fade-up"
+            data-aos-duration="1500"
+            className="space-y-12"
+          >
             <div>
               <h2 className="text-2xl font-bold mb-6">Connect with us</h2>
               <div className="space-y-8">
@@ -72,7 +81,11 @@ const ContactUs = () => {
           </div>
 
           {/* Right Column: Form */}
-          <div className="bg-white rounded-3xl p-8 md:p-10 shadow-xl shadow-emerald-900/5 border border-slate-100">
+          <div
+            data-aos="fade-up"
+            data-aos-duration="1500"
+            className="bg-white rounded-3xl p-8 md:p-10 shadow-xl shadow-emerald-900/5 border border-slate-100"
+          >
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
