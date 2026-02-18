@@ -14,6 +14,7 @@ import ServerError from "../Error/ServerError";
 import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
+import UserProfile from "../pages/Dashboard/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Dashboard
+      },
+      {
+        path:"/dashboard/profile",
+        Component:UserProfile
       }
     ]
   },

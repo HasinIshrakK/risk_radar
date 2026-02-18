@@ -72,12 +72,12 @@ const HowItWorks = () => {
             {index !== steps.length - 1 && (
               <>
                 {/* Horizontal arrow for lg screens */}
-                <div className="hidden lg:block absolute right-[-25px] top-1/2 transform -translate-y-1/2 text-2xl text-white bg-green-700 p-1  px-3 rounded-br-full rounded-tl-full">
+                <div className="hidden lg:block absolute -right-6.25 top-1/2 transform -translate-y-1/2 text-2xl text-white bg-green-700 p-1  px-3 rounded-br-full rounded-tl-full">
                   <FaArrowRightLong className=""/>
                 </div>
 
                 {/* Vertical arrow for mobile */}
-                <div className="block lg:hidden absolute bottom-[-25px] left-1/2 transform -translate-x-1/2 text-2xl text-white bg-green-700 p-1 px-3 rounded-bl-selector  rounded-tr-selector ">
+                <div className="block lg:hidden absolute -bottom-6.25 left-1/2 transform -translate-x-1/2 text-2xl text-white bg-green-700 p-1 px-3 rounded-bl-selector  rounded-tr-selector ">
                   <FaArrowDownLong />
                 </div>
               </>

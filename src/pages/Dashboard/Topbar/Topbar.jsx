@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X, Bell, User, LayoutDashboard, ShieldAlert, Settings, LogOut, ChevronDown } from 'lucide-react';
 import logo from "../../../assets/sheld.png";
-import { Link } from 'react-router'; // 'react-router-dom' ও হতে পারে আপনার প্রজেক্ট অনুযায়ী
+import { Link } from 'react-router';
 
 const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -53,7 +53,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
           <span className="absolute top-2 right-2.5 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white group-hover:animate-pulse"></span>
         </button>
 
-        <div className="h-6 w-[1px] bg-slate-200 mx-2 hidden sm:block"></div>
+        <div className="h-6 w-px bg-slate-200 mx-2 hidden sm:block"></div>
 
         {/* User Profile Trigger */}
         <div className="relative">
@@ -73,7 +73,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
 
           {/* Combined User & Navigation Menu (Responsive) */}
           {isUserMenuOpen && (
-            <div className="absolute right-0 mt-3 w-60 bg-white border border-green-50 rounded-2xl shadow-xl py-2 z-[60] animate-in fade-in zoom-in duration-200">
+            <div className="absolute right-0 mt-3 w-60 bg-white border border-green-50 rounded-2xl shadow-xl py-2 z-60 animate-in fade-in zoom-in duration-200">
               
               {/* Mobile Only Navigation Section */}
               <div className="md:hidden border-b border-slate-100 pb-2 mb-2 px-4 py-1">
@@ -101,7 +101,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 <button className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
                   <User size={16} className="text-slate-400" /> Account Settings
                 </button>
-                <div className="h-[1px] bg-slate-50 my-1 mx-2"></div>
+                <div className="h-px bg-slate-50 my-1 mx-2"></div>
                 <button className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors font-semibold">
                   <LogOut size={16} /> Sign Out
                 </button>

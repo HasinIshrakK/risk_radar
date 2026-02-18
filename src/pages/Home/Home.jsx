@@ -4,7 +4,7 @@ import AboutUs from "../../components/AboutUs/AboutUs";
 import Partnership from "../../components/Partnership/Partnership";
 import ClientReview from "../../components/ClientReview/ClientReview";
 import SecurityTechSection from "../../components/SecurityTechSection/SecurityTechSection";
-import SecurityCta from "../../components/SecurityCTA/SecurityCTA";
+import SecurityCta from "../../components/SecurityCta/SecurityCta";
 import HowItWorks from './HowItWorks';
 
 const Home = () => {
