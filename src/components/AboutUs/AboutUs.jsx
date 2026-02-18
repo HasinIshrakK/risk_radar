@@ -102,7 +102,7 @@ const AboutUs = () => {
         }
       `}</style>
     </section>
-  )
-}
+  );
+};
 
-export default AboutUs
+export default AboutUs;
