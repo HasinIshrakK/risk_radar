@@ -13,6 +13,7 @@ import Register from "../pages/Register/Register";
 import ServerError from "../Error/ServerError";
 import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ContactUs from "../pages/ContactUs/ContactUs";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "/reports",
         element: <Reports></Reports>,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs />,
       },
       {
         path: "*",

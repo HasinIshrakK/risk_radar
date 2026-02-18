@@ -1,7 +1,6 @@
-import React from "react";
 import { ArrowRight, PlayCircle, ShieldCheck } from "lucide-react";
 
-const SecurityCTA = () => {
+const SecurityCta = () => {
   return (
     <section className="relative max-w-7xl mx-auto overflow-hidden">
       {/* Background Decorative Elements */}
@@ -66,5 +65,4 @@ const SecurityCTA = () => {
     </section>
   );
 };
-
-export default SecurityCTA;
+export default SecurityCta;
