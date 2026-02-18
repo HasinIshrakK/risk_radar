@@ -12,6 +12,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ServerError from "../Error/ServerError";
 import NotFound from "../Error/NotFound";
+import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 
 export const router = createBrowserRouter([
@@ -27,10 +28,6 @@ export const router = createBrowserRouter([
     errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
-      {
-        path: "/dashboard",
-        element: <Dashboard></Dashboard>,
-      },
       {
         path: "/transaction",
         element: <Transactions></Transactions>,
@@ -52,6 +49,16 @@ export const router = createBrowserRouter([
         element: <NotFound></NotFound>,
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout></DashboardLayout>,
+    children: [
+      {
+        index: true,
+        Component: Dashboard
+      }
+    ]
   },
   {
     path: "/auth",
