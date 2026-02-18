@@ -38,6 +38,9 @@ const Navbar = () => {
             <NavLink to="/reports" className={linkClass}>
               Reports
             </NavLink>
+            <NavLink to="/contact-us" className={linkClass}>
+              Contact us
+            </NavLink>
             <NavLink to="/auth/register" className={linkClass}>
               Register
             </NavLink>
@@ -104,6 +107,13 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Reports
+              </NavLink>
+              <NavLink
+                to="/contact-us"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Contact Us
               </NavLink>
               <NavLink
                 to="/auth/register"

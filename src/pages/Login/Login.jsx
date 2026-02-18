@@ -6,6 +6,7 @@ const Login = () => {
     <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900 overflow-hidden">
       {/* LEFT SIDE: Brand Image and AI Financial Insights Section */}
       <div className="hidden lg:flex lg:w-[60%] relative overflow-hidden bg-[#022c22]">
+        {/* hello */}
         {/* Background Image with subtle zoom effect */}
         <img
           src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000"

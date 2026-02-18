@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 
 const AuthLayout = () => {
   return (
-    <div>
+    <div className="poppins-regular">
       <Outlet />
     </div>
   );
