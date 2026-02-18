@@ -18,7 +18,10 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-1">
             <img src={logo} alt="logo" className="w-10" />
-            <h1 className="text-xl font-bold text-blue-400">RiskRadar</h1>
+            <h1 className="text-xl font-bold"> 
+             <span className="text-white">Risk</span>
+             <span className="text-orange-400">Radar</span> 
+              </h1>
           </Link>
 
           {/* Desktop Menu */}
