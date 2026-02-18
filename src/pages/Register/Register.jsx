@@ -1,7 +1,41 @@
 import { House } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
+  const { registerUser, signinGoogle } = useAuth();
+
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const result = await registerUser(email, password);
+      console.log(result.user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    try {
+      await signinGoogle();
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       {/* LEFT SIDE: Brand Image and AI Features Section */}
@@ -101,7 +135,7 @@ const Register = () => {
             </Link>
           </header>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleRegister}>
             {/* Input 1: Full Name */}
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
@@ -109,6 +143,7 @@ const Register = () => {
               </label>
               <input
                 type="text"
+                name="name"
                 placeholder="John Doe"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all placeholder:text-slate-300"
               />
@@ -121,6 +156,7 @@ const Register = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="john@example.com"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all placeholder:text-slate-300"
               />
@@ -133,6 +169,7 @@ const Register = () => {
               </label>
               <input
                 type="password"
+                name="password"
                 placeholder="••••••••••••"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all placeholder:text-slate-300"
               />
@@ -145,6 +182,10 @@ const Register = () => {
             >
               Register Now
             </button>
+            {/* ERROR SHOW */}
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
 
             <p className="text-center">
               Already have an account?
@@ -168,6 +209,7 @@ const Register = () => {
             {/* Google Register Button */}
             <button
               type="button"
+              onClick={handleGoogleRegister}
               className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 font-bold py-4 rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
