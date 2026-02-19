@@ -30,15 +30,15 @@ const AboutUs = () => {
   ];
 
   return (
-    // ব্যাকগ্রাউন্ডে হালকা গ্রিনিশ টোন দেওয়া হয়েছে
+    
     <section className="py-24 px-6 bg-[#f4faf7] relative overflow-hidden">
       
-      {/* Decorative Background Element (একটু গাঢ় গ্রিন শেড) */}
+     
       <div className="absolute top-0 right-0 w-1/2 h-full bg-green-100/30 -skew-x-12 translate-x-32 hidden lg:block" />
 
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
         
-        {/* Left Side: Content */}
+       
         <div className="space-y-8 text-left">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 text-green-700 text-sm font-bold tracking-wide shadow-sm">
             <Globe size={16} className="animate-spin-slow text-green-500" />
@@ -69,7 +69,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        {/* Right Side: Feature Cards Grid */}
+        
         <div className="grid sm:grid-cols-2 gap-6">
           {features.map((feature, idx) => (
             <div

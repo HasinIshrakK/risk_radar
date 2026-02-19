@@ -51,10 +51,10 @@ const ClientReview = () => {
     <section className="py-16 md:py-24 bg-[#F8FAFC] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Modern Header with Badge */}
+       
         <div className="flex flex-col items-center text-center mb-16">
           
-          {/* Dual-Layer Animated Badge */}
+          
           <div className="relative group mb-8">
             <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
             <div className="relative flex items-center gap-3 bg-white border border-slate-200 px-5 py-2.5 rounded-full shadow-sm">
@@ -141,14 +141,14 @@ const ClientReview = () => {
                     </div>
                   </div>
 
-                  {/* Rating Stars */}
+                  
                   <div className="flex gap-1 mb-5">
                     {[...Array(t.rating)].map((_, i) => (
                       <FaStar key={i} className="w-4 h-4 text-yellow-400" />
                     ))}
                   </div>
 
-                  {/* Feedback Text */}
+                  
                   <p className="text-slate-600 text-base leading-relaxed italic">
                     "{t.text}"
                   </p>
@@ -159,7 +159,7 @@ const ClientReview = () => {
         </Swiper>
       </div>
 
-      {/* Global Styles */}
+      
       <style jsx global>{`
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(-5%); }

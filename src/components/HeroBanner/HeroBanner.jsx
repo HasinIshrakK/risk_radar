@@ -12,7 +12,7 @@ const HeroBanner = () => {
       style={{
         backgroundImage: `linear-gradient(rgba(3, 55, 61, 0.8), rgba(3, 55, 61, 0.8)), url(${heroBgImage})`,
         backgroundSize: "cover",
-        /* Changed to left center to keep your important content visible */
+        
         backgroundPosition: " center", 
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "scroll", 

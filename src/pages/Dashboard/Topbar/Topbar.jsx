@@ -15,7 +15,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
   return (
     <nav className="h-16 bg-white border-b border-slate-100 px-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
       
-      {/* Left Side: Drawer Toggle & Brand Logo */}
+      
       <div className="flex items-center gap-3">
         <button
           onClick={() => setIsDrawerOpen(!isDrawerOpen)}
@@ -24,7 +24,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
           {isDrawerOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
         
-        {/* Your Brand Logo Section */}
+       
         <Link to="/" className="flex items-center gap-1 ml-1 group">
           <img src={logo} alt="logo" className="w-9 h-9 object-contain transition-transform group-hover:scale-105" />
           <h1 className="text-xl font-bold text-green-700 tracking-tight">
@@ -33,7 +33,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
         </Link>
       </div>
 
-      {/* Middle: Navigation Links (Desktop) */}
+      
       <div className="hidden md:flex items-center gap-6">
         {navLinks.map((link, idx) => (
           <Link
@@ -46,7 +46,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
         ))}
       </div>
 
-      {/* Right Side: Notification & User Profile */}
+      
       <div className="flex items-center gap-2 relative">
         <button className="p-2 rounded-full text-slate-400 hover:bg-green-50 hover:text-green-600 transition-colors relative group">
           <Bell size={20} />
@@ -55,7 +55,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
 
         <div className="h-6 w-px bg-slate-200 mx-2 hidden sm:block"></div>
 
-        {/* User Profile Trigger */}
+        
         <div className="relative">
           <button
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -71,11 +71,11 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
             <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180 text-green-600' : ''}`} />
           </button>
 
-          {/* Combined User & Navigation Menu (Responsive) */}
+          
           {isUserMenuOpen && (
             <div className="absolute right-0 mt-3 w-60 bg-white border border-green-50 rounded-2xl shadow-xl py-2 z-60 animate-in fade-in zoom-in duration-200">
               
-              {/* Mobile Only Navigation Section */}
+              
               <div className="md:hidden border-b border-slate-100 pb-2 mb-2 px-4 py-1">
                 <p className="text-[10px] uppercase font-bold text-slate-400 mb-2 tracking-widest px-2">Menu Navigation</p>
                 {navLinks.map((link, idx) => (
@@ -90,17 +90,17 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 ))}
               </div>
 
-              {/* Identity Section */}
+              
               <div className="px-5 py-3 border-b border-slate-50">
                 <p className="text-sm font-bold text-slate-900 leading-none">Alex Morgan</p>
                 <p className="text-[11px] text-green-600 font-medium mt-1.5">Admin • Security Lead</p>
               </div>
 
-              {/* Action Links */}
+              
               <div className="p-1">
-                <button className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
-                  <User size={16} className="text-slate-400" /> Account Settings
-                </button>
+                <Link to={"/dashboard/profile"} className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
+                  <User size={16} className="text-slate-400" /> User profile
+                </Link>
                 <div className="h-px bg-slate-50 my-1 mx-2"></div>
                 <button className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors font-semibold">
                   <LogOut size={16} /> Sign Out
@@ -111,7 +111,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
         </div>
       </div>
 
-      {/* Click Outside Overlay */}
+      
       {isUserMenuOpen && (
         <div 
           className="fixed inset-0 z-40 bg-black/5 md:bg-transparent" 
