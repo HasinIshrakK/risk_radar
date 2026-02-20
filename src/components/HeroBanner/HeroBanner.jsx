@@ -1,5 +1,5 @@
-import React from 'react'
-import heroBgImage from "../../assets/hero.jpg"
+import React from "react";
+import heroBgImage from "../../assets/hero.jpg";
 
 const HeroBanner = () => {
   return (
@@ -13,14 +13,13 @@ const HeroBanner = () => {
         backgroundImage: `linear-gradient(rgba(3, 55, 61, 0.8), rgba(3, 55, 61, 0.8)), url(${heroBgImage})`,
         backgroundSize: "cover",
         /* Changed to left center to keep your important content visible */
-        backgroundPosition: " center", 
+        backgroundPosition: " center",
         backgroundRepeat: "no-repeat",
-        backgroundAttachment: "scroll", 
+        backgroundAttachment: "scroll",
       }}
     >
       <div className="container mx-auto px-6 md:px-12 lg:px-20 relative z-10">
         <div className="max-w-2xl lg:max-w-3xl">
-          
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-[1.1]">
             Smart Fraud <br className="hidden sm:block" /> Detection System
           </h1>
@@ -39,11 +38,10 @@ const HeroBanner = () => {
               Learn More
             </button>
           </div>
-
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeroBanner
+export default HeroBanner;

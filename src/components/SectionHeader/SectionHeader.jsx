@@ -1,18 +1,35 @@
-const SectionHeader = ({ subtitle, title, peraTitle }) => {
+/* eslint-disable no-unused-vars */
+import { motion } from "framer-motion";
+
+const SectionHeader = ({ subtitle, title, titlePera }) => {
   return (
-    <div data-aos="fade-up" data-aos-duration="1000" className="py-16 px-6">
-      <div className="max-w-6xl mx-auto text-center">
-        <span className="px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold tracking-wide uppercase">
-          {subtitle}
-        </span>
-        <h1 className="mt-6 text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
-          {title}
-        </h1>
-        <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-          {peraTitle}
-        </p>
+    <div>
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="max-w-2xl text-left">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2 mb-4"
+          >
+            <span className="w-12 h-[2px] bg-emerald-500"></span>
+            <span className="text-emerald-600 font-bold uppercase tracking-widest text-xs">
+              {subtitle}
+            </span>
+          </motion.div>
+
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+            {title}
+          </h2>
+        </div>
+
+        <div className="text-left md:text-right">
+          <p className="text-slate-500 font-medium max-w-xs md:ml-auto">
+            {titlePera}
+          </p>
+        </div>
       </div>
     </div>
   );
 };
+
 export default SectionHeader;

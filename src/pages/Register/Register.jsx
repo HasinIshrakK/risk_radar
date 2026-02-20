@@ -5,7 +5,6 @@ import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
   const { registerUser, signinGoogle } = useAuth();
-
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
