@@ -30,7 +30,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="bg-[#f0f9f4] py-12 relative overflow-hidden">
+    <section className="bg-[#f0f9f4] py-12 md:py-20 relative overflow-hidden">
       <div className="absolute top-0 -left-20 w-[500px] h-[500px] bg-emerald-200/40 blur-[100px] rounded-full"></div>
       <div className="absolute bottom-0 -right-20 w-[500px] h-[500px] bg-green-200/40 blur-[100px] rounded-full"></div>
 
@@ -41,7 +41,11 @@ const HowItWorks = () => {
             subtitle="Ultra-Low Latency Protocol"
             title={
               <span className="text-slate-900">
-                How <span className="text-emerald-600">RiskRadar</span> <br />
+                How{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-500">
+                  RiskRadar
+                </span>{" "}
+                <br />
                 Stops Fraud in{" "}
                 <span className="underline decoration-emerald-400/50 italic">
                   Real-Time

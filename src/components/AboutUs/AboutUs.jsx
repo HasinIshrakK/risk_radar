@@ -38,7 +38,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden py-12">
+    <section className="relative overflow-hidden py-12 md:py-20">
       <Container>
         <div className="absolute top-0 right-0 w-1/2 h-full bg-green-100/30 -skew-x-12 translate-x-32 hidden lg:block" />
 

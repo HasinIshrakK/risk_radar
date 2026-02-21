@@ -4,7 +4,7 @@ import Container from "../SharedUi/Container";
 const SecurityCta = () => {
   return (
     <Container>
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden md:mb-24">
         {/* Background Decorative Elements */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-10 pointer-events-none">
           <div

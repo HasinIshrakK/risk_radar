@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
+AOS.init();
 
 const SectionHeader = ({ subtitle, title, titlePera }) => {
   return (
-    <div>
+    <div data-aos="fade-up" data-aos-duration="1000" className="space-y-12">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
         <div className="max-w-2xl text-left">
           <motion.div
