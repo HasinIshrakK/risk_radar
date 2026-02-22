@@ -16,13 +16,13 @@ const PasswordReset = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-green-500  px-4">
-      <div className="w-full max-w-md bg-green-900  p-8 rounded-lg shadow-md">
+    <div className="flex items-center justify-center min-h-screen bg-white px-4 my-20 rounded-3xl">
+      <div className="w-full max-w-md bg-[#e4e6e9f1] p-8 rounded-xl shadow-md">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-black ">
             Reset Your Password
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">
+          <p className="text-black  mt-2">
             Enter your email to receive a reset link
           </p>
         </div>
@@ -30,7 +30,7 @@ const PasswordReset = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-gray-700 dark:text-gray-200 mb-1"
+              className="block text-gray-700  mb-1"
             >
               Email
             </label>
@@ -44,7 +44,9 @@ const PasswordReset = () => {
             />
           </div>
           {message && (
-            <p className="text-sm text-green-500 dark:text-green-400">{message}</p>
+            <p className="text-sm text-red-500 dark:text-red-400">
+              {message}
+            </p>
           )}
           <button
             type="submit"
