@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
+  GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -11,6 +12,7 @@ import {
 import auth from "../../firebase/firebase.config";
 
 const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const registerUser = (email, password) => {
@@ -23,6 +25,11 @@ const AuthProvider = ({ children }) => {
 
   const signinGoogle = () => {
     return signInWithPopup(auth, googleProvider);
+  };
+
+  const signinGithub = () => {
+    // setLoading(true);
+    return signInWithPopup(auth, githubProvider);
   };
 
   const logOut = () => {
@@ -41,14 +48,11 @@ const AuthProvider = ({ children }) => {
     registerUser,
     signinUser,
     signinGoogle,
+    signinGithub,
     logOut,
   };
 
-  return (
-    <AuthContext value={authInfo}>
-      {children}
-    </AuthContext>
-  );
+  return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
 
 export default AuthProvider;
