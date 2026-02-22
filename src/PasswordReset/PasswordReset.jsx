@@ -17,12 +17,12 @@ const PasswordReset = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white px-4 my-20 rounded-3xl">
-      <div className="w-full max-w-md bg-[#e4e6e9f1] p-8 rounded-xl shadow-md">
+      <div className="w-full max-w-md bg-green-700 p-8 rounded-xl shadow-md">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-black ">
+          <h1 className="text-2xl font-bold text-white ">
             Reset Your Password
           </h1>
-          <p className="text-black  mt-2">
+          <p className="text-white  mt-2">
             Enter your email to receive a reset link
           </p>
         </div>
@@ -30,7 +30,7 @@ const PasswordReset = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-gray-700  mb-1"
+              className="block text-white  mb-1"
             >
               Email
             </label>
