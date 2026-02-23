@@ -1,21 +1,26 @@
 import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-  const { signinUser, signinGoogle, signinGithub } = useAuth();
+  const { signinUser, signinGoogle, signinGithub, resetPassword } = useAuth();
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const emailRef = useRef();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
+    // const form = e.target;
+    // const email = form.email.value;
+    // const password = form.password.value;
+
+    // NEW: email
+    const email = emailRef.current.value;
+    const password = e.target.password.value;
 
     try {
       const result = await signinUser(email, password);
@@ -24,6 +29,21 @@ const Login = () => {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleResetPassword = () => {
+    const email = emailRef.current.value;
+    if (!email) {
+      setError("Please provide a valid email to reset password.");
+      return;
+    }
+    resetPassword(email)
+      .then(() => {
+        alert("Password reset email sent! Check your inbox.");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
   const handleGoogleLogin = async () => {
@@ -155,6 +175,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
+                ref={emailRef}
                 placeholder="Enter Your Email"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all duration-300 placeholder:text-slate-300"
               />
@@ -165,6 +186,14 @@ const Login = () => {
                 <label className="text-xs font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-emerald-500 transition-colors">
                   Secure Password
                 </label>
+                {/* NEW: Forgot Password */}
+                <button
+                  type="button"
+                  onClick={handleResetPassword}
+                  className="text-xs font-bold text-emerald-600 hover:underline"
+                >
+                  Forgot Password?
+                </button>
               </div>
               <input
                 type="password"
