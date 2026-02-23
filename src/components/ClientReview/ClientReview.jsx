@@ -160,7 +160,7 @@ const ClientReview = () => {
       </div>
 
       {/* Global Styles */}
-      <style jsx global>{`
+      <style jsx="true">{`
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(-5%); }
           50% { transform: translateY(0); }
