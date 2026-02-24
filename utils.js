@@ -1,6 +1,5 @@
 // detect high amount transactions
 export const detectHighAmount = (transactions, threshold = 50000) => {
-    
   return transactions.filter((tx) => tx.amount > threshold);
 };
 

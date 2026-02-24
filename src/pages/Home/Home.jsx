@@ -1,7 +1,7 @@
 import React from 'react';
 import HowItWorks from './HowItWorks';
 import PasswordReset from '../../PasswordReset/PasswordReset';
-import DetectionHighAmount from '../../AmountDetection/DetectionAmount';
+// import DetectionHighAmount from '../../AmountDetection/DetectionAmount';
 import HighAmountDashboard from '../../AmountDetection/HighAmountDashboard';
 
 
@@ -10,7 +10,7 @@ const Home = () => {
         <div>
            <HowItWorks></HowItWorks>
            <PasswordReset></PasswordReset>
-           <DetectionHighAmount></DetectionHighAmount>
+           {/* <DetectionHighAmount></DetectionHighAmount> */}
            <HighAmountDashboard></HighAmountDashboard>
         </div>
     );
