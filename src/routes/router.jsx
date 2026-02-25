@@ -35,14 +35,7 @@ export const router = createBrowserRouter([
         path: "/transaction",
         element: <Transactions></Transactions>,
       },
-      {
-        path: "/payment-success",
-        element: <PaymentSuccess></PaymentSuccess> ,
-      },
-      {
-        path: "/payment-cancel",
-        element: <PaymentCancel></PaymentCancel> ,
-      },
+      
       {
         path: "/alerts",
         element: <Alerts></Alerts>,
@@ -72,7 +65,15 @@ export const router = createBrowserRouter([
       {
         path:"/dashboard/profile",
         Component:UserProfile
-      }
+      },
+      {
+        path: "/dashboard/payment-success",
+        element: <PaymentSuccess></PaymentSuccess> ,
+      },
+      {
+        path: "/dashboard/payment-cancel",
+        element: <PaymentCancel></PaymentCancel> ,
+      },
     ]
   },
   {
