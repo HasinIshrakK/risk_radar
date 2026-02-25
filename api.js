@@ -1,14 +1,24 @@
-// fetch transactions from API
-import axios from "axios";
+// api.js
 
+const BASE_URL = "http://localhost:3000";
+
+// Fetch all transactions from backend
 export const fetchTransactions = async () => {
-  try {
-    const response = await axios.get("/api/transactions");
-    return Array.isArray(response.data.transactions)
-      ? response.data.transactions
-      : [];
-  } catch (error) {
-    console.error("Error fetching transactions:", error);
-    return [];
-  }
+  const res = await fetch(`${BASE_URL}/high-amount`);
+  return res.json();
+};
+
+// Detect high amount
+export const detectHighAmount = (transactions, threshold) => {
+  return transactions.filter((tx) => tx.amount > threshold);
+};
+
+export const detectHighAmountDynamic = (transactions) => {
+  const average =
+    transactions.reduce((sum, tx) => sum + tx.amount, 0) /
+    transactions.length;
+
+  const threshold = average * 1.5;
+
+  return transactions.filter((tx) => tx.amount > threshold);
 };
