@@ -2,9 +2,17 @@ import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useState, useRef } from "react";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signinUser, signinGoogle, signinGithub, resetPassword } = useAuth();
+  const {
+    signinUser,
+    signinGoogle,
+    signinGithub,
+    resetPassword,
+    checkLockStatus,
+    trackLoginAttempt,
+  } = useAuth();
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -14,29 +22,49 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    // const form = e.target;
-    // const email = form.email.value;
-    // const password = form.password.value;
-
-    // NEW: email
     const email = emailRef.current.value;
     const password = e.target.password.value;
 
-    try {
-      const result = await signinUser(email, password);
-      console.log(result.user);
-      navigate("/");
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleResetPassword = () => {
-    const email = emailRef.current.value;
-    if (!email) {
-      setError("Please provide a valid email to reset password.");
+    //  Basic validation
+    if (!email || !password) {
+      toast.error("Please enter email and password.");
       return;
     }
+
+    try {
+      //  STEP 1 → Lock check
+      const lockStatus = await checkLockStatus(email);
+
+      if (lockStatus.isLocked) {
+        toast.error(
+          `Account locked. Try again in ${lockStatus.remainingTime} minute(s).`,
+        );
+        return;
+      }
+
+      const result = await signinUser(email, password);
+      console.log(result.user); //
+      //  Reset failed attempts on success
+      await trackLoginAttempt(email, true);
+
+      toast.success("Login successful");
+      navigate("/");
+    } catch (err) {
+      //  Failed login → track attempt
+      const attemptData = await trackLoginAttempt(email, false);
+
+      if (attemptData?.lockUntil) {
+        toast.error("Too many failed attempts. Account locked for 15 minutes.");
+      } else {
+        toast.error("Invalid email or password.");
+      }
+      console.log("Login Error:", err.code || err.message);
+    }
+  };
+  const handleResetPassword = () => {
+    const email = emailRef.current.value;
+    if (!email) return toast.error("Please provide a valid email.");
+
     resetPassword(email)
       .then(() => {
         alert("Password reset email sent! Check your inbox.");
@@ -49,6 +77,10 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       await signinGoogle();
+      // Reset attempts after social login
+      const email = emailRef.current.value;
+      if (email) await trackLoginAttempt(email, true);
+
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -58,6 +90,11 @@ const Login = () => {
   const handleGithubLogin = async () => {
     try {
       await signinGithub();
+
+      // Reset attempts after social login
+      const email = emailRef.current.value;
+      if (email) await trackLoginAttempt(email, true);
+
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -210,7 +247,8 @@ const Login = () => {
             >
               Login
             </button>
-            {/*  ERROR SHOW */}
+
+            {/* 🔁 UPDATED: Error প্রদর্শন */}
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
             )}
