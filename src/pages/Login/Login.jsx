@@ -1,33 +1,100 @@
 import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signinUser, signinGoogle } = useAuth();
+  const {
+    signinUser,
+    signinGoogle,
+    signinGithub,
+    resetPassword,
+    checkLockStatus,
+    trackLoginAttempt,
+  } = useAuth();
+
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const emailRef = useRef();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
+    const email = emailRef.current.value;
+    const password = e.target.password.value;
+
+    //  Basic validation
+    if (!email || !password) {
+      toast.error("Please enter email and password.");
+      return;
+    }
 
     try {
+      //  STEP 1 → Lock check
+      const lockStatus = await checkLockStatus(email);
+
+      if (lockStatus.isLocked) {
+        toast.error(
+          `Account locked. Try again in ${lockStatus.remainingTime} minute(s).`,
+        );
+        return;
+      }
+
       const result = await signinUser(email, password);
-      console.log(result.user);
+      console.log(result.user); //
+      //  Reset failed attempts on success
+      await trackLoginAttempt(email, true);
+
+      toast.success("Login successful");
+      navigate("/");
+    } catch (err) {
+      //  Failed login → track attempt
+      const attemptData = await trackLoginAttempt(email, false);
+
+      if (attemptData?.lockUntil) {
+        toast.error("Too many failed attempts. Account locked for 15 minutes.");
+      } else {
+        toast.error("Invalid email or password.");
+      }
+      console.log("Login Error:", err.code || err.message);
+    }
+  };
+  const handleResetPassword = () => {
+    const email = emailRef.current.value;
+    if (!email) return toast.error("Please provide a valid email.");
+
+    resetPassword(email)
+      .then(() => {
+        alert("Password reset email sent! Check your inbox.");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signinGoogle();
+      // Reset attempts after social login
+      const email = emailRef.current.value;
+      if (email) await trackLoginAttempt(email, true);
+
       navigate("/");
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGithubLogin = async () => {
     try {
-      await signinGoogle();
+      await signinGithub();
+
+      // Reset attempts after social login
+      const email = emailRef.current.value;
+      if (email) await trackLoginAttempt(email, true);
+
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -145,6 +212,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
+                ref={emailRef}
                 placeholder="Enter Your Email"
                 className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all duration-300 placeholder:text-slate-300"
               />
@@ -155,6 +223,14 @@ const Login = () => {
                 <label className="text-xs font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-emerald-500 transition-colors">
                   Secure Password
                 </label>
+                {/* NEW: Forgot Password */}
+                <button
+                  type="button"
+                  onClick={handleResetPassword}
+                  className="text-xs font-bold text-emerald-600 hover:underline"
+                >
+                  Forgot Password?
+                </button>
               </div>
               <input
                 type="password"
@@ -171,7 +247,8 @@ const Login = () => {
             >
               Login
             </button>
-            {/*  ERROR SHOW */}
+
+            {/* 🔁 UPDATED: Error প্রদর্শন */}
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
             )}
@@ -221,6 +298,16 @@ const Login = () => {
                 />
               </svg>
               Sign in with Google Workspace
+            </button>
+            <button
+              type="button"
+              onClick={handleGithubLogin}
+              className="w-full flex items-center justify-center gap-3 bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-black transition-all active:scale-95 mt-4"
+            >
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
+              Sign in with GitHub
             </button>
           </form>
         </div>
