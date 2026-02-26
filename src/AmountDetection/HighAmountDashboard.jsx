@@ -91,7 +91,7 @@ const HighAmountDashboard = () => {
               <tr
                 key={idx}
                 className={`transition hover:bg-gray-100 ${
-                  tx.status === "High Amount" ? "bg-red-100" : "bg-green-100"
+                  tx.status === "High Amount" ? "bg-red-100 animate-pulse" : "bg-green-100"
                 }`}
               >
                 <th className="border border-gray-300 px-4 py-2 text-center">{idx + 1}</th>
