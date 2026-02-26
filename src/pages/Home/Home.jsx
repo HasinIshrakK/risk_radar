@@ -4,8 +4,9 @@ import Partnership from "../../components/Partnership/Partnership";
 import ClientReview from "../../components/ClientReview/ClientReview";
 import SecurityTechSection from "../../components/SecurityTechSection/SecurityTechSection";
 import SecurityCta from "../../components/SecurityCta/SecurityCta";
-import HowItWorks from "./HowItWorks";
 import HeroBanner from "../../components/HeroBanner/HeroBanner";
+import HowItWorks from './HowItWorks';
+import ProblemSection from "../../components/ProblemSection/ProblemSection";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <AboutUs></AboutUs>
         <ClientReview></ClientReview>
         <SecurityTechSection />
+        <ProblemSection />
         <HowItWorks></HowItWorks>
         <Partnership></Partnership>
         <SecurityCta />

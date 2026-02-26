@@ -24,8 +24,8 @@ export default function TransactionVolumeBarChart() {
     <div className="w-full rounded-2xl border border-base-200 bg-base-100 p-4 shadow-sm">
       <h3 className="mb-4 text-lg font-semibold">Transaction Volume</h3>
 
-      <div className="h-72 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full" style={{ minHeight: 288 }}>
+        <ResponsiveContainer width="100%" height={288}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />

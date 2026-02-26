@@ -174,6 +174,28 @@ const ClientReview = () => {
           ))}
         </Swiper>
       </Container>
+      </div>
+
+      {/* Global Styles */}
+      <style jsx="true">{`
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(-5%); }
+          50% { transform: translateY(0); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 3s infinite;
+        }
+        .swiper-pagination-bullet { 
+          background: #94a3b8 !important; 
+          opacity: 0.3;
+        }
+        .swiper-pagination-bullet-active { 
+          background: #16a34a !important; 
+          width: 30px !important; 
+          border-radius: 8px !important;
+          opacity: 1;
+        }
+      `}</style>
     </section>
   );
 };
