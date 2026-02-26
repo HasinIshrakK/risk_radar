@@ -47,7 +47,7 @@ const AboutUs = () => {
           
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
             Stop Fraud Before It <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-green-600 to-emerald-500">
               Affects Your Revenue.
             </span>
           </h2>
@@ -61,7 +61,7 @@ const AboutUs = () => {
                 <span className="text-3xl font-bold text-green-700">99.9%</span>
                 <span className="text-sm text-slate-500 font-semibold uppercase tracking-tighter">Detection Accuracy</span>
              </div>
-             <div className="w-[1px] h-12 bg-green-200 hidden sm:block" />
+             <div className="w-px h-12 bg-green-200 hidden sm:block" />
              <div className="flex flex-col">
                 <span className="text-3xl font-bold text-green-700">&lt;200ms</span>
                 <span className="text-sm text-slate-500 font-semibold uppercase tracking-tighter">Response Time</span>
@@ -76,7 +76,7 @@ const AboutUs = () => {
               key={idx}
               className={`p-8 rounded-[2.5rem] bg-white border border-green-50 shadow-[0_15px_35px_-15px_rgba(22,163,74,0.08)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] transition-all duration-500 group ${idx % 2 !== 0 ? 'lg:translate-y-8' : ''}`}
             >
-              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white mb-6 shadow-lg shadow-green-200/50 transition-transform group-hover:scale-110 group-hover:rotate-3`}>
+              <div className={`w-12 h-12 rounded-2xl bg-linear-to-br ${feature.gradient} flex items-center justify-center text-white mb-6 shadow-lg shadow-green-200/50 transition-transform group-hover:scale-110 group-hover:rotate-3`}>
                 {feature.icon}
               </div>
               
@@ -92,7 +92,7 @@ const AboutUs = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style jsx='true'>{`
         .animate-spin-slow {
           animation: spin 8s linear infinite;
         }
