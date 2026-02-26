@@ -15,6 +15,8 @@ import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
+import PaymentSuccess from "../pages/Payment/paymentSuccess";
+import PaymentCancel from "../pages/Payment/PaymentCancel";
 
 export const router = createBrowserRouter([
   // App layout
@@ -34,6 +36,7 @@ export const router = createBrowserRouter([
         path: "/transaction",
         element: <Transactions></Transactions>,
       },
+      
       {
         path: "/alerts",
         element: <Alerts></Alerts>,
@@ -62,10 +65,18 @@ export const router = createBrowserRouter([
         Component: Dashboard,
       },
       {
-        path: "/dashboard/profile",
-        Component: UserProfile,
+        path:"/dashboard/profile",
+        Component:UserProfile
       },
-    ],
+      {
+        path: "/dashboard/payment-success",
+        element: <PaymentSuccess></PaymentSuccess> ,
+      },
+      {
+        path: "/dashboard/payment-cancel",
+        element: <PaymentCancel></PaymentCancel> ,
+      },
+    ]
   },
   // Auth layout
   {
