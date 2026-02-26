@@ -17,6 +17,7 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
 
 export const router = createBrowserRouter([
+  // App layout
   {
     path: "/",
     element: (
@@ -51,20 +52,22 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  // Dashboard layout
   {
     path: "/dashboard",
     element: <DashboardLayout></DashboardLayout>,
     children: [
       {
         index: true,
-        Component: Dashboard
+        Component: Dashboard,
       },
       {
-        path:"/dashboard/profile",
-        Component:UserProfile
-      }
-    ]
+        path: "/dashboard/profile",
+        Component: UserProfile,
+      },
+    ],
   },
+  // Auth layout
   {
     path: "/auth",
     element: (

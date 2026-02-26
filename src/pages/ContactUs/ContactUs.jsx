@@ -1,28 +1,34 @@
 import React from "react";
 import { Mail, Phone, MapPin, MessageSquare, ShieldCheck } from "lucide-react";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
-
+import Container from "../../components/SharedUi/Container";
 import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-// ..
+import "aos/dist/aos.css";
 AOS.init();
 
 const ContactUs = () => {
   return (
-    <section
-      className="min-h-screen text-slate-900 px-6 md:px-0
-    "
-    >
-      {/* Hero Section */}
-      <SectionHeader
-        subtitle={"Contact Our Team"}
-        title={"Let’s scale your financial intelligence."}
-        peraTitle={
-          "Have questions about our AI-driven portfoli management or API integrations? Were here to help."
-        }
-      />
+    <section className="my-36">
+      <Container>
+        <SectionHeader
+          subtitle="Contact Our Team"
+          title={
+            <span className="text-slate-900">
+              Let’s{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-500">
+                scale your
+              </span>{" "}
+              <br />
+              financial{" "}
+              <span className="underline decoration-emerald-400/50 italic">
+                intelligence.
+              </span>
+            </span>
+          }
+          titlePera="Have questions about our AI-driven portfoli management or API integrations? Were here to help."
+        />
 
-      <div className="max-w-7xl mx-auto py-14  md:py-20">
+        {/* <div className="max-w-7xl mx-auto py-14  md:py-20"> */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Column: Info */}
           <div
@@ -140,7 +146,8 @@ const ContactUs = () => {
             </form>
           </div>
         </div>
-      </div>
+        {/* </div> */}
+      </Container>
     </section>
   );
 };

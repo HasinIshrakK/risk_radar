@@ -13,8 +13,7 @@ const Partnership = () => {
   const logos = [logo1, logo2, logo3, logo4, logo5, logo6];
 
   return (
-    <section className="bg-[#f4faf7] py-6 md:py-8 lg:py-16 overflow-hidden relative border-y border-green-50/50">
-      
+    <section className="overflow-hidden relative">
       {/* Smooth Marquee Animation */}
       <style>
         {`
@@ -32,10 +31,8 @@ const Partnership = () => {
       </style>
 
       <div className="max-w-7xl mx-auto px-6">
-        
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          
+        <div className="flex flex-col items-center text-center mb-8">
           {/* Reference Badge */}
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wider mb-6 shadow-xl shadow-green-500/20 group cursor-default">
             <Shield className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
@@ -46,9 +43,10 @@ const Partnership = () => {
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">
             Trusted by Industry <span className="text-green-600">Leaders</span>
           </h2>
-          
+
           <p className="text-slate-600 text-lg max-w-2xl font-medium">
-            RiskRadar powers the security systems of leading financial institutions globally.
+            RiskRadar powers the security systems of leading financial
+            institutions globally.
           </p>
         </div>
 
@@ -76,16 +74,19 @@ const Partnership = () => {
         </div>
 
         {/* Simple Trust Footer */}
-        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4 mt-16 opacity-70">
-           <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
-             <CheckCircle2 className="w-5 h-5 text-green-500" /> Enterprise-ready API
-           </div>
-           <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
-             <CheckCircle2 className="w-5 h-5 text-green-500" /> 24/7 Threat Intelligence
-           </div>
-           <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
-             <CheckCircle2 className="w-5 h-5 text-green-500" /> PCI-DSS Certified
-           </div>
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4 mt-8 opacity-70">
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
+            <CheckCircle2 className="w-5 h-5 text-green-500" /> Enterprise-ready
+            API
+          </div>
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
+            <CheckCircle2 className="w-5 h-5 text-green-500" /> 24/7 Threat
+            Intelligence
+          </div>
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
+            <CheckCircle2 className="w-5 h-5 text-green-500" /> PCI-DSS
+            Certified
+          </div>
         </div>
       </div>
     </section>
