@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-
-import { detectHighAmount, fetchTransactions } from "../../api";
+import { fetchTransactions } from "../../api";
+import { detectHighAmount } from "../../utils";
 
 const HighAmountDashboard = () => {
   const [transactions, setTransactions] = useState([]);
@@ -34,14 +34,14 @@ const HighAmountDashboard = () => {
 
       {/* Alert Box */}
       {highTransactions.length > 0 && (
-        <div className="bg-red-500 text-white p-3 rounded mb-4 text-center shadow-lg animate-pulse">
+        <div className="bg-green-500 text-white p-3 rounded mb-4 text-center shadow-lg animate-pulse">
           ⚠️ {highTransactions.length} High Amount Transaction(s) Detected!
         </div>
       )}
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition text-center">
+        <div className="bg-green-100 p-4 rounded-xl shadow-lg hover:shadow-2xl transition text-center">
           <h2 className="text-lg font-semibold">Total Transactions</h2>
           <p className="text-2xl sm:text-3xl font-bold">
             {transactions.length}
@@ -60,7 +60,7 @@ const HighAmountDashboard = () => {
       <div className="flex flex-wrap gap-4 mb-4 justify-center">
         <button
           onClick={() => setShowHighOnly(false)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition cursor-pointer"
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition cursor-pointer"
         >
           Show All
         </button>
@@ -74,8 +74,8 @@ const HighAmountDashboard = () => {
 
       {/* Table */}
       <div className="overflow-x-auto rounded-md">
-        <table className="min-w-full bg-white shadow-lg rounded-lg border-collapse">
-          <thead className="bg-gray-200 text-gray-700 sticky top-0 z-10">
+        <table className="min-w-full bg-white shadow-lg rounded-lg border-collapse border border-gray-300">
+          <thead className="bg-green-400 text-gray-700 sticky top-0 z-10">
             <tr>
               <th className="py-2 px-4 text-center">#</th>
               <th className="py-2 px-4 text-center">User Name</th>
@@ -91,15 +91,15 @@ const HighAmountDashboard = () => {
               <tr
                 key={idx}
                 className={`transition hover:bg-gray-100 ${
-                  tx.status === "High Amount" ? "bg-red-100" : ""
+                  tx.status === "High Amount" ? "bg-red-100" : "bg-green-100"
                 }`}
               >
-                <th className="border px-4 py-2 text-center">{idx + 1}</th>
-                <td className="border px-4 py-2 text-center">{tx.userName}</td>
-                <td className="border px-4 py-2 text-center">{tx.userEmail}</td>
-                <td className="border px-4 py-2 text-center">{tx.amount}</td>
-                <td className="border px-4 py-2 text-center">{tx.timestamp}</td>
-                <td className="border px-4 py-2 text-center">
+                <th className="border border-gray-300 px-4 py-2 text-center">{idx + 1}</th>
+                <td className="border border-gray-300 px-4 py-2 text-center">{tx.userName}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{tx.userEmail}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{tx.amount}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{tx.timestamp}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {tx.status === "High Amount" ? (
                     <span className="text-red-600 font-bold">{tx.status}</span>
                   ) : (

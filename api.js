@@ -8,17 +8,3 @@ export const fetchTransactions = async () => {
   return res.json();
 };
 
-// Detect high amount
-export const detectHighAmount = (transactions, threshold) => {
-  return transactions.filter((tx) => tx.amount > threshold);
-};
-
-export const detectHighAmountDynamic = (transactions) => {
-  const average =
-    transactions.reduce((sum, tx) => sum + tx.amount, 0) /
-    transactions.length;
-
-  const threshold = average * 1.5;
-
-  return transactions.filter((tx) => tx.amount > threshold);
-};
