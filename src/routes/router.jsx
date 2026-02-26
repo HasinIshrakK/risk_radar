@@ -15,7 +15,7 @@ import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
-import PaymentSuccess from "../pages/Payment/paymentSuccess";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 
 export const router = createBrowserRouter([

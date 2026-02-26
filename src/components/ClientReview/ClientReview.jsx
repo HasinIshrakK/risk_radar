@@ -200,7 +200,6 @@ const ClientReview = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </Container>
       </div>
 
       
