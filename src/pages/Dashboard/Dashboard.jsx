@@ -1,5 +1,7 @@
 import AlertsPanel from "../../components/SharedUi/AlertsPanel";
 import RecentTransactionsTable from "../../components/SharedUi/RecentTransactionsTable";
+import SystemHealthSection from "../../components/SharedUi/SystemHealthSection";
+import TopTriggeredRules from "../../components/SharedUi/TopTriggeredRules";
 import TransactionVolumeBarChart from "../../components/SharedUi/TransactionVolumeBarChart";
 
 export default function Dashboard() {
@@ -34,6 +36,8 @@ export default function Dashboard() {
       <TransactionVolumeBarChart />
       <AlertsPanel></AlertsPanel>
       <RecentTransactionsTable></RecentTransactionsTable>
+      <SystemHealthSection></SystemHealthSection>
+      <TopTriggeredRules></TopTriggeredRules>
     </div>
   );
 }

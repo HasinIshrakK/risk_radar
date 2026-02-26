@@ -54,7 +54,7 @@ function StatusPill({ status }) {
 
 export default function RecentTransactionsTable() {
   return (
-    <div className="rounded-2xl border border-base-200 bg-base-100 p-4 shadow-sm">
+    <div className="rounded-2xl border border-base-200 bg-base-100 mt-10 p-4 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-lg font-semibold">Recent Transactions</h3>
         <button className="btn btn-ghost btn-sm">See more</button>

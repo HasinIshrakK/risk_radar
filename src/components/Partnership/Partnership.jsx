@@ -46,9 +46,10 @@ const Partnership = () => {
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">
             Trusted by Industry <span className="text-green-600">Leaders</span>
           </h2>
-          
+
           <p className="text-slate-600 text-lg max-w-2xl font-medium">
-            RiskRadar powers the security systems of leading financial institutions globally.
+            RiskRadar powers the security systems of leading financial
+            institutions globally.
           </p>
         </div>
 

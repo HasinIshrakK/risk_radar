@@ -19,6 +19,7 @@ import PaymentSuccess from "../pages/Payment/paymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 
 export const router = createBrowserRouter([
+  // App layout
   {
     path: "/",
     element: (
@@ -54,13 +55,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  // Dashboard layout
   {
     path: "/dashboard",
     element: <DashboardLayout></DashboardLayout>,
     children: [
       {
         index: true,
-        Component: Dashboard
+        Component: Dashboard,
       },
       {
         path:"/dashboard/profile",
@@ -76,6 +78,7 @@ export const router = createBrowserRouter([
       },
     ]
   },
+  // Auth layout
   {
     path: "/auth",
     element: (
