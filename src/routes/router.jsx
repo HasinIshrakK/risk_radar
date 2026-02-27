@@ -15,6 +15,7 @@ import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
+import Services from "../pages/Services/Services";
 
 export const router = createBrowserRouter([
   // App layout
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
     errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
+      { path: "/services", element: <Services /> },
       {
         path: "/transaction",
         element: <Transactions></Transactions>,

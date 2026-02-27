@@ -83,12 +83,12 @@ const HeroBanner = () => {
                 }}
               >
                 {/* Green-White Gradient Overlay for Readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-white via-white/80 to-transparent"></div>
               </div>
 
               {/* Content Container */}
               <div className="container mx-auto px-6 md:px-12 lg:px-24 z-10">
-                <div className="max-w-3xl space-y-4 md:space-y-6">
+                <div className="max-w-3xl  mt12 md:mt20 space-y-4 md:space-y-6">
                   {/* Tagline */}
                   <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-700 text-sm font-bold uppercase tracking-wider animate-bounce">
                     {slide.tag}
