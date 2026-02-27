@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-// export default ClientReview;
 import React from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -7,7 +6,7 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
-import { FaStar, FaQuoteLeft } from "react-icons/fa";
+import { FaQuoteLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles, Star } from "lucide-react";
 import Container from "../SharedUi/Container";
@@ -51,8 +50,8 @@ const ClientReview = () => {
   return (
     <section className="relative overflow-hidden">
       <Container>
-        {/* Modern Header Section */}
-        <div className="flex flex-col items-center text-center mb14 md:mb20">
+        {/* Header */}
+        <div className="flex flex-col items-center text-center mb-14 md:mb-20">
           <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-full mb-4">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span className="text-[10px] font-black text-emerald-700 uppercase tracking-[0.2em]">
@@ -61,13 +60,13 @@ const ClientReview = () => {
           </div>
 
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
-            Trusted by the
+            Trusted by the{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-500">
               Modern Experts.
             </span>
           </h2>
 
-          <div className="flex items-center gap-6 mt-2">
+          <div className="flex items-center gap-6 mt-4">
             <div className="flex items-center gap-1">
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star
@@ -78,14 +77,16 @@ const ClientReview = () => {
               ))}
               <span className="ml-2 text-slate-900 font-bold">4.9/5</span>
             </div>
+
             <div className="h-4 w-[1px] bg-slate-200" />
+
             <p className="text-slate-500 font-medium">
               500+ Financial Entities
             </p>
           </div>
         </div>
 
-        {/* Swiper Section */}
+        {/* Swiper */}
         <Swiper
           loop={true}
           grabCursor={true}
@@ -100,34 +101,35 @@ const ClientReview = () => {
             slideShadows: false,
           }}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
-          pagination={{ clickable: true, dynamicBullets: true }}
+          // pagination={{ clickable: true, dynamicBullets: true }}
           modules={[EffectCoverflow, Pagination, Autoplay]}
           className="pb-16 !overflow-visible"
         >
           {testimonials.map((t, idx) => (
-            <SwiperSlide key={idx} className="max-w-95 py-16 sm:max-w-120">
+            <SwiperSlide
+              key={idx}
+              className="max-w-[380px] py-16 sm:max-w-[480px]"
+            >
               {({ isActive }) => (
                 <div
-                  className={`
-                    relative p-10 rounded-[3rem] h-full transition-all duration-700 border
-                    ${
-                      isActive
-                        ? "bg-white border-emerald-100 shadow-[0_40px_80px_-15px_rgba(16,185,129,0.12)] scale-100 opacity-100"
-                        : "bg-white/40 backdrop-blur-sm border-slate-100 scale-90 opacity-40 blur-[2px]"
-                    }
-                  `}
+                  className={`relative p-10 rounded-[3rem] h-full transition-all duration-700 border ${
+                    isActive
+                      ? "bg-white border-emerald-100 shadow-[0_40px_80px_-15px_rgba(16,185,129,0.12)] scale-100 opacity-100"
+                      : "bg-white/40 backdrop-blur-sm border-slate-100 scale-90 opacity-40 blur-[2px]"
+                  }`}
                 >
-                  {/* Glass Quote Badge */}
+                  {/* Quote Icon */}
                   <div
-                    className={`
-                    absolute -top-6 -left-6 w-14 h-14 rounded-2xl flex items-center justify-center shadow-xl transition-all duration-500
-                    ${isActive ? "bg-emerald-600 text-white scale-110" : "bg-slate-100 text-slate-300"}
-                  `}
+                    className={`absolute -top-6 -left-6 w-14 h-14 rounded-2xl flex items-center justify-center shadow-xl transition-all duration-500 ${
+                      isActive
+                        ? "bg-emerald-600 text-white scale-110"
+                        : "bg-slate-100 text-slate-300"
+                    }`}
                   >
                     <FaQuoteLeft size={20} />
                   </div>
 
-                  {/* Rating Pips */}
+                  {/* Rating */}
                   <div className="flex gap-1 mb-8">
                     {[...Array(t.rating)].map((_, i) => (
                       <div
@@ -147,7 +149,7 @@ const ClientReview = () => {
                     "{t.text}"
                   </p>
 
-                  {/* Profile Section */}
+                  {/* Profile */}
                   <div className="flex items-center justify-between border-t border-slate-50 pt-8">
                     <div className="flex items-center gap-4">
                       <img
@@ -156,14 +158,13 @@ const ClientReview = () => {
                         className="w-14 h-14 rounded-2xl object-cover ring-4 ring-emerald-50"
                       />
                       <div>
-                        <h4 className="font-bold text-slate-900 leading-tight tracking-tight">
-                          {t.name}
-                        </h4>
+                        <h4 className="font-bold text-slate-900">{t.name}</h4>
                         <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest mt-1">
                           {t.role}
                         </p>
                       </div>
                     </div>
+
                     <div className="hidden sm:block">
                       <Sparkles className="text-emerald-200" size={24} />
                     </div>
