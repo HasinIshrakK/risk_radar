@@ -15,6 +15,7 @@ import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
+import Services from "../pages/Services/Services";
 // import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 import PaymentSuccess from "../pages/Payment/paymentSuccess";
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
     errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
+      { path: "/services", element: <Services /> },
       {
         path: "/transaction",
         element: <Transactions></Transactions>,

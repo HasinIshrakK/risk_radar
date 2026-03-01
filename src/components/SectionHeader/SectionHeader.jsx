@@ -6,7 +6,11 @@ AOS.init();
 
 const SectionHeader = ({ subtitle, title, titlePera }) => {
   return (
-    <div data-aos="fade-up" data-aos-duration="1000" className="space-y-12">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      className="pt-32 md:pt-44 pb-8 space-y-12"
+    >
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
         <div className="max-w-2xl text-left">
           <motion.div
@@ -26,7 +30,7 @@ const SectionHeader = ({ subtitle, title, titlePera }) => {
         </div>
 
         <div className="text-left md:text-right">
-          <p className="text-slate-500 font-medium max-w-xs md:ml-auto">
+          <p className="text-slate-500 font-medium max-w-sm md:ml-auto">
             {titlePera}
           </p>
         </div>
