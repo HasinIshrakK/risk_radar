@@ -8,7 +8,7 @@ AOS.init();
 
 const ContactUs = () => {
   return (
-    <section className="my-36">
+    <section>
       <Container>
         <SectionHeader
           subtitle="Contact Our Team"
