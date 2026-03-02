@@ -13,8 +13,13 @@ import {
   Sparkles,
 } from "lucide-react";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext/AuthContext";
 
 const Services = () => {
+  const { user } = useContext(AuthContext);
+  console.log("AuthContext user:", user);
+
   const services = [
     {
       title: "Real-Time Fraud Shield",
@@ -103,6 +108,15 @@ const Services = () => {
   ];
 
   const handlePayment = async (plan) => {
+    if (!user) {
+      Swal.fire({
+        icon: "warning",
+
+        title: "Please Login First",
+      });
+
+      return;
+    }
     // Confirmation Modal
     const result = await Swal.fire({
       title: "Confirm Payment",
@@ -119,9 +133,9 @@ const Services = () => {
         price: plan.price,
         plansId: plan.name.toLowerCase(),
         name: plan.name,
-        email: "customer@example.com",   
-        userId : "user123",
-        ipAddress : "127.0.0.1"
+        email: user.email,
+        userId: user.uid,
+        ipAddress: "127.0.0.1",
       };
 
       const res = await axios.post(

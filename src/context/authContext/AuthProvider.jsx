@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import auth, { db } from "../../firebase/firebase.config";
 import { AuthContext } from "./AuthContext";
@@ -17,6 +17,8 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
+  const [user,setUser] = useState(null);
+  const [loading, setLoading] = useState(true)
   // NEW: Safe email for Firestore doc ID
   const getSafeEmail = (email) => email.replace(/\./g, "_");
 
@@ -97,6 +99,8 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
       console.log(currentUser);
     });
 
@@ -104,6 +108,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const authInfo = {
+    user,
+    setUser,
+    loading,
     registerUser,
     signinUser,
     signinGoogle,
@@ -114,7 +121,7 @@ const AuthProvider = ({ children }) => {
     checkLockStatus,
   };
 
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
