@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
 import Container from "../../components/SharedUi/Container";
 import {
@@ -11,6 +12,7 @@ import {
   Shield,
   Sparkles,
 } from "lucide-react";
+import axios from "axios";
 
 const Services = () => {
   const services = [
@@ -87,7 +89,7 @@ const Services = () => {
     },
     {
       name: "Enterprise",
-      price: "Custom",
+      price: "299",
       description: "Dedicated infrastructure for banks and large institutions.",
       features: [
         "Unlimited Transactions",
@@ -99,6 +101,46 @@ const Services = () => {
       isPopular: false,
     },
   ];
+
+  const handlePayment = async (plan) => {
+    // Confirmation Modal
+    const result = await Swal.fire({
+      title: "Confirm Payment",
+      text: `You are going to pay $${plan.price} for ${plan.name} plan.`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Pay Now",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const paymentInfo = {
+        price: plan.price,
+        plansId: plan.name.toLowerCase(),
+        name: plan.name,
+        email: "customer@example.com",   
+        userId : "user123",
+        ipAddress : "127.0.0.1"
+      };
+
+      const res = await axios.post(
+        "http://localhost:3000/api/payment/checkout",
+        paymentInfo,
+      );
+
+      // Stripe redirect
+      window.location.assign(res.data.url);
+    } catch (error) {
+      console.log(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Payment Failed",
+        text: "Something went wrong!",
+      });
+    }
+  };
 
   return (
     <div>
@@ -244,15 +286,14 @@ const Services = () => {
                   </ul>
 
                   <button
+                    onClick={() => handlePayment(plan)}
                     className={`w-full py-5 rounded-[1.5rem] font-bold text-sm transition-all duration-300 transform active:scale-95 ${
                       plan.isPopular
                         ? "bg-slate-900 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-100"
                         : "bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100"
                     }`}
                   >
-                    {plan.price === "Custom"
-                      ? "Contact Enterprise"
-                      : "Start Free Trial"}
+                    Pay Now
                   </button>
                 </div>
               </div>
