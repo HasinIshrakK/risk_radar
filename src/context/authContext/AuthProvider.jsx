@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import auth, { db } from "../../firebase/firebase.config";
 import { AuthContext } from "./AuthContext";
@@ -94,9 +94,13 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     return signOut(auth);
   };
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
       console.log(currentUser);
     });
 
@@ -112,6 +116,8 @@ const AuthProvider = ({ children }) => {
     logOut,
     trackLoginAttempt,
     checkLockStatus,
+    user,
+    loading,
   };
 
   return <AuthContext value={authInfo}>{children}</AuthContext>;
