@@ -18,6 +18,10 @@ import UserProfile from "../pages/Dashboard/UserProfile";
 import Services from "../pages/Services/Services";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
+import SideBar from "../Admin/SideBar"
+import AdminDashboard from "../Admin/AdminDashboard";
+import Notification from "../Admin/Notification";
+
 
 export const router = createBrowserRouter([
   // App layout
@@ -30,7 +34,7 @@ export const router = createBrowserRouter([
       </>
     ),
     hydrateFallbackElement: <Loader />,
-    errorElement: <ServerError></ServerError>,
+    // errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
       { path: "/services", element: <Services /> },
@@ -78,6 +82,22 @@ export const router = createBrowserRouter([
         path: "/dashboard/payment-cancel",
         element: <PaymentCancel></PaymentCancel> ,
       },
+    ]
+  },
+  // Sidebar
+  {
+    path: "sidebar",
+    element: <SideBar></SideBar>,
+    children: [
+      {
+        path: "admin-dashboard",
+        Component: AdminDashboard,
+      },
+      {
+        path: "notification",
+        Component: Notification,
+      },
+      
     ]
   },
   // Auth layout
