@@ -1,176 +1,137 @@
-import React from "react";
-import { FaPhoneVolume, FaCheckCircle } from "react-icons/fa";
+import { FaPhoneVolume, FaCheckCircle, FaEdit } from "react-icons/fa";
 import { IoLocation } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { motion } from "framer-motion";
+import useAuth from "../../hooks/useAuth";
 
 const UserProfile = () => {
-  const user = {
-    name: "Mahfuzur Rahman",
-    email: "mahfuz@example.com",
-    role: "User",
-    phone: "+880123456789",
-    location: "Dhaka, Bangladesh",
-    image: "https://i.pravatar.cc/150?img=12",
-    status: "active",
+  const { user, loading } = useAuth();
+
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
   };
 
-  return (
-    <div className="min-h-screen bg-green-900 p-4 md:p-8">
-      <div className="max-w-5xl mx-auto bg-green-800 shadow-xl rounded-3xl p-6 md:p-10">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-          <div className="relative">
-            <img
-              src={user.image}
-              alt="profile"
-              className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-blue-500 shadow-md"
-            />
-            <span className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
-          </div>
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+  };
 
-          <div className="text-center md:text-left">
-            <h2 className="text-2xl md:text-3xl font-bold text-white">
-              {user.name}
-            </h2>
-            <p className="text-white mt-1">{user.email}</p>
-
-            <span className="inline-block mt-3 px-4 py-1 text-sm bg-green-900 text-white rounded-full">
-              {user.role}
-            </span>
-
-            <div className="mt-4">
-              <button className="px-5 py-2 bg-green-700 text-white rounded-xl hover:bg-green-600 transition shadow cursor-pointer">
-                Edit Profile
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="my-8 border-t border-green-700"></div>
-
-        {/* Info Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          {/* Phone */}
-          <div className="bg-green-700 hover:shadow-lg hover:scale-105 transition transform p-5 rounded-2xl">
-            <div className="flex items-center gap-3">
-              <motion.div className="relative">
-                {/* Outer Ripple */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-white opacity-30 "
-                  animate={{ scale: [1, 1.9], opacity: [0.5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                />
-
-                {/* Icon */}
-                <motion.div
-                  animate={{ rotate: [0, -10, 10, -10, 0] }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 0.6,
-                    ease: "easeInOut",
-                  }}
-                  className="bg-white/20 p-3 rounded-full text-orange-900 shadow-lg relative z-10 flex items-center justify-center"
-                >
-                  <FaPhoneVolume className="text-lg" />
-                </motion.div>
-              </motion.div>
-
-              <p className="text-white font-semibold">Phone</p>
-            </div>
-            <p className="font-semibold text-white text-xl mt-2 ml-14">
-              {user.phone}
-            </p>
-          </div>
-
-          {/* Location */}
-          <div className="bg-green-700 hover:shadow-lg hover:scale-105 transition transform p-5 rounded-2xl">
-            <div className="flex items-center gap-3">
-              <motion.div className="relative flex items-center justify-center w-12 h-12">
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-white opacity-30"
-                  animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                />
-
-                <motion.div
-                  animate={{ scale: [1, 1.6, 1] }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1,
-                    ease: "easeInOut",
-                  }}
-                  className="bg-white/20 p-2 rounded-full text-green-950 shadow relative z-10 flex items-center justify-center"
-                >
-                  <IoLocation className="text-sm" />
-                </motion.div>
-              </motion.div>
-
-              <p className="text-white font-semibold">Location</p>
-            </div>
-            <p className="font-semibold text-white text-xl mt-2 ml-14">
-              {user.location}
-            </p>
-          </div>
-
-          {/* Role */}
-          <div className="bg-green-700 hover:shadow-lg hover:scale-105 transition transform p-5 rounded-2xl">
-            <div className="flex items-center gap-3">
-              <motion.div className="relative flex items-center justify-center w-12 h-12">
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-white opacity-30"
-                  animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                />
-
-                <motion.div
-                  animate={{
-                    scale: [1, 1.05, 1],
-                    boxShadow: [
-                      "0px 0px 0px #fff",
-                      "0px 0px 12px #fff",
-                      "0px 0px 0px #fff",
-                    ],
-                  }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1.5,
-                    ease: "easeInOut",
-                  }}
-                  className="bg-white/20 p-2 rounded-full flex items-center justify-center"
-                >
-                  <HiUserGroup className="text-sm text-blue-900" />
-                </motion.div>
-              </motion.div>
-
-              <p className="text-white font-semibold">Role</p>
-            </div>
-            <p className="font-semibold text-white text-xl mt-2 ml-14">
-              {user.role}
-            </p>
-          </div>
-        </div>
-
-        {/* Account Status */}
-        <div className="mt-10">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            Account Overview
-          </h3>
-
-          <div className="bg-green-900 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-lg transition">
-            <p className="text-white text-sm flex lg:items-center gap-1">
-              <FaCheckCircle className="text-green-400 lg:mt-0 mt-1" /> Your account is
-              active and secure
-            </p>
-
-            <button className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-600 transition cursor-pointer">
-              Change Password
-            </button>
-          </div>
-        </div>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+          className="w-10 h-10 border-4 border-emerald-100 border-t-emerald-600 rounded-full"
+        />
       </div>
+    );
+  }
+
+  if (!user) {
+    return <div className="text-emerald-900 text-center mt-10 font-medium">No user found</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-emerald-50/30 p-4 md:p-12 font-sans text-slate-800">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-5xl mx-auto space-y-6"
+      >
+        {/* Header Profile Card */}
+        <motion.div 
+          variants={itemVariants}
+          className="bg-white rounded-4xl p-8 md:p-10 shadow-sm border border-emerald-100 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden"
+        >
+          <div className="relative group">
+            <motion.img
+              whileHover={{ scale: 1.05 }}
+              src={user?.photoURL || "https://i.pravatar.cc"}
+              alt="profile"
+              className="w-32 h-32 md:w-40 md:h-40 rounded-3xl object-cover border-4 border-emerald-50 shadow-md transition-all"
+            />
+            <span className="absolute -bottom-2 -right-2 w-6 h-6 bg-emerald-500 border-4 border-white rounded-full shadow-sm"></span>
+          </div>
+
+          <div className="text-center md:text-left flex-1">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+              {user?.displayName || "Guest User"}
+            </h2>
+            <p className="text-emerald-600 font-semibold text-lg">{user.email}</p>
+            
+            <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-3">
+              <span className="px-4 py-1 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full border border-emerald-200 uppercase tracking-widest">
+                {user.role || "Member"}
+              </span>
+              <motion.button 
+                whileHover={{ x: 3 }}
+                className="flex items-center gap-2 text-emerald-600 font-bold text-sm hover:underline cursor-pointer"
+              >
+                <FaEdit /> Edit Account
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Info Bento Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { label: "Phone", value: user.phone || "Not Set", icon: <FaPhoneVolume />, color: "orange" },
+            { label: "Location", value: user.location || "Earth", icon: <IoLocation />, color: "emerald" },
+            { label: "Access Level", value: user.role || "Standard", icon: <HiUserGroup />, color: "blue" },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              variants={itemVariants}
+              whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.05)" }}
+              className="bg-white p-8 rounded-4xl border border-emerald-100 shadow-sm transition-all group"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <motion.div 
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ repeat: Infinity, duration: 3, delay: index * 0.5 }}
+                  className={`p-3 rounded-2xl bg-emerald-50 text-emerald-600 text-xl`}
+                >
+                  {item.icon}
+                </motion.div>
+                <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">{item.label}</p>
+              </div>
+              <p className="font-bold text-slate-900 text-xl truncate">{item.value}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Security Summary Footer */}
+        <motion.div 
+          variants={itemVariants}
+          className="bg-green-600 rounded-4xl p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl shadow-emerald-900/10"
+        >
+          <div className="flex items-center gap-5 text-white">
+            <div className="bg-emerald-500/30 p-4 rounded-2xl">
+              <FaCheckCircle className="text-3xl text-emerald-200" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">Account is Secure</h3>
+              <p className="text-emerald-100/80 text-sm">Verified member since 2024. Standard security active.</p>
+            </div>
+          </div>
+          
+          <motion.button 
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full md:w-auto px-8 py-4 bg-white text-emerald-700 font-extrabold rounded-2xl transition shadow-lg shadow-black/5 cursor-pointer"
+          >
+            Security Settings
+          </motion.button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
