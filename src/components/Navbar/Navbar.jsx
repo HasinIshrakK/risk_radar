@@ -41,6 +41,9 @@ const Navbar = () => {
             <NavLink to="/reports" className={linkClass}>
               Reports
             </NavLink>
+            <NavLink to="/sideBar" className={linkClass}>
+              Sidebar
+            </NavLink>
           </ul>
 
           {/* Profile */}
