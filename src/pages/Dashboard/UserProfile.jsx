@@ -1,19 +1,18 @@
-import React from "react";
 import { FaPhoneVolume, FaCheckCircle } from "react-icons/fa";
 import { IoLocation } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { motion } from "framer-motion";
+import useAuth from "../../hooks/useAuth";
 
 const UserProfile = () => {
-  const user = {
-    name: "Mahfuzur Rahman",
-    email: "mahfuz@example.com",
-    role: "User",
-    phone: "+880123456789",
-    location: "Dhaka, Bangladesh",
-    image: "https://i.pravatar.cc/150?img=12",
-    status: "active",
-  };
+  const { user, loading } = useAuth();
+  if (loading) {
+    return <div className="text-white text-center mt-10">Loading...</div>;
+  }
+
+  if (!user) {
+    return <div className="text-white text-center mt-10">No user found</div>;
+  }
 
   return (
     <div className="min-h-screen bg-green-900 p-4 md:p-8">
@@ -22,7 +21,7 @@ const UserProfile = () => {
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <div className="relative">
             <img
-              src={user.image}
+              src={user?.photoURL || "https://i.pravatar.cc/150"}
               alt="profile"
               className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-blue-500 shadow-md"
             />
@@ -31,7 +30,7 @@ const UserProfile = () => {
 
           <div className="text-center md:text-left">
             <h2 className="text-2xl md:text-3xl font-bold text-white">
-              {user.name}
+              {user?.displayName || "No Name"}
             </h2>
             <p className="text-white mt-1">{user.email}</p>
 
@@ -52,7 +51,6 @@ const UserProfile = () => {
 
         {/* Info Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
           {/* Phone */}
           <div className="bg-green-700 hover:shadow-lg hover:scale-105 transition transform p-5 rounded-2xl">
             <div className="flex items-center gap-3">
@@ -161,8 +159,8 @@ const UserProfile = () => {
 
           <div className="bg-green-900 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-lg transition">
             <p className="text-white text-sm flex lg:items-center gap-1">
-              <FaCheckCircle className="text-green-400 lg:mt-0 mt-1" /> Your account is
-              active and secure
+              <FaCheckCircle className="text-green-400 lg:mt-0 mt-1" /> Your
+              account is active and secure
             </p>
 
             <button className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-600 transition cursor-pointer">
