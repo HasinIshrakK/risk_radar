@@ -27,7 +27,7 @@ const notificationsData = [
   },
 ];
 
-const Notification = () => {
+const Notifications = () => {
   const [notifications, setNotifications] = useState(notificationsData);
   const [filter, setFilter] = useState("all");
 
@@ -137,4 +137,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default Notifications;
