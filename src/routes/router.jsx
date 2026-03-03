@@ -20,7 +20,6 @@ import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 
 export const router = createBrowserRouter([
-  // App layout
   {
     path: "/",
     element: (
@@ -38,7 +37,6 @@ export const router = createBrowserRouter([
         path: "/transaction",
         element: <Transactions></Transactions>,
       },
-      
       {
         path: "/alerts",
         element: <Alerts></Alerts>,
@@ -55,31 +53,65 @@ export const router = createBrowserRouter([
         path: "*",
         element: <NotFound></NotFound>,
       },
+      // {
+      //   path: "payment-success",
+      //   element: <PaymentSuccess></PaymentSuccess>,
+      // },
+      // {
+      //   path: "payment-cancel",
+      //   element: <PaymentCancel></PaymentCancel>,
+      // },
     ],
   },
   // Dashboard layout
   {
     path: "/dashboard",
-    element: <DashboardLayout></DashboardLayout>,
+    element: (
+      <>
+        <ScrollToTop />
+        <DashboardLayout />
+      </>
+    ),
     children: [
       {
         index: true,
-        Component: Dashboard,
+        element: <Dashboard />,
       },
       {
-        path:"/dashboard/profile",
-        Component:UserProfile
+        path: "profile",
+        element: <UserProfile />,
       },
       {
-        path: "/dashboard/payment-success",
-        element: <PaymentSuccess></PaymentSuccess> ,
+        path: "live",
+        element: <p>Lives</p>,
       },
       {
-        path: "/dashboard/payment-cancel",
-        element: <PaymentCancel></PaymentCancel> ,
+        path: "rules",
+        element: <p>Rules</p>,
       },
-    ]
+      {
+        path: "watchlist",
+        element: <p>Watchlist</p>,
+      },
+      {
+        path: "settings",
+        element: <p>Settings</p>,
+      },
+      {
+        path: "payment",
+        element: <p>Payment</p>,
+      },
+      {
+        path: "payment-success",
+        element: <p>Layment-success</p>,
+      },
+      {
+        path: "payment-cancel",
+        element: <p>Payment-cancel</p>,
+      },
+    ],
   },
+
   // Auth layout
   {
     path: "/auth",

@@ -12,13 +12,14 @@ import {
   Search,
   House,
   User,
+  Wallet,
 } from "lucide-react";
-import { Link, useLocation } from "react-router";
-import Container from "../components/SharedUi/Container";
+import { Link, Outlet, useLocation } from "react-router";
+
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -51,6 +52,7 @@ const DashboardLayout = ({ children }) => {
       path: "/dashboard/watchlist",
     },
     { name: "Profile", icon: <User size={20} />, path: "/dashboard/profile" },
+    { name: "Payment", icon: <Wallet size={20} />, path: "/dashboard/payment" },
     {
       name: "Settings",
       icon: <Settings size={20} />,
@@ -59,29 +61,23 @@ const DashboardLayout = ({ children }) => {
   ];
 
   return (
-    <div className="flex min-h-screen poppins-regular bg-emerald-50/30 text-slate-700 overflow-x-hidden">
-      {/* Mobile Overlay  */}
+    <div className="flex min-h-screen poppins-regular bg-emerald-50/30 text-slate-700 overflow-x-hidden ">
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 opacity-100"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* STICKY ASIDE  */}
       <aside
         className={`
-    fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-emerald-100 
-    /* AOS এর বদলে নিচের এই ২ লাইন ট্রানজিশন যোগ করুন */
-    transition-transform duration-300 ease-in-out transform 
-    lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen
-    
-    /* লজিক অনুযায়ী স্লাইডিং */
-    ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
-  `}
+          fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-emerald-100
+          transition-all duration-300 ease-in-out
+          lg:sticky lg:top-0 lg:h-screen lg:translate-x-0
+          ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
+        `}
       >
         <div className="flex flex-col h-full">
-          {/* Sidebar Header */}
           <div className="p-6 flex items-center justify-between shrink-0">
             <Link to="/" className="flex items-center gap-2 group">
               <img
@@ -147,9 +143,7 @@ const DashboardLayout = ({ children }) => {
         </div>
       </aside>
 
-      {/* MAIN CONTENT AREA */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-        {/* Navbar - AOS fade-down */}
         <header
           data-aos="fade-down"
           className="h-16 shrink-0 bg-white/70 backdrop-blur-md border-b border-emerald-100 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30"
@@ -195,77 +189,12 @@ const DashboardLayout = ({ children }) => {
           </div>
         </header>
 
-        {/* Main Content - AOS fade-up   */}
         <main data-aos="fade-up" className="flex-1">
-          <Container>
-            <div className="my-4 md:my-8">
-              <h1 className="md:text-3xl text-2xl font-black text-slate-800 tracking-tight leading-none">
-                System Overview
-              </h1>
-              <p className="text-slate-500 text-sm font-medium mt-2">
-                Real-time security analytics and fraud monitoring active.
-              </p>
-            </div>
-
-            {/* Stat Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              <StatCard
-                title="Total Scanned"
-                value="1,284"
-                trend="+12.5%"
-                isUp={true}
-              />
-              <StatCard title="High Risk" value="14" trend="+2" isUp={false} />
-              <StatCard
-                title="Avg Latency"
-                value="42ms"
-                trend="-3ms"
-                isUp={true}
-              />
-              <StatCard title="Saved" value="$42.4k" trend="+$5k" isUp={true} />
-            </div>
-
-            <div className="my-4 md:my-8">
-              {children ? (
-                children
-              ) : (
-                <div className="bg-white p-8 rounded-[2.5rem] border border-emerald-100 shadow-sm min-h-100 flex flex-col justify-center items-center">
-                  <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
-                    <Activity
-                      className="text-emerald-500 animate-pulse"
-                      size={32}
-                    />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-800">
-                    Live Pulse Feed
-                  </h3>
-                  <p className="text-slate-400 text-sm mt-2 italic">
-                    Listening for incoming Redis streams...
-                  </p>
-                </div>
-              )}
-            </div>
-          </Container>
+          <Outlet />
         </main>
       </div>
     </div>
   );
 };
-
-const StatCard = ({ title, value, trend, isUp }) => (
-  <div className="bg-white p-6 rounded-4xl border border-emerald-100 shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300">
-    <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em]">
-      {title}
-    </p>
-    <div className="flex items-end justify-between mt-4">
-      <h2 className="text-3xl font-black text-slate-800">{value}</h2>
-      <div
-        className={`flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isUp ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-500"}`}
-      >
-        {trend}
-      </div>
-    </div>
-  </div>
-);
 
 export default DashboardLayout;
