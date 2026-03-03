@@ -26,7 +26,6 @@ const Navbar = () => {
     { name: "Services", path: "/services" },
     { name: "Dashboard", path: "/dashboard" },
     { name: "Contact Us", path: "/contact-us" },
-    { name: "sidebar", path: "/SideBar" },
   ];
 
   return (
@@ -90,11 +89,11 @@ const Navbar = () => {
         {/* Mobile Menu - Transitioning from the Nav background */}
         <div
           className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-            isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+            isOpen ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="px-6 pb-8 pt-2 flex flex-col gap-1.5">
-            <div className="w-full h-[1px] bg-slate-200/50 mb-4" />
+            <div className="w-full h-px bg-slate-200/50 mb-4" />
 
             {navLinks.map((link) => (
               <NavLink

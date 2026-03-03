@@ -18,9 +18,7 @@ import UserProfile from "../pages/Dashboard/UserProfile";
 import Services from "../pages/Services/Services";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
-import SideBar from "../Admin/SideBar"
-import AdminDashboard from "../Admin/AdminDashboard";
-import Notification from "../Admin/Notification";
+import Notifications from "../pages/Dashboard/Notifications/Notifications";
 
 
 export const router = createBrowserRouter([
@@ -34,7 +32,7 @@ export const router = createBrowserRouter([
       </>
     ),
     hydrateFallbackElement: <Loader />,
-    // errorElement: <ServerError></ServerError>,
+    errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
       { path: "/services", element: <Services /> },
@@ -42,7 +40,7 @@ export const router = createBrowserRouter([
         path: "/transaction",
         element: <Transactions></Transactions>,
       },
-      
+
       {
         path: "/alerts",
         element: <Alerts></Alerts>,
@@ -71,35 +69,24 @@ export const router = createBrowserRouter([
         Component: Dashboard,
       },
       {
-        path:"/dashboard/profile",
-        Component:UserProfile
+        path: "/dashboard/profile",
+        Component: UserProfile
+      },
+      {
+        path: "notifications",
+        Component: Notifications,
       },
       {
         path: "/dashboard/payment-success",
-        element: <PaymentSuccess></PaymentSuccess> ,
+        element: <PaymentSuccess></PaymentSuccess>,
       },
       {
         path: "/dashboard/payment-cancel",
-        element: <PaymentCancel></PaymentCancel> ,
+        element: <PaymentCancel></PaymentCancel>,
       },
     ]
   },
-  // Sidebar
-  {
-    path: "sidebar",
-    element: <SideBar></SideBar>,
-    children: [
-      {
-        path: "admin-dashboard",
-        Component: AdminDashboard,
-      },
-      {
-        path: "notification",
-        Component: Notification,
-      },
-      
-    ]
-  },
+
   // Auth layout
   {
     path: "/auth",
