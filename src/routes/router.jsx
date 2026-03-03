@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
       </>
     ),
     hydrateFallbackElement: <Loader />,
-    // errorElement: <ServerError></ServerError>,
+    errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },
       { path: "/services", element: <Services /> },

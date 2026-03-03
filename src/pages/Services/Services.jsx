@@ -109,7 +109,7 @@ const Services = () => {
           title={
             <span className="text-slate-900 leading-tight">
               Modern Risk Management <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-500">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-green-500">
                 Built for Speed.
               </span>
             </span>
@@ -163,7 +163,7 @@ const Services = () => {
           {/* Section Header */}
           <div className="flex flex-col items-center text-center mb-16">
             {/* Reference Badge */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wider mb-6 shadow-xl shadow-green-500/20 group cursor-default">
+            <div className="inline-flex items-center gap-2 bg-linear-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wider mb-6 shadow-xl shadow-green-500/20 group cursor-default">
               <Shield className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               Trusted & Verified
               <Sparkles className="w-4 h-4 animate-pulse" />
@@ -201,7 +201,7 @@ const Services = () => {
 
                 {/* Popular Badge with Gradient */}
                 {plan.isPopular && (
-                  <span className="absolute top-5 right-8 bg-gradient-to-r from-emerald-600 to-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-200">
+                  <span className="absolute top-5 right-8 bg-linear-to-r from-emerald-600 to-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-200">
                     Most Popular
                   </span>
                 )}
@@ -227,9 +227,9 @@ const Services = () => {
                   </p>
 
                   {/* Divider */}
-                  <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent mb-8"></div>
+                  <div className="w-full h-px bg-linear-to-r from-transparent via-slate-200 to-transparent mb-8"></div>
 
-                  <ul className="space-y-4 mb-10 flex-grow">
+                  <ul className="space-y-4 mb-10 grow">
                     {plan.features.map((feature, i) => (
                       <li
                         key={i}
@@ -244,7 +244,7 @@ const Services = () => {
                   </ul>
 
                   <button
-                    className={`w-full py-5 rounded-[1.5rem] font-bold text-sm transition-all duration-300 transform active:scale-95 ${
+                    className={`w-full py-5 rounded-3xl font-bold text-sm transition-all duration-300 transform active:scale-95 ${
                       plan.isPopular
                         ? "bg-slate-900 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-100"
                         : "bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100"
@@ -252,7 +252,7 @@ const Services = () => {
                   >
                     {plan.price === "Custom"
                       ? "Contact Enterprise"
-                      : "Start Free Trial"}
+                      : "Pay Now"}
                   </button>
                 </div>
               </div>
