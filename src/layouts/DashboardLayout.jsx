@@ -1,52 +1,261 @@
-import { Outlet } from "react-router";
-import Topbar from "../pages/Dashboard/Topbar/Topbar";
+import React, { useState } from "react";
+import logo from "../../src/assets/sheld.png";
+import {
+  LayoutDashboard,
+  Activity,
+  ShieldAlert,
+  Users,
+  Settings,
+  Menu,
+  X,
+  Bell,
+  Search,
+  House,
+  User,
+} from "lucide-react";
+import { Link, useLocation } from "react-router";
+import Container from "../components/SharedUi/Container";
 
-const DashboardLayout = () => {
-    return (
-        <>
-            <div className="drawer lg:drawer-open">
-                <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content">
-                    {/* Navbar */}
-                    <Topbar />
-                    <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
-                        {/* Sidebar toggle icon */}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
-                    </label>
-                    {/* Page content here */}
-                    <div className="p-4">
-                        <Outlet />
-                    </div>
-                </div>
+const DashboardLayout = ({ children }) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
 
-                <div className="drawer-side is-drawer-close:overflow-visible">
-                    <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-                        {/* Sidebar content here */}
-                        <ul className="menu w-full grow">
-                            {/* List item */}
-                            <li>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
-                                    {/* Home icon */}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                                    <span className="is-drawer-close:hidden">Homepage</span>
-                                </button>
-                            </li>
+  const menuItems = [
+    {
+      name: "Overview",
+      icon: <LayoutDashboard size={20} />,
+      path: "/dashboard",
+    },
+    {
+      name: "Live Risk Feed",
+      icon: <Activity size={20} />,
+      path: "/dashboard/live",
+    },
+    {
+      name: "Risk Rules",
+      icon: <ShieldAlert size={20} />,
+      path: "/dashboard/rules",
+    },
+    {
+      name: "Watchlist",
+      icon: <Users size={20} />,
+      path: "/dashboard/watchlist",
+    },
+    { name: "Profile", icon: <User size={20} />, path: "/dashboard/profile" },
+    {
+      name: "Settings",
+      icon: <Settings size={20} />,
+      path: "/dashboard/settings",
+    },
+  ];
 
-                            {/* List item */}
-                            <li>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-                                    {/* Settings icon */}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                                    <span className="is-drawer-close:hidden">Settings</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+  return (
+    <div className="flex min-h-screen poppins-regular bg-emerald-50/30 text-slate-700">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* STICKY ASIDE */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-emerald-100 
+          transition-transform duration-300 transform 
+          lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        <div className="flex flex-col h-full">
+          {/* Sidebar Header */}
+          <div className="p-6 flex items-center justify-between shrink-0">
+            <Link to="/" className="flex items-center gap-2 group">
+              <img
+                src={logo}
+                alt="logo"
+                className="w-7 md:w-8 transition-transform group-hover:scale-110"
+              />
+              <h1 className="text-lg md:text-xl font-bold tracking-tighter">
+                <span className="text-slate-900 font-black">RISK</span>
+                <span className="text-emerald-600 font-black">RADAR</span>
+              </h1>
+            </Link>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-1 text-slate-400 hover:bg-emerald-50 rounded-full"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Sidebar Scrollable Nav */}
+          <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto custom-scrollbar">
+            {menuItems.map((item, index) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  to={item.path}
+                  key={index}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                    isActive
+                      ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200"
+                      : "text-slate-500 hover:bg-emerald-50 hover:text-emerald-600"
+                  }`}
+                >
+                  <span
+                    className={isActive ? "text-white" : "text-emerald-500"}
+                  >
+                    {item.icon}
+                  </span>
+                  <span className="font-semibold text-[14px]">{item.name}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-emerald-50">
+            <div className="bg-emerald-50/50 p-3 rounded-2xl flex items-center gap-3 border border-emerald-100">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-inner">
+                AD
+              </div>
+              <div className="flex-1 overflow-hidden">
+                <p className="text-xs font-bold text-slate-800 truncate">
+                  Admin Space
+                </p>
+                <p className="text-[10px] text-emerald-600 font-medium truncate tracking-tight">
+                  Active Node 01
+                </p>
+              </div>
             </div>
-        </>
-    );
+          </div>
+        </div>
+      </aside>
+
+      {/* MAIN CONTENT AREA */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+        {/* Navbar */}
+        <header className="h-16 shrink-0 bg-white/70 backdrop-blur-md border-b border-emerald-100 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
+          <div className="flex items-center gap-4">
+            <button
+              className="lg:hidden p-2 text-slate-600 hover:bg-emerald-50 rounded-xl"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu size={24} />
+            </button>
+
+            <Link
+              className="hidde sm: flex items-center justify-center gap-1.5 text-[12px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 px-4 py-2 rounded-full border border-emerald-100 transition-all"
+              to={"/"}
+            >
+              <House size={18} strokeWidth={2.5} />
+              <span className="mt-0.5">Home</span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-3 md:gap-5">
+            {/* Search */}
+            <div className="hidden md:flex items-center bg-slate-100/50 px-4 py-2 rounded-2xl border border-transparent focus-within:border-emerald-200 focus-within:bg-white w-64 transition-all">
+              <Search size={16} className="text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search analytics..."
+                className="bg-transparent border-none focus:ring-0 text-sm ml-2 w-full outline-none font-medium"
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-full relative">
+                <Bell size={20} />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+              </button>
+              <div className="h-8 w-px bg-emerald-100 mx-1"></div>
+              <button className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center hover:bg-emerald-100 transition-colors">
+                <Settings size={18} className="text-slate-500" />
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Scrollable Content Area */}
+        <main>
+          <Container>
+            {/* Welcome Message */}
+            <div className="my-4 md:my-8">
+              <h1 className="md:text-3xl text-2xl font-black text-slate-800 tracking-tight">
+                System Overview
+              </h1>
+              <p className="text-slate-500 text-sm font-medium mt-1">
+                Real-time security analytics and fraud monitoring active.
+              </p>
+            </div>
+
+            {/* Stat Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              <StatCard
+                title="Total Scanned"
+                value="1,284"
+                trend="+12.5%"
+                isUp={true}
+              />
+              <StatCard title="High Risk" value="14" trend="+2" isUp={false} />
+              <StatCard
+                title="Avg Latency"
+                value="42ms"
+                trend="-3ms"
+                isUp={true}
+              />
+              <StatCard title="Saved" value="$42.4k" trend="+$5k" isUp={true} />
+            </div>
+
+            {/* Children or Placeholder */}
+            <div className="my-4 md:my-8">
+              {children ? (
+                children
+              ) : (
+                <div className="bg-white p-8 rounded-4xl border border-emerald-100 shadow-sm min-h-100 flex flex-col justify-center items-center">
+                  <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
+                    <Activity
+                      className="text-emerald-500 animate-pulse"
+                      size={32}
+                    />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-800">
+                    Live Pulse Feed
+                  </h3>
+                  <p className="text-slate-400 text-sm mt-2 italic">
+                    Listening for incoming Redis streams...
+                  </p>
+                </div>
+              )}
+            </div>
+          </Container>
+        </main>
+      </div>
+    </div>
+  );
 };
+
+// Sub-component for Stats with modern look
+const StatCard = ({ title, value, trend, isUp }) => (
+  <div className="bg-white p-6 rounded-3xl border border-emerald-100 shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300 group">
+    <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em]">
+      {title}
+    </p>
+    <div className="flex items-end justify-between mt-4">
+      <h2 className="text-3xl font-black text-slate-800">{value}</h2>
+      <div
+        className={`flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${
+          isUp ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-500"
+        }`}
+      >
+        {trend}
+      </div>
+    </div>
+  </div>
+);
 
 export default DashboardLayout;
