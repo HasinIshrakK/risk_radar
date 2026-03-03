@@ -17,6 +17,8 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
+  const [user,setUser] = useState(null);
+  const [loading, setLoading] = useState(true)
   // NEW: Safe email for Firestore doc ID
   const getSafeEmail = (email) => email.replace(/\./g, "_");
 
@@ -108,6 +110,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const authInfo = {
+    user,
+    setUser,
+    loading,
     registerUser,
     signinUser,
     signinGoogle,
@@ -120,7 +125,7 @@ const AuthProvider = ({ children }) => {
     loading,
   };
 
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
