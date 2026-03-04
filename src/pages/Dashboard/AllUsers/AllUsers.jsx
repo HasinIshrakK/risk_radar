@@ -2,16 +2,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 const AllUsers = () => {
-    const dummyUsers = [
-    { _id: "1", name: "Amina Asha", email: "amina@example.com", role: "admin" },
-    { _id: "2", name: "Rahim Uddin", email: "rahim@gmail.com", role: "user" },
-    { _id: "3", name: "Karim Hasan", email: "karim@gmail.com", role: "user" },
-  ];
+  //   const dummyUsers = [
+  //   { _id: "1", name: "Amina Asha", email: "amina@example.com", role: "admin" },
+  //   { _id: "2", name: "Rahim Uddin", email: "rahim@gmail.com", role: "user" },
+  //   { _id: "3", name: "Karim Hasan", email: "karim@gmail.com", role: "user" },
+  // ];
 
-  const [users,setUsers] = useState(dummyUsers);
+  // const [users,setUsers] = useState(dummyUsers);
   
 //   for make it dynamic
-//   const [users,setUsers] = useState([]);
+  const [users,setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
 //   get user from backend

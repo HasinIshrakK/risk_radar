@@ -120,8 +120,7 @@ const AuthProvider = ({ children }) => {
     logOut,
     trackLoginAttempt,
     checkLockStatus,
-    user,
-    loading,
+    
   };
 
   return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
