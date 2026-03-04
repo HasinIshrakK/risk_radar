@@ -48,9 +48,15 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-          className="p-2 rounded-lg text-slate-600 hover:bg-green-50 hover:text-green-600 transition-colors"
+          className="rounded-lg text-slate-600 hover:bg-green-50 hover:text-green-600 transition-colors"
         >
-          {isDrawerOpen ? <X size={22} /> : <Menu size={22} />}
+          <label
+            htmlFor="my-drawer-4"
+            aria-label="open sidebar"
+            className="btn btn-square p-2 rounded-lg text-slate-600 hover:bg-green-50 hover:text-green-600 transition-colors border-0"
+          >
+            {isDrawerOpen ? <X size={22} /> : <Menu size={22} />}
+          </label>
         </button>
 
         <Link to="/" className="flex items-center gap-1 ml-1 group">

@@ -6,10 +6,11 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
-import { FaQuoteLeft } from "react-icons/fa";
+import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles, Star } from "lucide-react";
 import Container from "../SharedUi/Container";
+import { FaStar } from "react-icons/fa";
 
 const testimonials = [
   {

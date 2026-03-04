@@ -16,8 +16,11 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
 import Services from "../pages/Services/Services";
-import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+// import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
+import PaymentSuccess from "../pages/Payment/paymentSuccess";
+import Notifications from "../pages/Dashboard/Notifications/Notifications";
+
 
 export const router = createBrowserRouter([
   // App layout
@@ -38,7 +41,7 @@ export const router = createBrowserRouter([
         path: "/transaction",
         element: <Transactions></Transactions>,
       },
-      
+
       {
         path: "/alerts",
         element: <Alerts></Alerts>,
@@ -67,19 +70,24 @@ export const router = createBrowserRouter([
         Component: Dashboard,
       },
       {
-        path:"/dashboard/profile",
-        Component:UserProfile
+        path: "/dashboard/profile",
+        Component: UserProfile
+      },
+      {
+        path: "notifications",
+        Component: Notifications,
       },
       {
         path: "/dashboard/payment-success",
-        element: <PaymentSuccess></PaymentSuccess> ,
+        element: <PaymentSuccess></PaymentSuccess>,
       },
       {
         path: "/dashboard/payment-cancel",
-        element: <PaymentCancel></PaymentCancel> ,
+        element: <PaymentCancel></PaymentCancel>,
       },
     ]
   },
+
   // Auth layout
   {
     path: "/auth",
