@@ -20,6 +20,7 @@ import Services from "../pages/Services/Services";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 import PaymentSuccess from "../pages/Payment/paymentSuccess";
 import Notifications from "../pages/Dashboard/Notifications/Notifications";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 
 
 export const router = createBrowserRouter([
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path: "notifications",
         Component: Notifications,
+      },
+      {
+        path: "all-users",
+        Component: AllUsers,
       },
       {
         path: "/dashboard/payment-success",

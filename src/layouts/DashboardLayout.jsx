@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router";
 import Topbar from "../pages/Dashboard/Topbar/Topbar";
 import { IoIosNotifications } from "react-icons/io";
 import { useState } from "react";
+import { User } from "lucide-react";
 
 const DashboardLayout = () => {
 
@@ -45,6 +46,17 @@ const DashboardLayout = () => {
                                     >
                                         <IoIosNotifications className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
                                         <span className="is-drawer-close:hidden">Notification</span>
+                                    </button>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"all-users"}>
+                                    <button
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="All Users"
+                                    >
+                                        <User className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
+                                        <span className="is-drawer-close:hidden">All Users</span>
                                     </button>
                                 </Link>
                             </li>
