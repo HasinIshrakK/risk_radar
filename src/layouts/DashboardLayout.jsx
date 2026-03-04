@@ -1,6 +1,7 @@
 import { Link, Outlet } from "react-router";
 import Topbar from "../pages/Dashboard/Topbar/Topbar";
 import { IoIosNotifications } from "react-icons/io";
+import { AiOutlineTransaction } from "react-icons/ai";
 import { useState } from "react";
 
 const DashboardLayout = () => {
@@ -45,6 +46,17 @@ const DashboardLayout = () => {
                                     >
                                         <IoIosNotifications className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
                                         <span className="is-drawer-close:hidden">Notification</span>
+                                    </button>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"transactionFraud"}>
+                                    <button
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Transaction-Fraud"
+                                    >
+                                        <AiOutlineTransaction className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
+                                        <span className="is-drawer-close:hidden">Transaction-Fraud</span>
                                     </button>
                                 </Link>
                             </li>
