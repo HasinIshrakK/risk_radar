@@ -42,17 +42,22 @@ const DashboardLayout = () => {
       path: "/dashboard/live",
     },
     {
+      name: "Watchlist",
+      icon: <Users size={20} />,
+      path: "/dashboard/watchlist",
+    },
+    {
       name: "Risk Rules",
       icon: <ShieldAlert size={20} />,
       path: "/dashboard/rules",
     },
     {
-      name: "Watchlist",
-      icon: <Users size={20} />,
-      path: "/dashboard/watchlist",
+      name: "Manage User",
+      icon: <Wallet size={20} />,
+      path: "/dashboard/manage-users",
     },
-    { name: "Profile", icon: <User size={20} />, path: "/dashboard/profile" },
     { name: "Payment", icon: <Wallet size={20} />, path: "/dashboard/payment" },
+    { name: "Profile", icon: <User size={20} />, path: "/dashboard/profile" },
     {
       name: "Settings",
       icon: <Settings size={20} />,

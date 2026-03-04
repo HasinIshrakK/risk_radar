@@ -20,6 +20,7 @@ import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 
 export const router = createBrowserRouter([
+  // RootLayout layout
   {
     path: "/",
     element: (
@@ -53,14 +54,6 @@ export const router = createBrowserRouter([
         path: "*",
         element: <NotFound></NotFound>,
       },
-      // {
-      //   path: "payment-success",
-      //   element: <PaymentSuccess></PaymentSuccess>,
-      // },
-      // {
-      //   path: "payment-cancel",
-      //   element: <PaymentCancel></PaymentCancel>,
-      // },
     ],
   },
   // Dashboard layout
@@ -90,6 +83,10 @@ export const router = createBrowserRouter([
         element: <p>Rules</p>,
       },
       {
+        path: "manage-users",
+        element: <p>Manage Users</p>,
+      },
+      {
         path: "watchlist",
         element: <p>Watchlist</p>,
       },
@@ -111,7 +108,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   // Auth layout
   {
     path: "/auth",
