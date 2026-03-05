@@ -9,8 +9,9 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles, Star } from "lucide-react";
-// import Container from "../SharedUi/Container";
-// import { FaStar } from "react-icons/fa";
+
+import Container from "../SharedUi/Container";
+
 
 const testimonials = [
   {
