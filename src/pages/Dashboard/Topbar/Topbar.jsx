@@ -13,7 +13,7 @@ const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
   ];
 
   return (
-    <nav className="h-16 bg-white border-b border-slate-100 px-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+    <nav className="h-16 bg-white border-b border-slate-100 px-4 flex items-center justify-between shadow-sm">
 
       <div className="flex items-center gap-3">
         <button
