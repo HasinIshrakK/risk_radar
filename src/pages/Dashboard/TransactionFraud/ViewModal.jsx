@@ -1,15 +1,13 @@
+import React from "react";
+
 const ViewModal = ({ transaction, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4 z-50">
-      
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl relative animate-fadeIn">
 
         {/* Header */}
         <div className="flex justify-between items-center border-b p-5">
-          <h2 className="text-xl font-semibold">
-            Transaction Details
-          </h2>
-
+          <h2 className="text-xl font-semibold">Transaction Details</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-red-500 text-xl"
@@ -29,21 +27,15 @@ const ViewModal = ({ transaction, onClose }) => {
               className="w-20 h-20 rounded-full border"
             />
             <div>
-              <h3 className="text-lg font-bold">
-                {transaction.user}
-              </h3>
-              <p className="text-sm text-gray-500">
-                {transaction.location}
-              </p>
+              <h3 className="text-lg font-bold">{transaction.user}</h3>
+              <p className="text-sm text-gray-500">{transaction.location}</p>
             </div>
           </div>
 
-          {/* Details */}
+          {/* Transaction Details */}
           <div className="grid grid-cols-2 gap-3 text-sm">
-
             <p><span className="font-semibold">ID:</span> {transaction.id}</p>
             <p><span className="font-semibold">Amount:</span> ${transaction.amount}</p>
-
             <p>
               <span className="font-semibold">Status:</span>{" "}
               <span
@@ -56,10 +48,21 @@ const ViewModal = ({ transaction, onClose }) => {
                 {transaction.status}
               </span>
             </p>
+            <p><span className="font-semibold">Risk:</span> {transaction.risk}%</p>
+          </div>
 
-            <p>
-              <span className="font-semibold">Risk:</span> {transaction.risk}%
-            </p>
+          {/* Fraud Categories */}
+          <div>
+            <h4 className="font-semibold text-sm mb-1">Fraud Categories:</h4>
+            {transaction.fraudCategories && transaction.fraudCategories.length > 0 ? (
+              <ul className="list-disc list-inside text-xs text-red-500">
+                {transaction.fraudCategories.map((cat, idx) => (
+                  <li key={idx}>{cat}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-gray-500">No Fraud Detected</p>
+            )}
           </div>
 
           {/* Risk Progress */}
