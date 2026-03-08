@@ -7,8 +7,6 @@ import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import AddModal from "./AddModal";
 
-
-
 //  Dynamic configuration for fraud detection
 const fraudConfig = {
   highAmount: 10000,
@@ -51,25 +49,34 @@ function detectFraud(tx, config = fraudConfig) {
   if (config.patternedAmounts.includes(tx.amount))
     fraudCategories.push("Patterned Amount");
 
-  if (tx.paymentMethod && config.suspiciousPaymentMethods.includes(tx.paymentMethod))
+  if (
+    tx.paymentMethod &&
+    config.suspiciousPaymentMethods.includes(tx.paymentMethod)
+  )
     fraudCategories.push("Suspicious Payment Method");
 
   tx.fraudCategories = fraudCategories;
-  tx.status = fraudCategories.length > 0 ? "Fraud" : "Normal";
+
+  tx.risk = fraudCategories.length * config.riskPerCategory;
+
+  if (tx.risk >= 50) {
+    tx.status = "Blocked";
+  } else if (tx.risk >= 25) {
+    tx.status = "Fraud";
+  } else {
+    tx.status = "Normal";
+  }
   tx.risk = fraudCategories.length * config.riskPerCategory;
 
   return tx;
 }
 
-
-
 const TransactionFraudDashboard = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [modalType, setModalType] = useState(null);
+  const [filter, setFilter] = useState("all");
 
-  
-
- const transactions = [
+  const transactions = [
     {
       id: 101,
       user: "Amina Asha",
@@ -151,14 +158,52 @@ const TransactionFraudDashboard = () => {
   ];
 
   // Apply fraud detection dynamically
-  const updatedTransactions = transactions.map(tx => detectFraud(tx));
+  const updatedTransactions = transactions.map((tx) => detectFraud(tx));
 
+  const filteredUsers =
+    filter === "blocked"
+      ? updatedTransactions.filter((tx) => tx.status === "Blocked")
+      : filter === "fraud"
+        ? updatedTransactions.filter((tx) => tx.status === "Fraud")
+        : filter === "normal"
+          ? updatedTransactions.filter((td) => td.status === "Normal")
+          : updatedTransactions;
 
   return (
     <div className="max-w-7xl mx-auto">
       <h2 className="text-2xl my-10 font-semibold">
         Transaction-Fraud Dashboard
       </h2>
+
+      <div className="flex flex-wrap justify-around  items-center gap-4 mb-4">
+        <button
+          className="btn btn-outline text-gray-500 hover:bg-gray-500 hover:text-white"
+          onClick={() => setFilter("all")}
+        >
+          Show All Users
+        </button>
+
+        <button
+          className="btn btn-outline text-green-500 hover:bg-green-500 hover:text-white"
+          onClick={() => setFilter("normal")}
+        >
+          Show Normal Users
+        </button>
+
+        <button
+          className="btn btn-outline text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          onClick={() => setFilter("fraud")}
+        >
+          Show Fraud Users
+        </button>
+
+        <button
+          className="btn btn-outline btn-error hover:text-white"
+          onClick={() => setFilter("blocked")}
+        >
+          Show Blocked Users
+        </button>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="table w-full">
@@ -175,7 +220,7 @@ const TransactionFraudDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {updatedTransactions.map((transaction, idx) => (
+            {filteredUsers.map((transaction, idx) => (
               <tr key={transaction.id}>
                 <th>{idx + 1}</th>
                 <td>{transaction.id}</td>
@@ -199,7 +244,7 @@ const TransactionFraudDashboard = () => {
                 </td>
                 <td>{transaction.email}</td>
                 <td>${transaction.amount}</td>
-                <td>{transaction.risk}</td>
+                <td>{transaction.risk} %</td>
                 <th>
                   <div
                     className="tooltip tooltip-bottom"
@@ -211,9 +256,13 @@ const TransactionFraudDashboard = () => {
                   >
                     <button
                       className={`btn btn-ghost btn-xs ${
-                        transaction.status === "Fraud"
-                          ? "bg-red-400 text-white"
-                          : "bg-green-400"
+                        transaction.status === "Blocked"
+                          ? "bg-red-100 text-red-600"
+                          : transaction.status === "Fraud"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : transaction.status === "Normal"
+                              ? "bg-green-100 text-green-600"
+                              : ""
                       }`}
                     >
                       {transaction.status}
@@ -231,7 +280,7 @@ const TransactionFraudDashboard = () => {
                           setSelectedTransaction(transaction);
                           setModalType("view");
                         }}
-                        className="btn btn-outline btn-square text-blue-400 hover:bg-blue-400 hover:text-black"
+                        className="btn btn-outline btn-square text-blue-400 hover:bg-blue-400 hover:text-white"
                       >
                         <GrView className="text-lg" />
                       </button>
@@ -246,7 +295,7 @@ const TransactionFraudDashboard = () => {
                           setSelectedTransaction(transaction);
                           setModalType("edit");
                         }}
-                        className="btn btn-outline btn-square text-green-500 hover:bg-green-500 hover:text-black"
+                        className="btn btn-outline btn-square text-green-500 hover:bg-green-500 hover:text-white"
                       >
                         <LiaEditSolid className="text-lg" />
                       </button>
@@ -260,7 +309,7 @@ const TransactionFraudDashboard = () => {
                         onClick={() => {
                           setModalType("add");
                         }}
-                        className="btn btn-outline btn-square text-yellow-500 hover:bg-yellow-500 hover:text-black"
+                        className="btn btn-outline btn-square text-yellow-500 hover:bg-yellow-500 hover:text-white"
                       >
                         <MdOutlineAddToDrive className="text-lg" />
                       </button>
@@ -270,7 +319,7 @@ const TransactionFraudDashboard = () => {
                       className="relative overflow-visible tooltip tooltip-bottom"
                       data-tip="Delete"
                     >
-                      <button className="btn btn-outline btn-square text-[#f87171] hover:bg-[#f87171] hover:text-black">
+                      <button className="btn btn-outline btn-square text-[#f87171] hover:bg-[#f87171] hover:text-white">
                         <IoTrashOutline className="text-lg" />
                       </button>
                     </div>
