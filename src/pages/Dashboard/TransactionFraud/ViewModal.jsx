@@ -1,9 +1,11 @@
 import React from "react";
 
 const ViewModal = ({ transaction, onClose }) => {
+  if (!transaction) return null;
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4 z-50">
-      <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl relative animate-fadeIn">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl relative">
 
         {/* Header */}
         <div className="flex justify-between items-center border-b p-5">
@@ -24,7 +26,7 @@ const ViewModal = ({ transaction, onClose }) => {
             <img
               src={transaction.image}
               alt={transaction.user}
-              className="w-20 h-20 rounded-full border"
+              className="w-20 h-20 rounded-full border object-cover"
             />
             <div>
               <h3 className="text-lg font-bold">{transaction.user}</h3>
@@ -36,11 +38,14 @@ const ViewModal = ({ transaction, onClose }) => {
           <div className="grid grid-cols-2 gap-3 text-sm">
             <p><span className="font-semibold">ID:</span> {transaction.id}</p>
             <p><span className="font-semibold">Amount:</span> ${transaction.amount}</p>
+
             <p>
               <span className="font-semibold">Status:</span>{" "}
               <span
                 className={`px-2 py-1 rounded-full text-xs font-semibold ${
                   transaction.status === "Fraud"
+                    ? "bg-yellow-100 text-yellow-600"
+                    : transaction.status === "Blocked"
                     ? "bg-red-100 text-red-600"
                     : "bg-green-100 text-green-600"
                 }`}
@@ -48,13 +53,15 @@ const ViewModal = ({ transaction, onClose }) => {
                 {transaction.status}
               </span>
             </p>
+
             <p><span className="font-semibold">Risk:</span> {transaction.risk}%</p>
           </div>
 
           {/* Fraud Categories */}
           <div>
             <h4 className="font-semibold text-sm mb-1">Fraud Categories:</h4>
-            {transaction.fraudCategories && transaction.fraudCategories.length > 0 ? (
+
+            {transaction.fraudCategories?.length > 0 ? (
               <ul className="list-disc list-inside text-xs text-red-500">
                 {transaction.fraudCategories.map((cat, idx) => (
                   <li key={idx}>{cat}</li>
@@ -71,6 +78,7 @@ const ViewModal = ({ transaction, onClose }) => {
               <span>Risk Level</span>
               <span>{transaction.risk}%</span>
             </div>
+
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className={`h-2 rounded-full ${

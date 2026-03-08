@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 import Topbar from "../pages/Dashboard/Topbar/Topbar";
-import { IoIosNotifications } from "react-icons/io";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { useState } from "react";
 
@@ -48,7 +48,7 @@ const DashboardLayout = () => {
                       strokeWidth="2"
                       fill="none"
                       stroke="currentColor"
-                      className="my-1.5 inline-block size-5 text-green-500"
+                      className="my-1.5 inline-block size-5 text-green-400 cursor-pointer"
                     >
                       <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
                       <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -63,10 +63,10 @@ const DashboardLayout = () => {
               <li>
                 <Link to={"notifications"}>
                   <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right cursor-pointer"
                     data-tip="Notification"
                   >
-                    <IoIosNotifications className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
+                    <IoIosNotificationsOutline className="text-green-400 font-extrabold inline-block size-5 -ml-0.5 mr-1.5" />
                     <span className="is-drawer-close:hidden">Notification</span>
                   </button>
                 </Link>
@@ -74,7 +74,7 @@ const DashboardLayout = () => {
               <li>
                 <Link to={"transactionFraud"}>
                   <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right cursor-pointer"
                     data-tip="Transaction-Fraud"
                   >
                     <AiOutlineTransaction className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
