@@ -16,10 +16,12 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
 import Services from "../pages/Services/Services";
-// import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
-import PaymentSuccess from "../pages/Payment/paymentSuccess";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import Notifications from "../pages/Dashboard/Notifications/Notifications";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
+import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
+import BlockedUsers from "../pages/BlockedUser/BlockedUsers";
 
 
 export const router = createBrowserRouter([
@@ -76,6 +78,16 @@ export const router = createBrowserRouter([
       {
         path: "notifications",
         Component: Notifications,
+      },
+      {
+        path: "all-users",
+        Component: AllUsers,
+        path: "transactionFraud",
+        Component: TransactionFraudDashboard,
+      },
+      {
+        path: "blockedUser",
+        Component: BlockedUsers,
       },
       {
         path: "/dashboard/payment-success",

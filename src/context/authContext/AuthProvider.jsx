@@ -119,8 +119,7 @@ const AuthProvider = ({ children }) => {
     logOut,
     trackLoginAttempt,
     checkLockStatus,
-    // user,
-    // loading,
+    
   };
 
   return (

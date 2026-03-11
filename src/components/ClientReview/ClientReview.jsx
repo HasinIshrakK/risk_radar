@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import React from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -9,8 +9,9 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles, Star } from "lucide-react";
+
 import Container from "../SharedUi/Container";
-import { FaStar } from "react-icons/fa";
+
 
 const testimonials = [
   {
