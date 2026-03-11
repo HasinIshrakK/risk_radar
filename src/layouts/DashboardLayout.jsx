@@ -57,7 +57,7 @@ const DashboardLayout = () => {
             </label>
 
             <div>
-              <h3 className="text-xl font-medium uppercase">Dahsboard</h3>
+              <h3 className="md:text-xl font-bold uppercase">Dahsboard</h3>
               <p className="text-xs">Overview</p>
             </div>
           </div>
@@ -238,7 +238,7 @@ const DashboardLayout = () => {
                 <Link
                   to="/dashboard/my-plan"
                   onClick={handleLinkClick}
-                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/plan")}`}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/my-plan")}`}
                 >
                   <ShieldAlert size={20} />{" "}
                   <span className="ml-3">My plan</span>
