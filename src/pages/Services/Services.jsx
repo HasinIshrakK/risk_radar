@@ -130,7 +130,7 @@ const Services = () => {
 
     try {
       const paymentInfo = {
-        price: plan.price,
+        amount: plan.price,
         plansId: plan.name.toLowerCase(),
         name: plan.name,
         email: user.email,

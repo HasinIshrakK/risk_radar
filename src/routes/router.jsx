@@ -19,6 +19,7 @@ import Services from "../pages/Services/Services";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import Notifications from "../pages/Dashboard/Notifications/Notifications";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 import BlockedUsers from "../pages/BlockedUser/BlockedUsers";
 
@@ -79,6 +80,8 @@ export const router = createBrowserRouter([
         Component: Notifications,
       },
       {
+        path: "all-users",
+        Component: AllUsers,
         path: "transactionFraud",
         Component: TransactionFraudDashboard,
       },

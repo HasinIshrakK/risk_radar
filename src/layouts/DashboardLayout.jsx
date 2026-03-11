@@ -3,6 +3,7 @@ import Topbar from "../pages/Dashboard/Topbar/Topbar";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { useState } from "react";
+import { User } from "lucide-react";
 
 const DashboardLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -85,41 +86,45 @@ const DashboardLayout = () => {
                 </Link>
               </li>
 
-              {/* List item */}
-              <li>
-                <Link to="profile">
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Settings"
-                  >
-                    {/* Settings icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2"
-                      fill="none"
-                      stroke="currentColor"
-                      className="my-1.5 inline-block size-4 text-green-500"
-                    >
-                      <path d="M20 7h-9"></path>
-                      <path d="M14 17H5"></path>
-                      <circle cx="17" cy="17" r="3"></circle>
-                      <circle cx="7" cy="7" r="3"></circle>
-                    </svg>
-                    <span className="is-drawer-close:hidden ml-2">
-                      Settings
-                    </span>
-                  </button>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+                            <li>
+                                <Link to={"notifications"}>
+                                    <button
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Notification"
+                                    >
+                                        <IoIosNotifications className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
+                                        <span className="is-drawer-close:hidden">Notification</span>
+                                    </button>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"all-users"}>
+                                    <button
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="All Users"
+                                    >
+                                        <User className="text-green-400 inline-block size-5 -ml-0.5 mr-1.5" />
+                                        <span className="is-drawer-close:hidden">All Users</span>
+                                    </button>
+                                </Link>
+                            </li>
+
+                            {/* List item */}
+                            <li>
+                                <Link to="profile">
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
+                                        {/* Settings icon */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4 text-green-500"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                                        <span className="is-drawer-close:hidden ml-2">Settings</span>
+                                    </button>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default DashboardLayout;
