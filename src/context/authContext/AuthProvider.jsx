@@ -17,8 +17,8 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
-  const [user,setUser] = useState(null);
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   // NEW: Safe email for Firestore doc ID
   const getSafeEmail = (email) => email.replace(/\./g, "_");
 
@@ -97,7 +97,6 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -123,7 +122,9 @@ const AuthProvider = ({ children }) => {
     
   };
 
-  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
