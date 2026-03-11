@@ -16,8 +16,9 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import UserProfile from "../pages/Dashboard/UserProfile";
 import Services from "../pages/Services/Services";
-import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+import Notifications from "../pages/Dashboard/Notifications/Notifications";
 
 export const router = createBrowserRouter([
   // RootLayout layout
@@ -71,43 +72,28 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "profile",
-        element: <UserProfile />,
+        path: "/dashboard/notifications",
+        Component: Notifications,
       },
       {
-        path: "live",
-        element: <p>Lives</p>,
+        path: "/dashboard/profile",
+        Component: UserProfile,
       },
       {
-        path: "rules",
-        element: <p>Rules</p>,
+        path: "/dashboard/plan",
+        Component: UserProfile,
       },
       {
-        path: "manage-users",
-        element: <p>Manage Users</p>,
+        path: "/dashboard/payment-success",
+        element: <PaymentSuccess></PaymentSuccess>,
       },
       {
-        path: "watchlist",
-        element: <p>Watchlist</p>,
-      },
-      {
-        path: "settings",
-        element: <p>Settings</p>,
-      },
-      {
-        path: "payment",
-        element: <p>Payment</p>,
-      },
-      {
-        path: "payment-success",
-        element: <p>Layment-success</p>,
-      },
-      {
-        path: "payment-cancel",
-        element: <p>Payment-cancel</p>,
+        path: "/dashboard/payment-cancel",
+        element: <PaymentCancel></PaymentCancel>,
       },
     ],
   },
+
   // Auth layout
   {
     path: "/auth",

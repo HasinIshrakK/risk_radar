@@ -1,202 +1,250 @@
-import React, { useState, useEffect } from "react";
-import logo from "../../src/assets/sheld.png";
+import React, { useState } from "react";
+import { Link, Outlet, useLocation } from "react-router";
+import { IoIosNotifications } from "react-icons/io";
 import {
-  LayoutDashboard,
-  Activity,
-  ShieldAlert,
-  Users,
-  Settings,
   Menu,
   X,
   Bell,
-  Search,
-  House,
   User,
-  Wallet,
+  LayoutDashboard,
+  ShieldAlert,
+  Settings,
+  LogOut,
+  ChevronDown,
+  Home,
+  HomeIcon,
 } from "lucide-react";
-import { Link, Outlet, useLocation } from "react-router";
-
-import AOS from "aos";
-import "aos/dist/aos.css";
-
+import logo from "../../src/assets/sheld.png";
 const DashboardLayout = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      duration: 1000,
-    });
-  }, []);
+  const activeClass = (path) =>
+    location.pathname === path
+      ? "bg-emerald-100 text-emerald-700 font-semibold"
+      : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-600";
 
-  const menuItems = [
-    {
-      name: "Overview",
-      icon: <LayoutDashboard size={20} />,
-      path: "/dashboard",
-    },
-    {
-      name: "Live Risk Feed",
-      icon: <Activity size={20} />,
-      path: "/dashboard/live",
-    },
-    {
-      name: "Watchlist",
-      icon: <Users size={20} />,
-      path: "/dashboard/watchlist",
-    },
-    {
-      name: "Risk Rules",
-      icon: <ShieldAlert size={20} />,
-      path: "/dashboard/rules",
-    },
-    {
-      name: "Manage User",
-      icon: <Wallet size={20} />,
-      path: "/dashboard/manage-users",
-    },
-    { name: "Payment", icon: <Wallet size={20} />, path: "/dashboard/payment" },
-    { name: "Profile", icon: <User size={20} />, path: "/dashboard/profile" },
-    {
-      name: "Settings",
-      icon: <Settings size={20} />,
-      path: "/dashboard/settings",
-    },
-  ];
+  const handleLinkClick = () => {
+    setIsDrawerOpen(false);
+  };
 
   return (
-    <div className="flex min-h-screen poppins-regular bg-emerald-50/30 text-slate-700 overflow-x-hidden ">
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+    <div className="poppins-regular drawer lg:drawer-open bg-slate-50 min-h-screen">
+      {/* back to home button */}
+      <input
+        id="dashboard-drawer-input"
+        type="checkbox"
+        className="drawer-toggle"
+        checked={isDrawerOpen}
+        onChange={(e) => setIsDrawerOpen(e.target.checked)}
+      />
 
-      <aside
-        className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-emerald-100
-          transition-all duration-300 ease-in-out
-          lg:sticky lg:top-0 lg:h-screen lg:translate-x-0
-          ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
-        `}
-      >
-        <div className="flex flex-col h-full">
-          <div className="p-6 flex items-center justify-between shrink-0">
-            <Link to="/" className="flex items-center gap-2 group">
+      {/* 2. Main Page Content */}
+      <div className="drawer-content flex flex-col h-screen overflow-hidden">
+        {/* Topbar */}
+        <nav className="h-16 bg-white border-b border-slate-100 px-4 flex items-center justify-between sticky top-0 z-30 shadow-sm shrink-0">
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Button - htmlFor makes it toggle the input */}
+            <label
+              htmlFor="dashboard-drawer-input"
+              className="lg:hidden btn btn-ghost btn-square p-2 rounded-lg text-slate-600 hover:bg-green-50 hover:text-green-600 border-0 bg-transparent transition-colors"
+            >
+              {isDrawerOpen ? <X size={24} /> : <Menu size={24} />}
+            </label>
+
+            <div>
+              <h3 className="text-xl font-medium uppercase">Dahsboard</h3>
+              <p className="text-xs">Overview</p>
+            </div>
+          </div>
+
+          {/* Desktop Nav Items */}
+          <div className="hidden md:flex items-center gap-6">
+            <Link
+              to="/dashboard"
+              className="text-sm font-semibold text-slate-500 hover:text-green-600"
+            >
+              Overview
+            </Link>
+            <Link
+              to="/alerts"
+              className="text-sm font-semibold text-slate-500 hover:text-green-600"
+            >
+              Fraud Alerts
+            </Link>
+            <Link
+              to="/settings"
+              className="text-sm font-semibold text-slate-500 hover:text-green-600"
+            >
+              Settings
+            </Link>
+          </div>
+
+          {/* Right Side Icons */}
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-full text-slate-400 hover:bg-green-50 hover:text-green-600 relative group">
+              <Bell size={20} />
+              <span className="absolute top-2 right-2.5 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white group-hover:animate-pulse"></span>
+            </button>
+
+            <div className="h-6 w-px bg-slate-200 mx-2 hidden sm:block"></div>
+
+            <div className="relative">
+              <button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className={`flex items-center gap-2 p-1 pr-3 rounded-full border transition-all ${isUserMenuOpen ? "border-green-200 bg-green-50" : "border-slate-100 hover:bg-slate-50"}`}
+              >
+                <img
+                  src="https://i.pravatar.cc/150?u=risk"
+                  alt="User"
+                  className="w-8 h-8 rounded-full border border-green-100 shadow-sm"
+                />
+                <ChevronDown
+                  size={14}
+                  className={`text-slate-400 transition-transform duration-300 ${isUserMenuOpen ? "rotate-180 text-green-600" : ""}`}
+                />
+              </button>
+
+              {isUserMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40 bg-transparent"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  ></div>
+                  <div className="absolute right-0 mt-3 w-56 bg-white border border-green-50 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+                    <div className="px-5 py-3 border-b border-slate-50">
+                      <p className="text-sm font-bold text-slate-900">
+                        Alex Morgan
+                      </p>
+                      <p className="text-[11px] text-green-600 font-medium">
+                        Admin • Security Lead
+                      </p>
+                    </div>
+                    <Link
+                      to="/dashboard/profile"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50"
+                    >
+                      <User size={16} /> User profile
+                    </Link>
+                    <button className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 font-semibold">
+                      <LogOut size={16} /> Sign Out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </nav>
+
+        {/* Content View */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10">
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+
+      {/* 3. Sidebar Drawer Side */}
+      <div className="drawer-side z-50">
+        {/* Overlay - ক্লিক করলে ড্রয়ার বন্ধ হবে */}
+        <label
+          htmlFor="dashboard-drawer-input"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+          onClick={() => setIsDrawerOpen(false)}
+        ></label>
+
+        <aside className="flex min-h-full flex-col w-72 bg-white border-r border-emerald-100">
+          {/* Sidebar Header */}
+          <div className="px-6 py-5 flex items-center justify-between border-b border-slate-50 shrink-0">
+            <Link to="/" className="flex items-center gap-1 ml-1 group">
               <img
                 src={logo}
                 alt="logo"
-                className="w-7 md:w-8 transition-transform group-hover:scale-110"
+                className="w-9 h-9 object-contain transition-transform group-hover:scale-105"
               />
-              <h1 className="text-lg md:text-xl font-bold tracking-tighter">
-                <span className="text-slate-900 font-black">RISK</span>
-                <span className="text-emerald-600 font-black">RADAR</span>
+              <h1 className="text-xl font-bold text-green-700 tracking-tight">
+                RiskRadar
               </h1>
             </Link>
+
+            {/* Mobile Close Button */}
             <button
-              onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-1.5 text-slate-400 hover:bg-emerald-50 rounded-full transition-colors"
+              onClick={() => setIsDrawerOpen(false)}
+              className="lg:hidden p-1 text-slate-400 hover:text-red-500 transition-colors"
             >
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 
-          {/* Sidebar Scrollable Nav */}
-          <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto custom-scrollbar">
-            {menuItems.map((item, index) => {
-              const isActive = location.pathname === item.path;
-              return (
+          {/* Sidebar Navigation */}
+          <nav className="flex-1 px-4 py-6 overflow-y-auto">
+            <p className="text-[10px] uppercase font-bold text-slate-400 mb-4 tracking-widest px-4">
+              Menu
+            </p>
+            <ul className="menu w-full p-0 gap-1.5">
+              <li>
                 <Link
-                  to={item.path}
-                  key={index}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                    isActive
-                      ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200"
-                      : "text-slate-500 hover:bg-emerald-50 hover:text-emerald-600"
-                  }`}
+                  to="/"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/home")}`}
                 >
-                  <span
-                    className={isActive ? "text-white" : "text-emerald-500"}
-                  >
-                    {item.icon}
-                  </span>
-                  <span className="font-semibold text-[14px]">{item.name}</span>
+                  <HomeIcon size={20} /> <span className="ml-3">Home</span>
                 </Link>
-              );
-            })}
+              </li>
+              <li>
+                <Link
+                  to="/dashboard"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard")}`}
+                >
+                  <LayoutDashboard size={20} />{" "}
+                  <span className="ml-3">Dashboard</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/notifications"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/notifications")}`}
+                >
+                  <IoIosNotifications size={22} />{" "}
+                  <span className="ml-3">Notifications</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/profile"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/profile")}`}
+                >
+                  <User size={20} /> <span className="ml-3">User Profile</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/plan"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/plan")}`}
+                >
+                  <ShieldAlert size={20} />{" "}
+                  <span className="ml-3">Security Plan</span>
+                </Link>
+              </li>
+            </ul>
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-emerald-50 shrink-0">
-            <div className="bg-emerald-50/50 p-3 rounded-2xl flex items-center gap-3 border border-emerald-100">
-              <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-inner uppercase">
-                ad
-              </div>
-              <div className="flex-1 overflow-hidden">
-                <p className="text-xs font-bold text-slate-800 truncate">
-                  Admin Space
-                </p>
-                <p className="text-[10px] text-emerald-600 font-medium truncate tracking-tight uppercase">
-                  Node-01 Active
-                </p>
-              </div>
+          <div className="p-4 border-t border-emerald-50">
+            <div className="bg-emerald-50 rounded-2xl p-4 border border-emerald-100/50">
+              <p className="text-xs font-bold text-emerald-800">Pro Tip</p>
+              <p className="text-[10px] text-emerald-600 mt-1">
+                Update security protocols regularly.
+              </p>
             </div>
           </div>
-        </div>
-      </aside>
-
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-        <header
-          data-aos="fade-down"
-          className="h-16 shrink-0 bg-white/70 backdrop-blur-md border-b border-emerald-100 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30"
-        >
-          <div className="flex items-center gap-4">
-            <button
-              className="lg:hidden p-2 text-slate-600 hover:bg-emerald-50 rounded-xl transition-colors"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu size={24} />
-            </button>
-
-            <Link
-              className="hidden sm:flex items-center justify-center gap-1.5 text-[12px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 px-4 py-2 rounded-full border border-emerald-100 transition-all"
-              to={"/"}
-            >
-              <House size={18} strokeWidth={2.5} />
-              <span className="mt-0.5">Home</span>
-            </Link>
-          </div>
-
-          {/* Right side icons */}
-          <div className="flex items-center gap-3 md:gap-5">
-            <div className="hidden md:flex items-center bg-slate-100/50 px-4 py-2 rounded-2xl border border-transparent focus-within:border-emerald-200 focus-within:bg-white w-64 transition-all">
-              <Search size={16} className="text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search analytics..."
-                className="bg-transparent border-none focus:ring-0 text-sm ml-2 w-full outline-none font-medium text-slate-600"
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-full relative transition-colors">
-                <Bell size={20} />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-              </button>
-              <div className="h-8 w-px bg-emerald-100 mx-1 hidden sm:block"></div>
-              <button className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center hover:bg-emerald-100 transition-colors">
-                <Settings size={18} className="text-slate-500" />
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <main data-aos="fade-up" className="flex-1">
-          <Outlet />
-        </main>
+        </aside>
       </div>
     </div>
   );
