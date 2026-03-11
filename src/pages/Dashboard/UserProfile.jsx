@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { FaPhoneVolume, FaCheckCircle, FaEdit } from "react-icons/fa";
 import { IoLocation } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { motion } from "framer-motion";
 import useAuth from "../../hooks/useAuth";
-import Container from "../../components/SharedUi/Container";
 
 const UserProfile = () => {
   const { user, loading } = useAuth();

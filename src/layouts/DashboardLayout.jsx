@@ -13,8 +13,11 @@ import {
   ChevronDown,
   Home,
   HomeIcon,
+  Settings2,
+  BadgeDollarSign,
 } from "lucide-react";
 import logo from "../../src/assets/sheld.png";
+
 const DashboardLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -74,7 +77,7 @@ const DashboardLayout = () => {
               Fraud Alerts
             </Link>
             <Link
-              to="/settings"
+              to="/dashboard/settings"
               className="text-sm font-semibold text-slate-500 hover:text-green-600"
             >
               Settings
@@ -138,7 +141,7 @@ const DashboardLayout = () => {
         </nav>
 
         {/* Content View */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>
@@ -147,7 +150,6 @@ const DashboardLayout = () => {
 
       {/* 3. Sidebar Drawer Side */}
       <div className="drawer-side z-50">
-        {/* Overlay - ক্লিক করলে ড্রয়ার বন্ধ হবে */}
         <label
           htmlFor="dashboard-drawer-input"
           aria-label="close sidebar"
@@ -205,6 +207,16 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <Link
+                  to="/dashboard/transaction-fraud"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/transaction-fraud")}`}
+                >
+                  <BadgeDollarSign size={20} />{" "}
+                  <span className="ml-3">Transection Fraud</span>
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/dashboard/notifications"
                   onClick={handleLinkClick}
                   className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/notifications")}`}
@@ -215,21 +227,30 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <Link
-                  to="/dashboard/profile"
+                  to="/dashboard/all-users"
                   onClick={handleLinkClick}
-                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/profile")}`}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/all-users")}`}
                 >
-                  <User size={20} /> <span className="ml-3">User Profile</span>
+                  <User size={20} /> <span className="ml-3">Manage Users</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/dashboard/plan"
+                  to="/dashboard/my-plan"
                   onClick={handleLinkClick}
                   className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/plan")}`}
                 >
                   <ShieldAlert size={20} />{" "}
-                  <span className="ml-3">Security Plan</span>
+                  <span className="ml-3">My plan</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/settings"
+                  onClick={handleLinkClick}
+                  className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/settings")}`}
+                >
+                  <Settings2 size={20} /> <span className="ml-3">Settings</span>
                 </Link>
               </li>
             </ul>

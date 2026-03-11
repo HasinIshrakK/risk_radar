@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Container from "../../../components/SharedUi/Container";
 
 const notificationsData = [
   {
@@ -47,8 +49,8 @@ const Notifications = () => {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen bg-white p-6 md:p-12">
-      <div className="max-w-4xl mx-auto">
+    <div className="my-5 md:my-10">
+      <Container>
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -163,7 +165,7 @@ const Notifications = () => {
             </motion.div>
           )}
         </motion.div>
-      </div>
+      </Container>
     </div>
   );
 };

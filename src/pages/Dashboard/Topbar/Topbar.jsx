@@ -1,4 +1,7 @@
 // import React, { useState } from "react";
+// import { useContext } from "react";
+
+// import { useNavigate } from "react-router";
 // import {
 //   Menu,
 //   X,
@@ -12,9 +15,23 @@
 // } from "lucide-react";
 // import logo from "../../../assets/sheld.png";
 // import { Link } from "react-router";
+// import { AuthContext } from "../../../context/authContext/AuthContext";
 
-// const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
-//   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+// // const Topbar = ({ isDrawerOpen, setIsDrawerOpen }) => {
+// //   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+//   const { user, logOut } = useContext(AuthContext);
+//   const navigate = useNavigate();
+
+//   const handleSignOut = async () => {
+//     try {
+//       await logOut();
+//       setIsUserMenuOpen(false);
+//       navigate("/login");
+//     } catch (error) {
+//       console.error("Logout error:", error);
+//     }
+//   };
 
 //   const navLinks = [
 //     {
@@ -131,13 +148,123 @@
 //                   <User size={16} className="text-slate-400" /> User profile
 //                 </Link>
 //                 <div className="h-px bg-slate-50 my-1 mx-2"></div>
-//                 <button className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors font-semibold">
-//                   <LogOut size={16} /> Sign Out
-//                 </button>
+//                 {user ? (
+//                   <button
+//                     onClick={handleSignOut}
+//                     className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors font-semibold"
+//                   >
+//                     <LogOut size={16} /> Sign Out
+//                   </button>
+//                 ) : (
+//                   <Link
+//                     to={"/auth/login"}
+//                     className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-green-500 hover:bg-red-50 rounded-xl transition-colors font-semibold"
+//                   >
+//                     <LogOut size={16} /> Login{" "}
+//                   </Link>
+//                 )}
 //               </div>
 //             </div>
-//           )}
-//         </div>
+//             <span className="text-xl font-bold text-slate-800 tracking-tight">
+//               RiskRadar
+//             </span>
+//           </div>
+
+//           <ul className="menu px-4 py-0 w-full grow gap-1">
+//             <p className="text-[10px] uppercase font-bold text-slate-400 mb-2 tracking-widest px-4">
+//               Overview
+//             </p>
+//             {/* Homepage */}
+//             <li>
+//               <Link
+//                 to="/dashboard"
+//                 className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard")}`}
+//                 onClick={() => setIsDrawerOpen(false)} // মোবাইলে ক্লিক করলে সাইডবার বন্ধ হবে
+//               >
+//                 <svg
+//                   xmlns="http://www.w3.org/2000/svg"
+//                   viewBox="0 0 24 24"
+//                   strokeWidth="2"
+//                   fill="none"
+//                   stroke="currentColor"
+//                   className="size-5"
+//                 >
+//                   <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+//                   <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+//                 </svg>
+//                 <span className="ml-3">Dashboard</span>
+//               </Link>
+//             </li>
+
+//             {/* Notifications */}
+//             <li>
+//               <Link
+//                 to="notifications"
+//                 className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/notifications")}`}
+//                 onClick={() => setIsDrawerOpen(false)}
+//               >
+//                 <IoIosNotifications className="size-5" />
+//                 <span className="ml-3">Notifications</span>
+//               </Link>
+//             </li>
+
+//             {/* Profile */}
+//             <li>
+//               <Link
+//                 to="profile"
+//                 className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/profile")}`}
+//                 onClick={() => setIsDrawerOpen(false)}
+//               >
+//                 <svg
+//                   xmlns="http://www.w3.org/2000/svg"
+//                   viewBox="0 0 24 24"
+//                   strokeWidth="2"
+//                   fill="none"
+//                   stroke="currentColor"
+//                   className="size-5"
+//                 >
+//                   <circle cx="12" cy="8" r="4" />
+//                   <path d="M6 20c0-4 12-4 12 0" />
+//                 </svg>
+//                 <span className="ml-3">Profile</span>
+//               </Link>
+//             </li>
+
+//             {/* My Plan */}
+//             <li>
+//               <Link
+//                 to="plan"
+//                 className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/plan")}`}
+//                 onClick={() => setIsDrawerOpen(false)}
+//               >
+//                 <svg
+//                   xmlns="http://www.w3.org/2000/svg"
+//                   viewBox="0 0 24 24"
+//                   strokeWidth="2"
+//                   fill="none"
+//                   stroke="currentColor"
+//                   className="size-5"
+//                 >
+//                   <rect width="18" height="18" x="3" y="3" rx="2" />
+//                   <path d="M3 9h18M9 21V9" />
+//                 </svg>
+//                 <span className="ml-3">My Plan</span>
+//               </Link>
+//             </li>
+//           </ul>
+
+//           {/* Sidebar Footer */}
+//           <div className="p-4 border-t border-emerald-50">
+//             <div className="bg-emerald-50 rounded-2xl p-4">
+//               <p className="text-xs font-medium text-emerald-800">
+//                 Account Status
+//               </p>
+//               <p className="text-[10px] text-emerald-600/80 mt-1 uppercase font-bold">
+//                 Premium Member
+//               </p>
+//             </div>
+//           </div>
+//         </aside>
 //       </div>
 
 //       {isUserMenuOpen && (
@@ -149,165 +276,5 @@
 //     </nav>
 //   );
 // };
+
 // export default Topbar;
-
-import { Link, Outlet, useLocation } from "react-router";
-import Topbar from "../pages/Dashboard/Topbar/Topbar";
-import { IoIosNotifications } from "react-icons/io";
-import { useState } from "react";
-
-const DashboardLayout = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const location = useLocation();
-
-  // Active link styling
-  const activeClass = (path) =>
-    location.pathname === path
-      ? "bg-emerald-100 text-emerald-700 font-semibold"
-      : "text-slate-600 hover:bg-emerald-50";
-
-  return (
-    <div className="drawer lg:drawer-open bg-slate-50 min-h-screen">
-      {/* Drawer Toggle Input */}
-      <input
-        id="my-drawer-4"
-        type="checkbox"
-        className="drawer-toggle"
-        checked={isDrawerOpen}
-        onChange={() => setIsDrawerOpen(!isDrawerOpen)}
-      />
-
-      {/* Main Content Area */}
-      <div className="drawer-content flex flex-col">
-        {/* Topbar: passes state for full functionality */}
-        <Topbar isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
-
-        <main className="p-4 md:p-6 lg:p-10 grow">
-          <div className="max-w-7xl mx-auto">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-
-      {/* Sidebar Navigation */}
-      <div className="drawer-side z-[60]">
-        {/* z-index বাড়ানো হয়েছে যাতে টপবারের উপরে সাইডবার থাকে মোবাইলে */}
-        <label
-          htmlFor="my-drawer-4"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-          onClick={() => setIsDrawerOpen(false)}
-        ></label>
-
-        <aside className="flex min-h-full flex-col w-72 bg-white border-r border-emerald-100 shadow-xl lg:shadow-none">
-          {/* Sidebar Header - Logo (Only visible when sidebar is open or on large screens) */}
-          <div className="px-6 py-5 flex items-center gap-2 border-b border-slate-50 mb-4">
-            <div className="size-8 bg-emerald-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-100">
-              <span className="text-white font-bold">R</span>
-            </div>
-            <span className="text-xl font-bold text-slate-800 tracking-tight">
-              RiskRadar
-            </span>
-          </div>
-
-          <ul className="menu px-4 py-0 w-full grow gap-1">
-            <p className="text-[10px] uppercase font-bold text-slate-400 mb-2 tracking-widest px-4">
-              Overview
-            </p>
-            {/* Homepage */}
-            <li>
-              <Link
-                to="/dashboard"
-                className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard")}`}
-                onClick={() => setIsDrawerOpen(false)} // মোবাইলে ক্লিক করলে সাইডবার বন্ধ হবে
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="size-5"
-                >
-                  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-                  <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                </svg>
-                <span className="ml-3">Dashboard</span>
-              </Link>
-            </li>
-
-            {/* Notifications */}
-            <li>
-              <Link
-                to="notifications"
-                className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/notifications")}`}
-                onClick={() => setIsDrawerOpen(false)}
-              >
-                <IoIosNotifications className="size-5" />
-                <span className="ml-3">Notifications</span>
-              </Link>
-            </li>
-
-            {/* Profile */}
-            <li>
-              <Link
-                to="profile"
-                className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/profile")}`}
-                onClick={() => setIsDrawerOpen(false)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="size-5"
-                >
-                  <circle cx="12" cy="8" r="4" />
-                  <path d="M6 20c0-4 12-4 12 0" />
-                </svg>
-                <span className="ml-3">Profile</span>
-              </Link>
-            </li>
-
-            {/* My Plan */}
-            <li>
-              <Link
-                to="plan"
-                className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/plan")}`}
-                onClick={() => setIsDrawerOpen(false)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="size-5"
-                >
-                  <rect width="18" height="18" x="3" y="3" rx="2" />
-                  <path d="M3 9h18M9 21V9" />
-                </svg>
-                <span className="ml-3">My Plan</span>
-              </Link>
-            </li>
-          </ul>
-
-          {/* Sidebar Footer */}
-          <div className="p-4 border-t border-emerald-50">
-            <div className="bg-emerald-50 rounded-2xl p-4">
-              <p className="text-xs font-medium text-emerald-800">
-                Account Status
-              </p>
-              <p className="text-[10px] text-emerald-600/80 mt-1 uppercase font-bold">
-                Premium Member
-              </p>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
-  );
-};
-
-export default DashboardLayout;
