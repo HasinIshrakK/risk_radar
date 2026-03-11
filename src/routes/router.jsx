@@ -19,11 +19,11 @@ import Services from "../pages/Services/Services";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import Notifications from "../pages/Dashboard/Notifications/Notifications";
-import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
-import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 import BlockedUsers from "../pages/BlockedUser/BlockedUsers";
-import Settings from "../pages/Dashboard/Settings/Settings";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import MyPlan from "../pages/Dashboard/MyPlan/MyPlan";
+import Settings from "../pages/Dashboard/Settings/Settings";
+import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 
 export const router = createBrowserRouter([
   // RootLayout layout
