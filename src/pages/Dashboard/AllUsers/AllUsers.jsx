@@ -1,27 +1,21 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Container from "../../../components/SharedUi/Container";
+import useAxios from "../../../hooks/useAxios";
 
 const AllUsers = () => {
-  //   const dummyUsers = [
-  //   { _id: "1", name: "Amina Asha", email: "amina@example.com", role: "admin" },
-  //   { _id: "2", name: "Rahim Uddin", email: "rahim@gmail.com", role: "user" },
-  //   { _id: "3", name: "Karim Hasan", email: "karim@gmail.com", role: "user" },
-  // ];
 
-  // const [users,setUsers] = useState(dummyUsers);
-
-  //   for make it dynamic
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   //   get user from backend
 
+  const axiosInstance = useAxios();
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("http://localhost:3000/api/users")
+    axiosInstance
+      .get("/api/users")
       .then((res) => {
         setUsers(res.data);
         setLoading(false);
@@ -47,7 +41,7 @@ const AllUsers = () => {
     console.log("updatiing:", id, role);
 
     try {
-      await axios.patch(`http://localhost:3000/api/users/${id}`, {
+      await axiosInstance.patch(`/api/users/${id}`, {
         role: role,
       });
       alert("role update successfully");

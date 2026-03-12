@@ -9,6 +9,7 @@ import EditModal from "./EditModal";
 import AddModal from "./AddModal";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import useAxios from "../../../hooks/useAxios";
 
 //  Dynamic configuration for fraud detection
 const fraudConfig = {
@@ -62,6 +63,8 @@ function detectFraud(tx, config = fraudConfig) {
   return tx;
 }
 
+const axiosInstance = useAxios();
+
 const TransactionFraudDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,10 +76,10 @@ const TransactionFraudDashboard = () => {
   const limit = 10;
 
   useEffect(() => {
-    fetch("http://localhost:3000/users-transaction")
-      .then((res) => res.json())
-      .then((data) => {
-        setTransactions(data);
+    axiosInstance
+      .get("/api/users-transaction")
+      .then((res) => {
+        setTransactions(res.data);
         setLoading(false);
       });
   }, []);
@@ -261,15 +264,14 @@ const TransactionFraudDashboard = () => {
                       }
                     >
                       <button
-                        className={`btn btn-ghost btn-xs ${
-                          transaction.status === "Blocked"
-                            ? "bg-red-100 text-red-600"
-                            : transaction.status === "Fraud"
-                              ? "bg-yellow-100 text-yellow-600"
-                              : transaction.status === "Normal"
-                                ? "bg-green-100 text-green-600"
-                                : "Data Not Match"
-                        }`}
+                        className={`btn btn-ghost btn-xs ${transaction.status === "Blocked"
+                          ? "bg-red-100 text-red-600"
+                          : transaction.status === "Fraud"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : transaction.status === "Normal"
+                              ? "bg-green-100 text-green-600"
+                              : "Data Not Match"
+                          }`}
                       >
                         {transaction.status}
                       </button>

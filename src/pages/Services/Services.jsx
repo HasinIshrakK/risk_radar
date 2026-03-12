@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext/AuthContext";
+import useAxios from "../../hooks/useAxios";
 
 const Services = () => {
   const { user } = useContext(AuthContext);
@@ -138,8 +139,10 @@ const Services = () => {
         ipAddress: "127.0.0.1",
       };
 
-      const res = await axios.post(
-        "http://localhost:3000/api/payment/checkout",
+      const axiosInstance = useAxios();
+
+      const res = await axiosInstance.post(
+        "/api/payment/checkout",
         paymentInfo,
       );
 
@@ -237,11 +240,10 @@ const Services = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`group relative p-8 rounded-[2.5rem] transition-all duration-500 flex flex-col overflow-hidden ${
-                  plan.isPopular
-                    ? "bg-white border-2 border-emerald-500/20 shadow-[0_20px_50px_rgba(16,185,129,0.15)] scale-105 z-10"
-                    : "bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1"
-                }`}
+                className={`group relative p-8 rounded-[2.5rem] transition-all duration-500 flex flex-col overflow-hidden ${plan.isPopular
+                  ? "bg-white border-2 border-emerald-500/20 shadow-[0_20px_50px_rgba(16,185,129,0.15)] scale-105 z-10"
+                  : "bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                  }`}
               >
                 {/* --- GRADIENT BLUR EFFECTS --- */}
                 {plan.isPopular ? (
@@ -301,11 +303,10 @@ const Services = () => {
 
                   <button
                     onClick={() => handlePayment(plan)}
-                    className={`w-full py-5 rounded-[1.5rem] font-bold text-sm transition-all duration-300 transform active:scale-95 ${
-                      plan.isPopular
-                        ? "bg-slate-900 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-100"
-                        : "bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100"
-                    }`}
+                    className={`w-full py-5 rounded-[1.5rem] font-bold text-sm transition-all duration-300 transform active:scale-95 ${plan.isPopular
+                      ? "bg-slate-900 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-100"
+                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100"
+                      }`}
                   >
                     Pay Now
                   </button>
