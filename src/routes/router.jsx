@@ -19,13 +19,14 @@ import Services from "../pages/Services/Services";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import Notifications from "../pages/Dashboard/Notifications/Notifications";
-import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
-import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 import BlockedUsers from "../pages/BlockedUser/BlockedUsers";
-
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
+import MyPlan from "../pages/Dashboard/MyPlan/MyPlan";
+import Settings from "../pages/Dashboard/Settings/Settings";
+import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 
 export const router = createBrowserRouter([
-  // App layout
+  // RootLayout layout
   {
     path: "/",
     element: (
@@ -43,7 +44,6 @@ export const router = createBrowserRouter([
         path: "/transaction",
         element: <Transactions></Transactions>,
       },
-
       {
         path: "/alerts",
         element: <Alerts></Alerts>,
@@ -62,32 +62,48 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
   // Dashboard layout
   {
     path: "/dashboard",
-    element: <DashboardLayout></DashboardLayout>,
+    element: (
+      <>
+        <ScrollToTop />
+        <DashboardLayout />
+      </>
+    ),
     children: [
       {
         index: true,
-        Component: Dashboard,
+        element: <Dashboard />,
       },
       {
-        path: "/dashboard/profile",
-        Component: UserProfile
-      },
-      {
-        path: "notifications",
+        path: "/dashboard/notifications",
         Component: Notifications,
       },
       {
-        path: "all-users",
+        path: "/dashboard/profile",
+        Component: UserProfile,
+      },
+      {
+        path: "/dashboard/my-plan",
+        element: <MyPlan />,
+      },
+      {
+        path: "/dashboard/all-users",
         Component: AllUsers,
-        path: "transactionFraud",
+      },
+      {
+        path: "/dashboard/transaction-fraud",
         Component: TransactionFraudDashboard,
       },
       {
-        path: "blockedUser",
+        path: "/dashboard/blockedUser",
         Component: BlockedUsers,
+      },
+      {
+        path: "/dashboard/settings",
+        element: <Settings />,
       },
       {
         path: "/dashboard/payment-success",
@@ -97,7 +113,7 @@ export const router = createBrowserRouter([
         path: "/dashboard/payment-cancel",
         element: <PaymentCancel></PaymentCancel>,
       },
-    ]
+    ],
   },
 
   // Auth layout

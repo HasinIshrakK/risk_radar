@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useEffect, useState } from "react";
 import { GrView } from "react-icons/gr";
 import { LiaEditSolid } from "react-icons/lia";
@@ -6,7 +7,7 @@ import { MdOutlineAddToDrive } from "react-icons/md";
 import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import AddModal from "./AddModal";
-import { jsPDF } from "jspdf"; // <-- PDF import
+import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 //  Dynamic configuration for fraud detection
@@ -85,11 +86,11 @@ const TransactionFraudDashboard = () => {
   }, [filter, searchTerm]);
 
   if (loading)
-  return (
-    <div className="flex justify-center items-center h-40">
-      <span className="loading loading-spinner loading-lg text-green-500"></span>
-    </div>
-  );
+    return (
+      <div className="flex justify-center items-center h-40">
+        <span className="loading loading-spinner loading-lg text-green-500"></span>
+      </div>
+    );
   // Apply fraud detection dynamically
   // const updatedTransactions = transactions.map((tx) => detectFraud(tx));
   const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
