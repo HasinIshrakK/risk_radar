@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useEffect, useState } from "react";
 import { GrView } from "react-icons/gr";
 import { LiaEditSolid } from "react-icons/lia";
@@ -6,8 +7,10 @@ import { MdOutlineAddToDrive } from "react-icons/md";
 import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import AddModal from "./AddModal";
-import { jsPDF } from "jspdf"; // <-- PDF import
+import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import useAxios from "../../../hooks/useAxios";
+
 
 //  Dynamic configuration for fraud detection
 const fraudConfig = {
@@ -61,6 +64,8 @@ function detectFraud(tx, config = fraudConfig) {
   return tx;
 }
 
+
+
 const TransactionFraudDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,14 +76,15 @@ const TransactionFraudDashboard = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  useEffect(() => {
-    fetch("http://localhost:3000/users-transaction")
-      .then((res) => res.json())
-      .then((data) => {
-        setTransactions(data);
-        setLoading(false);
-      });
-  }, []);
+  const axiosInstance = useAxios();
+
+ useEffect(() => {
+  axiosInstance.get("/api/users-transaction").then((res) => {
+    console.log(res.data); // debug
+    setTransactions(res.data?.data || res.data || []);
+    setLoading(false);
+  });
+}, []);
 
   useEffect(() => {
     setPage(1);
@@ -92,7 +98,11 @@ const TransactionFraudDashboard = () => {
     );
   // Apply fraud detection dynamically
   // const updatedTransactions = transactions.map((tx) => detectFraud(tx));
-  const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
+  // const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
+
+  const updatedTransactions = Array.isArray(transactions)
+  ? transactions.map((tx) => detectFraud({ ...tx }))
+  : [];
 
   // Filter + Search
   let filteredUsers = updatedTransactions
@@ -274,15 +284,14 @@ const TransactionFraudDashboard = () => {
                       }
                     >
                       <button
-                        className={`btn btn-ghost btn-xs ${
-                          transaction.status === "Blocked"
-                            ? "bg-red-100 text-red-600"
-                            : transaction.status === "Fraud"
-                              ? "bg-yellow-100 text-yellow-600"
-                              : transaction.status === "Normal"
-                                ? "bg-green-100 text-green-600"
-                                : "Data Not Match"
-                        }`}
+                        className={`btn btn-ghost btn-xs ${transaction.status === "Blocked"
+                          ? "bg-red-100 text-red-600"
+                          : transaction.status === "Fraud"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : transaction.status === "Normal"
+                              ? "bg-green-100 text-green-600"
+                              : "Data Not Match"
+                          }`}
                       >
                         {transaction.status}
                       </button>

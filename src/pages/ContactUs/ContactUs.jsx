@@ -29,7 +29,7 @@ const ContactUs = () => {
         />
 
         {/* <div className="max-w-7xl mx-auto py-14  md:py-20"> */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-18">
           {/* Left Column: Info */}
           <div
             data-aos="fade-up"
