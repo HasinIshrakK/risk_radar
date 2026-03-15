@@ -67,7 +67,7 @@ const TransactionFraudDashboard = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [filter, setFilter] = useState("all");
-  const [searchTerm, setSearchTerm] = useState(""); // <-- Search state
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const limit = 10;
 
@@ -85,11 +85,11 @@ const TransactionFraudDashboard = () => {
   }, [filter, searchTerm]);
 
   if (loading)
-  return (
-    <div className="flex justify-center items-center h-40">
-      <span className="loading loading-spinner loading-lg text-green-500"></span>
-    </div>
-  );
+    return (
+      <div className="flex justify-center items-center h-40">
+        <span className="loading loading-spinner loading-lg text-green-500"></span>
+      </div>
+    );
   // Apply fraud detection dynamically
   // const updatedTransactions = transactions.map((tx) => detectFraud(tx));
   const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
@@ -162,7 +162,11 @@ const TransactionFraudDashboard = () => {
       {/* Filter Buttons */}
       <div className="flex md:flex-row flex-col justify-between gap-3 mb-6">
         <button
-          className="btn btn-outline text-gray-500 hover:bg-gray-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "all"
+              ? "bg-gray-500 text-white"
+              : "text-gray-500 hover:bg-gray-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("all");
             // setPage(1);
@@ -171,7 +175,11 @@ const TransactionFraudDashboard = () => {
           Show All Users
         </button>
         <button
-          className="btn btn-outline text-green-500 hover:bg-green-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "normal"
+              ? "bg-green-500 text-white"
+              : "text-green-500 hover:bg-green-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("normal");
             // setPage(1);
@@ -180,7 +188,11 @@ const TransactionFraudDashboard = () => {
           Show Normal Users
         </button>
         <button
-          className="btn btn-outline text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "fraud"
+              ? "bg-yellow-500 text-white"
+              : "text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("fraud");
             // setPage(1);
@@ -189,7 +201,9 @@ const TransactionFraudDashboard = () => {
           Show Fraud Users
         </button>
         <button
-          className="btn btn-outline btn-error hover:text-white"
+          className={`btn btn-outline ${
+            filter === "blocked" ? "bg-red-500 text-white" : "text-red-500 hover:bg-red-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("blocked");
             // setPage(1);
