@@ -4,7 +4,6 @@ import Container from "../../../components/SharedUi/Container";
 import useAxios from "../../../hooks/useAxios";
 
 const AllUsers = () => {
-
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +24,21 @@ const AllUsers = () => {
         setLoading(false);
       });
   }, []);
+
+//   useEffect(() => {
+//   setLoading(true);
+//   axiosInstance
+//     .get("/api/users")
+//     .then((res) => {
+//       console.log(res.data); // check the structure
+//       setUsers(Array.isArray(res.data) ? res.data : res.data.users || []);
+//       setLoading(false);
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       setLoading(false);
+//     });
+// }, []);
 
   // drop down role change
 
