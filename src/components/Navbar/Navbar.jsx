@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
-import logo from "../../assets/sheld.png";
+import logo from "../../assets/shield.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
