@@ -3,7 +3,7 @@ import RootLayout from "../layouts/RootLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Transactions from "../pages/Transactions/Transactions";
 import Alerts from "../pages/Alerts/Alerts";
-import Reports from "../pages/Reports/Reports";
+import Offers from "../pages/Offers/Offers";
 import Home from "../pages/Home/Home";
 import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
 import Loader from "../components/SharedUi/Loader";
@@ -49,8 +49,8 @@ export const router = createBrowserRouter([
         element: <Alerts></Alerts>,
       },
       {
-        path: "/reports",
-        element: <Reports></Reports>,
+        path: "/offers",
+        element: <Offers></Offers>,
       },
       {
         path: "/contact-us",
