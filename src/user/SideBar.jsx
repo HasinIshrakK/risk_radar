@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router";
-import logoImg from "../assets/sheld.png";
+import logoImg from "../assets/shield.png";
 import { RiAdminFill } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 

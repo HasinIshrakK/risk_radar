@@ -16,7 +16,7 @@ import {
   Settings2,
   BadgeDollarSign,
 } from "lucide-react";
-import logo from "../../src/assets/sheld.png";
+import logo from "../../src/assets/shield.png";
 
 const DashboardLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/sheld.png";
+import logo from "../../assets/shield.png";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
 import { Link } from "react-router";
 import Container from "../SharedUi/Container";

@@ -13,7 +13,7 @@
 //   LogOut,
 //   ChevronDown,
 // } from "lucide-react";
-// import logo from "../../../assets/sheld.png";
+// import logo from "../../../assets/shield.png";
 // import { Link } from "react-router";
 // import { AuthContext } from "../../../context/authContext/AuthContext";
 
