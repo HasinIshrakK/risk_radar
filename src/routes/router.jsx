@@ -1,8 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import Transactions from "../pages/Transactions/Transactions";
-import Alerts from "../pages/Alerts/Alerts";
+import FAQ from "../pages/FAQ/FAQ";
 import Offers from "../pages/Offers/Offers";
 import Home from "../pages/Home/Home";
 import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
@@ -41,16 +40,12 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "/services", element: <Services /> },
       {
-        path: "/transaction",
-        element: <Transactions></Transactions>,
-      },
-      {
-        path: "/alerts",
-        element: <Alerts></Alerts>,
-      },
-      {
         path: "/offers",
         element: <Offers></Offers>,
+      },
+      {
+        path: "/faq",
+        element: <FAQ></FAQ>,
       },
       {
         path: "/contact-us",
