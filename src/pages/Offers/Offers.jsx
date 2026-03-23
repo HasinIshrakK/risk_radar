@@ -2,7 +2,6 @@ import React from "react";
 import { Ticket, Users, Zap, ArrowRight, Gift } from "lucide-react";
 import Container from "../../components/SharedUi/Container";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
-import AOS from "aos";
 import Swal from "sweetalert2";
 
 const Offers = () => {
@@ -19,10 +18,10 @@ const Offers = () => {
     {
       id: 2,
       title: "Refer a Friend",
-      description: "You and your friend both get a $50 credit toward API usage.",
-      code: "REFER50",
+      description: "Share your unique link. When they join, you both get $50 in API credits.",
+      type: "referral",
       icon: <Users className="text-emerald-500" size={28} />,
-      expiry: "Permanent Offer",
+      stats: "12 Successful Refers",
       gradient: "from-emerald-50 to-teal-50",
     },
     {
@@ -76,17 +75,38 @@ const Offers = () => {
                 {offer.description}
               </p>
 
-              <div className="flex items-center justify-between bg-white/60 p-4 rounded-2xl border border-white/80">
-                <span className="font-mono font-bold text-slate-800 tracking-wider">
-                  {offer.code}
-                </span>
-                <button
-                  onClick={() => copyToClipboard(offer.code)}
-                  className="text-xs font-bold uppercase text-emerald-700 hover:text-emerald-900 flex items-center gap-1 transition-colors"
-                >
-                  Copy <ArrowRight size={14} />
-                </button>
-              </div>
+              {offer.type === "referral" ? (
+                // Referral Variant: No code shown, just a "Generate/Share" action
+                <div className="space-y-4">
+                  <button
+                    onClick={() => {
+                      Swal.fire({
+                        title: "Generating your unique referral link...",
+                        draggable: true
+                      });
+                    }}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2"
+                  >
+                    Generate Invite Link <ArrowRight size={18} />
+                  </button>
+                  <p className="text-[10px] text-center font-bold text-slate-400 uppercase tracking-widest">
+                    {offer.stats}
+                  </p>
+                </div>
+              ) : (
+                // Standard Promo Variant: Shows the code
+                <div className="flex items-center justify-between bg-white/60 p-4 rounded-2xl border border-white/80">
+                  <span className="font-mono font-bold text-slate-800 tracking-wider">
+                    {offer.code}
+                  </span>
+                  <button
+                    onClick={() => copyToClipboard(offer.code)}
+                    className="text-xs font-bold uppercase text-emerald-700 hover:text-emerald-900 flex items-center gap-1 transition-colors"
+                  >
+                    Copy <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
 
               <div className="mt-4 flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-slate-400">
                 <Ticket size={12} />
