@@ -7,7 +7,7 @@ import {
   Home,
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../../hooks/useAxios";
 
 const axiosInstance = useAxios();
 

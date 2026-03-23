@@ -212,7 +212,7 @@ const DashboardLayout = () => {
                   className={`flex items-center p-3 rounded-xl transition-all ${activeClass("/dashboard/transaction-fraud")}`}
                 >
                   <BadgeDollarSign size={20} />{" "}
-                  <span className="ml-3">Transection Fraud</span>
+                  <span className="ml-3">Transaction Fraud</span>
                 </Link>
               </li>
               <li>
