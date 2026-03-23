@@ -23,6 +23,7 @@ import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import MyPlan from "../pages/Dashboard/MyPlan/MyPlan";
 import Settings from "../pages/Dashboard/Settings/Settings";
 import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   // RootLayout
@@ -70,7 +71,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <PrivateRoute> <Dashboard /> </PrivateRoute>,
       },
       {
         path: "/dashboard/notifications",

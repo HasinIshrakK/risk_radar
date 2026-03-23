@@ -1,5 +1,5 @@
 import { House } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useState, useRef } from "react";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ const Login = () => {
   } = useAuth();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState("");
   const emailRef = useRef();
 
@@ -48,7 +49,7 @@ const Login = () => {
       await trackLoginAttempt(email, true);
 
       toast.success("Login successful");
-      navigate("/");
+      navigate(location?.state || "/");
     } catch (err) {
       //  Failed login → track attempt
       const attemptData = await trackLoginAttempt(email, false);
@@ -81,7 +82,7 @@ const Login = () => {
       const email = emailRef.current.value;
       if (email) await trackLoginAttempt(email, true);
 
-      navigate("/");
+      navigate(location?.state || "/");
     } catch (err) {
       setError(err.message);
     }
@@ -95,7 +96,7 @@ const Login = () => {
       const email = emailRef.current.value;
       if (email) await trackLoginAttempt(email, true);
 
-      navigate("/");
+      navigate(location?.state || "/");
     } catch (err) {
       setError(err.message);
     }
