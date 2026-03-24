@@ -12,7 +12,7 @@ import {
   Shield,
   Sparkles,
 } from "lucide-react";
-// import axios from "axios";
+import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext/AuthContext";
 import useAxios from "../../hooks/useAxios";
@@ -140,7 +140,6 @@ const Services = () => {
         name: plan.name,
         email: user.email,
         userId: user.uid,
-        ipAddress: "127.0.0.1",
       };
 
       const axiosInstance = useAxios();
