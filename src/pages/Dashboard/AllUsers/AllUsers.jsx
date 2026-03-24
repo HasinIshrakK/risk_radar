@@ -25,20 +25,6 @@ const AllUsers = () => {
       });
   }, []);
 
-//   useEffect(() => {
-//   setLoading(true);
-//   axiosInstance
-//     .get("/api/users")
-//     .then((res) => {
-//       console.log(res.data); // check the structure
-//       setUsers(Array.isArray(res.data) ? res.data : res.data.users || []);
-//       setLoading(false);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       setLoading(false);
-//     });
-// }, []);
 
   // drop down role change
 

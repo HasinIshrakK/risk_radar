@@ -7,15 +7,13 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const linkClass = ({ isActive }) =>
-    `transition-all duration-300 hover:text-green-600 text-[13px] font-medium uppercase trackingwider ${
-      isActive ? "text-green-600" : "text-slate-600"
+    `transition-all duration-300 hover:text-green-600 text-[13px] font-medium uppercase trackingwider ${isActive ? "text-green-600" : "text-slate-600"
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
-    `flex items-center px-4 py-3 rounded-xl transition-all duration-300 ${
-      isActive
-        ? "bg-green-600 text-white font-semibold shadow-md shadow-green-200"
-        : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
+    `flex items-center px-4 py-3 rounded-xl transition-all duration-300 ${isActive
+      ? "bg-green-600 text-white font-semibold shadow-md shadow-green-200"
+      : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
     }`;
 
   const navLinks = [
@@ -88,9 +86,8 @@ const Navbar = () => {
 
         {/* Mobile Menu - Transitioning from the Nav background */}
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-            isOpen ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
-          }`}
+          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
+            }`}
         >
           <div className="px-6 pb-8 pt-2 flex flex-col gap-1.5">
             <div className="w-full h-px bg-slate-200/50 mb-4" />
@@ -116,6 +113,7 @@ const Navbar = () => {
               </NavLink>
             </div>
           </div>
+
         </div>
       </nav>
     </div>
