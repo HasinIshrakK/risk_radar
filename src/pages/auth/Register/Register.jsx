@@ -1,100 +1,85 @@
 import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useState, useRef } from "react";
-import useAuth from "../../hooks/useAuth";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 
-const Login = () => {
-  const {
-    signinUser,
-    signinGoogle,
-    signinGithub,
-    resetPassword,
-    checkLockStatus,
-    trackLoginAttempt,
-  } = useAuth();
+const Register = () => {
+  const { registerUser, signinGoogle, signinGithub } = useAuth();
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const emailRef = useRef();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
 
-    const email = emailRef.current.value;
-    const password = e.target.password.value;
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
 
-    //  Basic validation
-    if (!email || !password) {
-      toast.error("Please enter email and password.");
-      return;
-    }
+    const newUser = { name, email };
 
     try {
-      //  STEP 1 → Lock check
-      const lockStatus = await checkLockStatus(email);
-
-      if (lockStatus.isLocked) {
-        toast.error(
-          `Account locked. Try again in ${lockStatus.remainingTime} minute(s).`,
-        );
-        return;
-      }
-
-      const result = await signinUser(email, password);
-      console.log(result.user); //
-      //  Reset failed attempts on success
-      await trackLoginAttempt(email, true);
-
-      toast.success("Login successful");
-      navigate("/");
-    } catch (err) {
-      //  Failed login → track attempt
-      const attemptData = await trackLoginAttempt(email, false);
-
-      if (attemptData?.lockUntil) {
-        toast.error("Too many failed attempts. Account locked for 15 minutes.");
-      } else {
-        toast.error("Invalid email or password.");
-      }
-      console.log("Login Error:", err.code || err.message);
-    }
-  };
-  const handleResetPassword = () => {
-    const email = emailRef.current.value;
-    if (!email) return toast.error("Please provide a valid email.");
-
-    resetPassword(email)
-      .then(() => {
-        alert("Password reset email sent! Check your inbox.");
-      })
-      .catch((err) => {
-        setError(err.message);
+      const result = await registerUser(email, password);
+      console.log(result.user);
+      const response = await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(newUser),
       });
+
+      const data = await response.json();
+
+      if (data.insertedId) {
+        alert("User registered and saved to DB successfully!");
+        navigate("/");
+      }
+      // ====================
+      // navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleRegister = async () => {
     try {
-      await signinGoogle();
-      // Reset attempts after social login
-      const email = emailRef.current.value;
-      if (email) await trackLoginAttempt(email, true);
-
+      const result = await signinGoogle();
+      // -------
+      const googleUser = {
+        name: result.user.displayName,
+        email: result.user.email,
+        photo: result.user.photoURL,
+      };
+      // ----------
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(googleUser),
+      });
       navigate("/");
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleGithubLogin = async () => {
+  const handleGithubRegister = async () => {
     try {
-      await signinGithub();
+      const result = await signinGithub();
 
-      // Reset attempts after social login
-      const email = emailRef.current.value;
-      if (email) await trackLoginAttempt(email, true);
+      const githubUser = {
+        name: result.user.displayName,
+        email: result.user.email,
+        photo: result.user.photoURL,
+      };
 
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(githubUser),
+      });
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -102,19 +87,17 @@ const Login = () => {
   };
 
   return (
-    <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900 overflow-hidden">
-      {/* LEFT SIDE: Brand Image and AI Financial Insights Section */}
+    <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
+      {/* LEFT SIDE: Brand Image and AI Features Section */}
       <div className="hidden lg:flex lg:w-[60%] relative overflow-hidden bg-[#022c22]">
-        {/* hello */}
-        {/* Background Image with subtle zoom effect */}
+        {/* High-Quality Abstract Tech Image */}
         <img
-          src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000"
-          alt="AI Finance Grid"
-          className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-overlay transition-transform duration-[10s] hover:scale-110"
+          src="https://images.unsplash.com/photo-1620712943543-bcc4638ef7a6?auto=format&fit=crop&q=80&w=2000"
+          alt="AI Neural Network"
+          className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay"
         />
 
         <div className="relative z-10 flex flex-col justify-between p-16 text-white w-full">
-          {/* Logo: Slide Down effect */}
           {/* Logo */}
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
@@ -145,21 +128,20 @@ const Login = () => {
             </Link>
           </div>
 
-          {/* Main Heading: Slide Right effect */}
-          <div className="animate-in fade-in slide-in-from-left-10 duration-1000 delay-300 fill-mode-both">
+          <div>
             <div className="mb-6 h-1 w-20 bg-[#10b981]"></div>
             <h1 className="text-6xl font-extrabold leading-[1.1] tracking-tight">
               Predictive <br />
               Wealth Analysis.
             </h1>
             <p className="mt-6 text-xl text-emerald-100/60 max-w-md leading-relaxed">
-              Secure and optimize your portfolio with AI-driven insights.
-              Institutional-grade security at your fingertips.
+              Register now to harness AI-driven insights for your financial
+              future. Institutional-grade security tailored for you.
             </p>
           </div>
 
-          {/* Trust Factors: Slide Up effect */}
-          <div className="grid grid-cols-3 gap-8 border-t border-white/10 pt-10 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500 fill-mode-both">
+          {/* Trust Factors */}
+          <div className="grid grid-cols-3 gap-8 border-t border-white/10 pt-10">
             <div>
               <p className="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-1">
                 Security
@@ -185,15 +167,15 @@ const Login = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#022c22] via-transparent to-[#022c22]/50" />
       </div>
 
-      {/* RIGHT SIDE: Login Form Section */}
-      <div className="w-full py-16 lg:w-[40%] flex flex-col justify-center px-8 md:px-16 lg:px-20 bg-white animate-in fade-in slide-in-from-right-10 duration-700">
+      {/* RIGHT SIDE: Registration Form Section */}
+      <div className="w-full py-16 lg:w-[40%] flex flex-col justify-center px8 md:px-16 lg:px-20 bg-white">
         <div className="max-w-md w-full mx-auto">
           <header className="mb-10 text-center lg:text-left">
             <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-              Secure Access
+              Create Account
             </h2>
             <p className="mt-3 text-slate-500 font-medium">
-              Login to access your RiskRadar
+              Join AI.Finance today and start your journey.
             </p>
             <Link
               className="hidden max-lg:flex items-center justify-center mt-3 gap-2 opacity-90 transition-all hover:bg-[#059669] hover:text-white underline text-black backdrop-blur-md py-3 rounded-2xl px-5"
@@ -203,66 +185,63 @@ const Login = () => {
             </Link>
           </header>
 
-          <form className="space-y-6" onSubmit={handleLogin}>
-            {/* Input fields with transition on focus */}
-            <div className="space-y-2 group">
-              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1 group-focus-within:text-emerald-500 transition-colors">
-                Client Identifier
+          <form className="space-y-6" onSubmit={handleRegister}>
+            {/* Input 1: Full Name */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="John Doe"
+                className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all placeholder:text-slate-300"
+              />
+            </div>
+            {/* Input 2: Email */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
+                Email Address
               </label>
               <input
                 type="email"
                 name="email"
-                ref={emailRef}
-                placeholder="Enter Your Email"
-                className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all duration-300 placeholder:text-slate-300"
+                placeholder="john@example.com"
+                className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all placeholder:text-slate-300"
               />
             </div>
-
-            <div className="space-y-2 group">
-              <div className="flex justify-between items-center px-1">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-emerald-500 transition-colors">
-                  Secure Password
-                </label>
-                {/* NEW: Forgot Password */}
-                <button
-                  type="button"
-                  onClick={handleResetPassword}
-                  className="text-xs font-bold text-emerald-600 hover:underline"
-                >
-                  Forgot Password?
-                </button>
-              </div>
+            {/* Input 3: Password */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
+                Secure Password
+              </label>
               <input
                 type="password"
                 name="password"
                 placeholder="••••••••••••"
-                className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all duration-300 placeholder:text-slate-300"
+                className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#10b981]/10 focus:border-[#10b981] outline-none transition-all placeholder:text-slate-300"
               />
             </div>
-
-            {/* Login Button with Hover & Active animation */}
+            {/* Register Button */}
             <button
               type="submit"
               className="w-full bg-[#10b981] hover:bg-[#059669] text-white font-bold py-4 rounded-2xl shadow-xl shadow-emerald-100 transition-all duration-300 hover:scale-[1.02] active:scale-95 mt-2"
             >
-              Login
+              Register Now
             </button>
-
-            {/* 🔁 UPDATED: Error প্রদর্শন */}
+            {/* ERROR SHOW */}
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
             )}
-
             <p className="text-center">
-              Don't have an account?
+              Already have an account?
               <Link
-                to={"/auth/register"}
-                className="ml-1.5 font-medium hover:text-green-600 hover:underline transition-all"
+                to={"/auth/login"}
+                className="ml-1.5 font-medium hover:text-green-600 hover:underline"
               >
-                Sign up
+                Sign In
               </Link>
             </p>
-
             {/* Divider */}
             <div className="relative flex items-center">
               <div className="flex-grow border-t border-slate-100"></div>
@@ -271,11 +250,10 @@ const Login = () => {
               </span>
               <div className="flex-grow border-t border-slate-100"></div>
             </div>
-
-            {/* Google Login with Hover effect */}
+            {/* Google Register Button */}
             <button
               type="button"
-              onClick={handleGoogleLogin}
+              onClick={handleGoogleRegister}
               className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 font-bold py-4 rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -297,22 +275,42 @@ const Login = () => {
                   fill="#EA4335"
                 />
               </svg>
-              Sign in with Google Workspace
+              Register with Google
             </button>
+
             <button
               type="button"
-              onClick={handleGithubLogin}
-              className="w-full flex items-center justify-center gap-3 bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-black transition-all active:scale-95 mt-4"
+              onClick={handleGithubRegister}
+              className="w-full flex items-center justify-center gap-3 bg-[#1e293b] text-white font-bold py-4 rounded-2xl hover:bg-black transition-all active:scale-95 mt-4 shadow-lg shadow-slate-200"
             >
               <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
               </svg>
-              Sign in with GitHub
+              Continue with GitHub
             </button>
           </form>
+
+          {/* Terms and Conditions */}
+          <footer className="mt-8 text-center text-[12px] text-slate-400 leading-relaxed">
+            By registering, you agree to our
+            <a
+              href="#"
+              className="mx-1 font-bold text-slate-600 hover:text-emerald-600 underline decoration-slate-200"
+            >
+              Terms of Service
+            </a>
+            and
+            <a
+              href="#"
+              className="mx-1 font-bold text-slate-600 hover:text-emerald-600 underline decoration-slate-200"
+            >
+              Privacy Policy
+            </a>
+            .
+          </footer>
         </div>
       </div>
     </div>
   );
 };
-export default Login;
+export default Register;

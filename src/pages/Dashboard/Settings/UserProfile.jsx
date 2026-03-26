@@ -3,7 +3,7 @@ import { FaPhoneVolume, FaCheckCircle, FaEdit } from "react-icons/fa";
 import { IoLocation } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { motion } from "framer-motion";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 
 const UserProfile = () => {
   const { user, loading } = useAuth();
