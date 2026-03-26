@@ -149,14 +149,26 @@ const Services = () => {
       // Stripe redirect
       window.location.assign(res.data.url);
     } catch (error) {
-      console.log(error);
+  console.log(error);
 
-      Swal.fire({
-        icon: "error",
-        title: "Payment Failed",
-        text: "Something went wrong!",
-      });
-    }
+  if (error.response?.status === 403) {
+    
+    Swal.fire({
+      icon: "error",
+      title: "Account Blocked ",
+      text: error.response.data.message,
+      confirmButtonColor: "#ef4444",
+    });
+  } else {
+    
+    Swal.fire({
+      icon: "error",
+      title: "Payment Failed",
+      text:
+        error.response?.data?.message || "Something went wrong!",
+    });
+  }
+}
   };
 
   return (
