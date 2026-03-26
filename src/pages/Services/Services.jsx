@@ -108,6 +108,8 @@ const Services = () => {
   ];
 
   const handlePayment = async (plan) => {
+  //    console.log("User before payment:", user);
+  // console.log("Sending userId:", user?._id);
     if (!user) {
       Swal.fire({
         icon: "warning",
@@ -134,7 +136,7 @@ const Services = () => {
         plansId: plan.name.toLowerCase(),
         name: plan.name,
         email: user.email,
-        userId: user.uid,
+        userId: user._id,
       };
 
       const axiosInstance = useAxios();
