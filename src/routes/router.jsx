@@ -63,15 +63,15 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <>
+      <PrivateRoute>
         <ScrollToTop />
         <DashboardLayout />
-      </>
+      </PrivateRoute>
     ),
     children: [
       {
         index: true,
-        element: <PrivateRoute> <Dashboard /> </PrivateRoute>,
+        element: <Dashboard />,
       },
       {
         path: "/dashboard/notifications",
