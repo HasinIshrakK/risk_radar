@@ -9,7 +9,7 @@ const Offers = () => {
     {
       id: 1,
       title: "Early Bird Access",
-      description: "Get 20% off your first year of Premium AI Portfolio management.",
+      description: "Get 20% off your first year of Premium Fraud Detection System.",
       code: "RISKFREE20",
       icon: <Zap className="text-amber-500" size={28} />,
       expiry: "Valid until April 30, 2026",
