@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { user, loading, logOut } = useAuth();
+ 
 
   const linkClass = ({ isActive }) =>
     `transition-all duration-300 hover:text-green-600 text-[13px] font-medium uppercase trackingwider ${isActive ? "text-green-600" : "text-slate-600"
@@ -145,6 +146,7 @@ const Navbar = () => {
               )}
             </div>
           </div>
+
         </div>
       </nav>
     </div>

@@ -12,12 +12,14 @@ import {
   Shield,
   Sparkles,
 } from "lucide-react";
+import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext/AuthContext";
 import useAxios from "../../hooks/useAxios";
 
 const Services = () => {
   const { user } = useContext(AuthContext);
+  console.log(user);
   console.log("AuthContext user:", user);
 
   const services = [
@@ -218,6 +220,8 @@ const Services = () => {
       });
     }
   };
+
+
 
   return (
     <div>

@@ -4,7 +4,6 @@ import Container from "../../../components/SharedUi/Container";
 import useAxios from "../../../hooks/useAxios";
 
 const AllUsers = () => {
-
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +24,7 @@ const AllUsers = () => {
         setLoading(false);
       });
   }, []);
+
 
   // drop down role change
 
