@@ -209,19 +209,7 @@ const Services = () => {
       };
 
       const axiosInstance = useAxios();
-<<<<<<< HEAD
-
-      const res = await axiosInstance.post(
-        "/api/payment/checkout",
-        paymentInfo,
-      );
-
-
-
-      // Stripe redirect
-=======
       const res = await axiosInstance.post("/api/payment/checkout", paymentInfo);
->>>>>>> 49d4a896951cd00ef04d92f596309c45b8c1e659
       window.location.assign(res.data.url);
 
     } catch (error) {
