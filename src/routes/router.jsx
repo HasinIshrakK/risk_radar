@@ -13,7 +13,6 @@ import ServerError from "../Error/ServerError";
 import NotFound from "../Error/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs/ContactUs";
-import UserProfile from "../pages/Dashboard/Settings/UserProfile";
 import Services from "../pages/Services/Services";
 import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
 import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
@@ -63,23 +62,19 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <>
+      <PrivateRoute>
         <ScrollToTop />
         <DashboardLayout />
-      </>
+      </PrivateRoute>
     ),
     children: [
       {
         index: true,
-        element: <PrivateRoute> <Dashboard /> </PrivateRoute>,
+        element: <Dashboard />,
       },
       {
         path: "/dashboard/notifications",
         Component: Notifications,
-      },
-      {
-        path: "/dashboard/profile",
-        Component: UserProfile,
       },
       {
         path: "/dashboard/my-plan",

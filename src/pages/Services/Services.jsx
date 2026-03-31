@@ -110,6 +110,8 @@ const Services = () => {
   ];
 
   const handlePayment = async (plan) => {
+  //    console.log("User before payment:", user);
+  // console.log("Sending userId:", user?._id);
     if (!user) {
       Swal.fire({
         icon: "warning",
@@ -139,7 +141,7 @@ const Services = () => {
         plansId: plan.name.toLowerCase(),
         name: plan.name,
         email: user.email,
-        userId: user.uid,
+        userId: user._id,
       };
 
       const axiosInstance = useAxios();
@@ -154,14 +156,26 @@ const Services = () => {
       // Stripe redirect
       window.location.assign(res.data.url);
     } catch (error) {
-      console.log(error);
+  console.log(error);
 
-      Swal.fire({
-        icon: "error",
-        title: "Payment Failed",
-        text: "Something went wrong!",
-      });
-    }
+  if (error.response?.status === 403) {
+    
+    Swal.fire({
+      icon: "error",
+      title: "Account Blocked ",
+      text: error.response.data.message,
+      confirmButtonColor: "#ef4444",
+    });
+  } else {
+    
+    Swal.fire({
+      icon: "error",
+      title: "Payment Failed",
+      text:
+        error.response?.data?.message || "Something went wrong!",
+    });
+  }
+}
   };
 
 
