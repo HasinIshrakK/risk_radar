@@ -108,67 +108,115 @@ const Services = () => {
   ];
 
   const handlePayment = async (plan) => {
-  //    console.log("User before payment:", user);
-  // console.log("Sending userId:", user?._id);
     if (!user) {
-      Swal.fire({
-        icon: "warning",
-
-        title: "Please Login First",
-      });
-
+      Swal.fire({ icon: "warning", title: "Login Required", text: "Please sign in to continue." });
       return;
     }
-    // Confirmation Modal
-    const result = await Swal.fire({
-      title: "Confirm Payment",
-      text: `You are going to pay $${plan.price} for ${plan.name} plan.`,
-      icon: "question",
+
+    // Initial price
+    let currentPrice = parseFloat(plan.price);
+
+    const { value: finalData } = await Swal.fire({
+      title: `<span class="text-2xl font-black text-slate-800">Checkout</span>`,
+      html: `
+      <div class="text-left mt-4 space-y-4">
+        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Selected Plan</p>
+            <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-slate-800">${plan.name}</span>
+                <span class="text-2xl font-black text-emerald-600">$<span id="display-price">${plan.price}</span></span>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Promo Code</label>
+            <div class="flex gap-2">
+                <input id="promo-input" type="text" placeholder="e.g. RISKFREE20" 
+                       class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none uppercase font-bold text-sm">
+                <button id="check-promo-btn" type="button" 
+                        class="px-4 py-3 bg-slate-900 text-white rounded-xl font-bold text-xs hover:bg-emerald-600 transition-all active:scale-95">
+                    Check
+                </button>
+            </div>
+            <p id="promo-msg" class="text-[11px] font-bold mt-1 ml-1 hidden"></p>
+        </div>
+      </div>
+    `,
       showCancelButton: true,
-      confirmButtonText: "Yes, Pay Now",
+      confirmButtonText: "Complete Payment",
+      confirmButtonColor: "#10b981",
+      customClass: { popup: "rounded-[2.5rem] p-8", confirmButton: "w-full py-4 rounded-xl font-black" },
+
+      // logic to handle the "Check" button click inside the modal
+      didOpen: () => {
+        const checkBtn = document.getElementById('check-promo-btn');
+        const promoInput = document.getElementById('promo-input');
+        const promoMsg = document.getElementById('promo-msg');
+        const displayPrice = document.getElementById('display-price');
+
+        checkBtn.addEventListener('click', () => {
+          const code = promoInput.value.toUpperCase().trim();
+
+          // Reset messages
+          promoMsg.classList.remove('hidden', 'text-emerald-600', 'text-rose-500');
+
+          if (code === "RISKFREE20") {
+            const discount = currentPrice * 0.2;
+            const newPrice = (currentPrice - discount).toFixed(2);
+            displayPrice.innerText = newPrice;
+            promoMsg.innerText = "✓ 20% Discount Applied!";
+            promoMsg.classList.add('text-emerald-600');
+            promoInput.disabled = true; // Lock it in
+            checkBtn.disabled = true;
+            checkBtn.classList.add('opacity-50');
+          }
+          else if (code === "RADAR14") {
+            promoMsg.innerText = "✕ Code 'RADAR14' has expired.";
+            promoMsg.classList.add('text-rose-500');
+          }
+          else if (code === "") {
+            promoMsg.innerText = "Please enter a code.";
+            promoMsg.classList.add('text-slate-400');
+          }
+          else {
+            promoMsg.innerText = "✕ Invalid promo code.";
+            promoMsg.classList.add('text-rose-500');
+          }
+        });
+      },
+      preConfirm: () => {
+        const displayPrice = document.getElementById('display-price').innerText;
+        const promoInput = document.getElementById('promo-input').value;
+        return {
+          finalAmount: displayPrice,
+          appliedCode: promoInput.toUpperCase()
+        };
+      }
     });
 
-    if (!result.isConfirmed) return;
+    if (!finalData) return;
 
     try {
       const paymentInfo = {
-        amount: plan.price,
+        amount: finalData.finalAmount,
         plansId: plan.name.toLowerCase(),
         name: plan.name,
         email: user.email,
         userId: user._id,
+        promoCode: finalData.appliedCode
       };
 
       const axiosInstance = useAxios();
-
-      const res = await axiosInstance.post(
-        "/api/payment/checkout",
-        paymentInfo,
-      );
-
-      // Stripe redirect
+      const res = await axiosInstance.post("/api/payment/checkout", paymentInfo);
       window.location.assign(res.data.url);
-    } catch (error) {
-  console.log(error);
 
-  if (error.response?.status === 403) {
-    
-    Swal.fire({
-      icon: "error",
-      title: "Account Blocked ",
-      text: error.response.data.message,
-      confirmButtonColor: "#ef4444",
-    });
-  } else {
-    
-    Swal.fire({
-      icon: "error",
-      title: "Payment Failed",
-      text:
-        error.response?.data?.message || "Something went wrong!",
-    });
-  }
-}
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Payment Error",
+        text: error.response?.data?.message || "Something went wrong during checkout.",
+      });
+    }
   };
 
   return (
