@@ -48,7 +48,6 @@ const DashboardLayout = () => {
       <div className="drawer-content flex flex-col h-screen overflow-hidden">
         {/* Topbar */}
         <DashboardNav></DashboardNav>
-
         {/* Content View */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
@@ -65,7 +64,6 @@ const DashboardLayout = () => {
           className="drawer-overlay"
           onClick={() => setIsDrawerOpen(false)}
         ></label>
-
         <aside className="flex min-h-full flex-col w-72 bg-white border-r border-emerald-100">
           {/* Sidebar Header */}
           <div className="px-6 py-5 flex items-center justify-between border-b border-slate-50 shrink-0">

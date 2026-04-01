@@ -2,12 +2,15 @@ import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
+import useAxios from "../../../hooks/useAxios";
 
 const Register = () => {
-  const { registerUser, signinGoogle, signinGithub,user,loading } = useAuth();
+  const { registerUser, signinGoogle, signinGithub, user, loading } = useAuth();
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     if (user && !loading) {
@@ -15,36 +18,100 @@ const Register = () => {
     }
   }, [user, loading, navigate]);
 
+  // const handleRegister = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   const form = e.target;
+  //   const name = form.name.value;
+  //   const email = form.email.value;
+  //   const password = form.password.value;
+
+  //   const newUser = { name, email };
+
+  //   try {
+  //     const result = await registerUser(email, password);
+  //     console.log(result.user);
+  //     const response = await fetch("http://localhost:5000/users", {
+  //       method: "POST",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       body: JSON.stringify(newUser),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (data.insertedId) {
+  //       alert("User registered and saved to DB successfully!");
+  //       navigate("/");
+  //     }
+  //     // ====================
+  //     // navigate("/");
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
+
+  // const handleGoogleRegister = async () => {
+  //   try {
+  //     const result = await signinGoogle();
+  //     // -------
+  //     const googleUser = {
+  //       name: result.user.displayName,
+  //       email: result.user.email,
+  //       photo: result.user.photoURL,
+  //     };
+  //     // ----------
+  //     await fetch("http://localhost:5000/users", {
+  //       method: "POST",
+  //       headers: { "content-type": "application/json" },
+  //       body: JSON.stringify(googleUser),
+  //     });
+  //     navigate("/");
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
+
+  // const handleGithubRegister = async () => {
+  //   try {
+  //     const result = await signinGithub();
+
+  //     const githubUser = {
+  //       name: result.user.displayName,
+  //       email: result.user.email,
+  //       photo: result.user.photoURL,
+  //     };
+
+  //     await fetch("http://localhost:5000/users", {
+  //       method: "POST",
+  //       headers: { "content-type": "application/json" },
+  //       body: JSON.stringify(githubUser),
+  //     });
+  //     navigate("/");
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
-
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-
     const newUser = { name, email };
 
     try {
       const result = await registerUser(email, password);
       console.log(result.user);
-      const response = await fetch("http://localhost:5000/users", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-
-      const data = await response.json();
-
+      const { data } = await axiosInstance.post("/api/users", newUser);
       if (data.insertedId) {
         alert("User registered and saved to DB successfully!");
         navigate("/");
       }
-      // ====================
-      // navigate("/");
     } catch (err) {
       setError(err.message);
     }
@@ -53,19 +120,17 @@ const Register = () => {
   const handleGoogleRegister = async () => {
     try {
       const result = await signinGoogle();
-      // -------
       const googleUser = {
         name: result.user.displayName,
         email: result.user.email,
         photo: result.user.photoURL,
       };
-      // ----------
-      await fetch("http://localhost:5000/users", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(googleUser),
-      });
+
+      const { data } = await axiosInstance.post("/api/users", googleUser);
+      console.log(data);
+
       navigate("/");
+      // if (data.insertedId) {}
     } catch (err) {
       setError(err.message);
     }
@@ -74,24 +139,20 @@ const Register = () => {
   const handleGithubRegister = async () => {
     try {
       const result = await signinGithub();
-
       const githubUser = {
         name: result.user.displayName,
         email: result.user.email,
         photo: result.user.photoURL,
       };
 
-      await fetch("http://localhost:5000/users", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(githubUser),
-      });
-      navigate("/");
+      const { data } = await axiosInstance.post("/api/users", githubUser);
+      if (data.insertedId) {
+        navigate("/");
+      }
     } catch (err) {
       setError(err.message);
     }
   };
-
   return (
     <div className="flex poppins-regular min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       {/* LEFT SIDE: Brand Image and AI Features Section */}

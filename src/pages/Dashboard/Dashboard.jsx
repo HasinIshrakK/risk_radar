@@ -6,7 +6,6 @@ import TopTriggeredRules from "../../components/SharedUi/TopTriggeredRules";
 import TransactionVolumeBarChart from "../../components/SharedUi/TransactionVolumeBarChart";
 import StatCard from "../../components/StatCard/StatCard";
 
-
 export default function Dashboard() {
   return (
     <div className="my-5 md:my-10">
@@ -39,7 +38,6 @@ export default function Dashboard() {
         <RecentTransactionsTable></RecentTransactionsTable>
         <SystemHealthSection></SystemHealthSection>
         <TopTriggeredRules></TopTriggeredRules>
-        
       </Container>
     </div>
   );

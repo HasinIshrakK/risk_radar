@@ -23,6 +23,7 @@ import MyPlan from "../pages/Dashboard/MyPlan/MyPlan";
 import Settings from "../pages/Dashboard/Settings/Settings";
 import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 import PrivateRoute from "./PrivateRoute";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 export const router = createBrowserRouter([
   // RootLayout
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
         <RootLayout />
       </>
     ),
-    hydrateFallbackElement: <Loader />,
+    hydrateFallbackElement: <LoadingSpinner />,
     errorElement: <ServerError></ServerError>,
     children: [
       { index: true, element: <Home /> },

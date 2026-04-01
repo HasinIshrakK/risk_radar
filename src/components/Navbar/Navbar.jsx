@@ -8,16 +8,17 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { user, loading, logOut } = useAuth();
- 
 
   const linkClass = ({ isActive }) =>
-    `transition-all duration-300 hover:text-green-600 text-[13px] font-medium uppercase trackingwider ${isActive ? "text-green-600" : "text-slate-600"
+    `transition-all duration-300 hover:text-green-600 text-[13px] font-medium uppercase trackingwider ${
+      isActive ? "text-green-600" : "text-slate-600"
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
-    `flex items-center px-4 py-3 rounded-xl transition-all duration-300 ${isActive
-      ? "bg-green-600 text-white font-semibold shadow-md shadow-green-200"
-      : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
+    `flex items-center px-4 py-3 rounded-xl transition-all duration-300 ${
+      isActive
+        ? "bg-green-600 text-white font-semibold shadow-md shadow-green-200"
+        : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
     }`;
 
   const navLinks = [
@@ -69,41 +70,53 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-4">
             {loading ? (
               <div className="w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-            ) :
-              !user ? (
-                <>
-                  <NavLink to="/auth/login" className="text-slate-600 uppercase hover:text-green-600 text-sm font-medium">
-                    Login
-                  </NavLink>
-                  <NavLink to="/auth/register" className="bg-green-600 text-white px-5 py-2 rounded-full text-xs font-bold uppercase shadow-lg shadow-green-100 hover:bg-green-700 transition-all">
-                    Get Started
-                  </NavLink>
-                </>
-              ) : (
-                <div className="flex items-center gap-4">
-                  {/* Dynamic Avatar & Role */}
-                  <div className="flex items-center gap-2 bg-slate-100/50 pl-1.5 pr-3 py-1 rounded-full border border-slate-200/50">
-                    <div className="w-8 h-8 rounded-full bg-green-600 overflow-hidden flex items-center justify-center text-white text-[14px] font-bold shadow-sm shadow-green-300">
-                      {user?.photoURL ? (
-                        <img src={user.photoURL} alt="U" className="w-full h-full object-cover" />
-                      ) : (
-                        user?.displayName?.charAt(0) || "U"
-                      )}
-                    </div>
-                    <span className="text-xs uppercase font-bold text-slate-800 tracking-tight">
-                      {user?.displayName ? user.displayName.split(' ')[0] : 'User'}
-                    </span>
+            ) : !user ? (
+              <>
+                <NavLink
+                  to="/auth/login"
+                  className="text-slate-600 uppercase hover:text-green-600 text-sm font-medium"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/auth/register"
+                  className="bg-green-600 text-white px-5 py-2 rounded-full text-xs font-bold uppercase shadow-lg shadow-green-100 hover:bg-green-700 transition-all"
+                >
+                  Get Started
+                </NavLink>
+              </>
+            ) : (
+              <div className="flex items-center gap-4">
+                {/* Dynamic Avatar & Role */}
+                <div className="flex items-center gap-2 bg-slate-100/50 pl-1.5 pr-3 py-1 rounded-full border border-slate-200/50">
+                  <div className="w-8 h-8 rounded-full bg-green-600 overflow-hidden flex items-center justify-center text-white text-[14px] font-bold shadow-sm shadow-green-300">
+                    {user?.photoURL ? (
+                      <img
+                        referrerPolicy="no-referrer"
+                        src={user?.photoURL}
+                        alt="U"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      user?.displayName?.charAt(0) || "U"
+                    )}
                   </div>
-
-                  <button
-                    onClick={handleLogout}
-                    className="text-slate-500 hover:text-red-500 transition-colors p-2"
-                    title="Logout"
-                  >
-                    <FaSignOutAlt size={18} />
-                  </button>
+                  <span className="text-xs uppercase font-bold text-slate-800 tracking-tight">
+                    {user?.displayName
+                      ? user.displayName.split(" ")[0]
+                      : "User"}
+                  </span>
                 </div>
-              )}
+
+                <button
+                  onClick={handleLogout}
+                  className="text-slate-500 hover:text-red-500 transition-colors p-2"
+                  title="Logout"
+                >
+                  <FaSignOutAlt size={18} />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Hamburger */}
@@ -117,8 +130,9 @@ const Navbar = () => {
 
         {/* Mobile Menu - Transitioning from the Nav background */}
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
-            }`}
+          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+            isOpen ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
+          }`}
         >
           <div className="px-6 pb-8 pt-2 flex flex-col gap-1.5">
             <div className="w-full h-px bg-slate-200/50 mb-4" />
@@ -136,17 +150,23 @@ const Navbar = () => {
 
             <div className="mt-4 pt-4 border-t border-slate-100">
               {user ? (
-                <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 py-4 bg-red-50 text-red-600 rounded-2xl font-bold">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 py-4 bg-red-50 text-red-600 rounded-2xl font-bold"
+                >
                   <FaSignOutAlt /> Logout
                 </button>
               ) : (
-                <NavLink to="/auth/login" onClick={() => setIsOpen(false)} className="w-full block text-center py-4 bg-slate-900 text-white rounded-2xl font-bold transition-transform active:scale-95">
+                <NavLink
+                  to="/auth/login"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full block text-center py-4 bg-slate-900 text-white rounded-2xl font-bold transition-transform active:scale-95"
+                >
                   Login / Register
                 </NavLink>
               )}
             </div>
           </div>
-
         </div>
       </nav>
     </div>

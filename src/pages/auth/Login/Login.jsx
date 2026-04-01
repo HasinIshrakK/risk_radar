@@ -64,34 +64,33 @@ const Login = () => {
   };
 
   const handleResetPassword = async () => {
- 
-  const email = emailRef.current?.value;
+    const email = emailRef.current?.value;
 
-  
-  if (!email) {
-    return toast.error("To reset your password, please enter your email first.");
-  }
-
-  try {
-   
-    await resetPassword(email);
-    
-    
-    toast.success("Password reset link has been sent to your email. Check your inbox!");
-    
-  } catch (err) {
-   
-    console.error("Reset Error:", err.code);
-    
-    if (err.code === "auth/user-not-found") {
-      toast.error("No account has been opened with this email.");
-    } else if (err.code === "auth/invalid-email") {
-      toast.error("Please provide a valid email address.");
-    } else {
-      toast.error("There is a problem resetting your password. Please try again later.");
+    if (!email) {
+      return toast.error(
+        "To reset your password, please enter your email first.",
+      );
     }
-  }
-};
+
+    try {
+      await resetPassword(email);
+      toast.success(
+        "Password reset link has been sent to your email. Check your inbox!",
+      );
+    } catch (err) {
+      console.error("Reset Error:", err.code);
+
+      if (err.code === "auth/user-not-found") {
+        toast.error("No account has been opened with this email.");
+      } else if (err.code === "auth/invalid-email") {
+        toast.error("Please provide a valid email address.");
+      } else {
+        toast.error(
+          "There is a problem resetting your password. Please try again later.",
+        );
+      }
+    }
+  };
 
   const handleGoogleLogin = async () => {
     try {
@@ -242,14 +241,14 @@ const Login = () => {
                 <label className="text-xs font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-emerald-500 transition-colors">
                   Secure Password
                 </label>
-               
+
                 <button
-  type="button"
-  onClick={handleResetPassword} 
-  className="text-xs font-bold text-emerald-600 hover:underline"
->
-  Forgot Password?
-</button>
+                  type="button"
+                  onClick={handleResetPassword}
+                  className="text-xs font-bold text-emerald-600 hover:underline"
+                >
+                  Forgot Password?
+                </button>
               </div>
               <input
                 type="password"

@@ -5,7 +5,7 @@ import ClientReview from "../../components/ClientReview/ClientReview";
 import SecurityTechSection from "../../components/SecurityTechSection/SecurityTechSection";
 import SecurityCta from "../../components/SecurityCta/SecurityCta";
 import HeroBanner from "../../components/HeroBanner/HeroBanner";
-import HowItWorks from './HowItWorks';
+import HowItWorks from "./HowItWorks";
 import ProblemSection from "../../components/ProblemSection/ProblemSection";
 
 const Home = () => {
