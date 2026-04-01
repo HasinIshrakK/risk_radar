@@ -11,6 +11,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import useAxios from "../../../hooks/useAxios";
 
+
 //  Dynamic configuration for fraud detection
 const fraudConfig = {
   highAmount: 10000,
@@ -63,7 +64,7 @@ function detectFraud(tx, config = fraudConfig) {
   return tx;
 }
 
-const axiosInstance = useAxios();
+
 
 const TransactionFraudDashboard = () => {
   const [transactions, setTransactions] = useState([]);
@@ -71,18 +72,19 @@ const TransactionFraudDashboard = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [filter, setFilter] = useState("all");
-  const [searchTerm, setSearchTerm] = useState(""); // <-- Search state
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  useEffect(() => {
-    axiosInstance
-      .get("/api/users-transaction")
-      .then((res) => {
-        setTransactions(res.data);
-        setLoading(false);
-      });
-  }, []);
+  const axiosInstance = useAxios();
+
+ useEffect(() => {
+  axiosInstance.get("/api/users-transaction").then((res) => {
+    console.log(res.data); // debug
+    setTransactions(res.data?.data || res.data || []);
+    setLoading(false);
+  });
+}, []);
 
   useEffect(() => {
     setPage(1);
@@ -96,7 +98,11 @@ const TransactionFraudDashboard = () => {
     );
   // Apply fraud detection dynamically
   // const updatedTransactions = transactions.map((tx) => detectFraud(tx));
-  const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
+  // const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
+
+  const updatedTransactions = Array.isArray(transactions)
+  ? transactions.map((tx) => detectFraud({ ...tx }))
+  : [];
 
   // Filter + Search
   let filteredUsers = updatedTransactions
@@ -166,7 +172,11 @@ const TransactionFraudDashboard = () => {
       {/* Filter Buttons */}
       <div className="flex md:flex-row flex-col justify-between gap-3 mb-6">
         <button
-          className="btn btn-outline text-gray-500 hover:bg-gray-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "all"
+              ? "bg-gray-500 text-white"
+              : "text-gray-500 hover:bg-gray-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("all");
             // setPage(1);
@@ -175,7 +185,11 @@ const TransactionFraudDashboard = () => {
           Show All Users
         </button>
         <button
-          className="btn btn-outline text-green-500 hover:bg-green-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "normal"
+              ? "bg-green-500 text-white"
+              : "text-green-500 hover:bg-green-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("normal");
             // setPage(1);
@@ -184,7 +198,11 @@ const TransactionFraudDashboard = () => {
           Show Normal Users
         </button>
         <button
-          className="btn btn-outline text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "fraud"
+              ? "bg-yellow-500 text-white"
+              : "text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("fraud");
             // setPage(1);
@@ -193,7 +211,9 @@ const TransactionFraudDashboard = () => {
           Show Fraud Users
         </button>
         <button
-          className="btn btn-outline btn-error hover:text-white"
+          className={`btn btn-outline ${
+            filter === "blocked" ? "bg-red-500 text-white" : "text-red-500 hover:bg-red-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("blocked");
             // setPage(1);
