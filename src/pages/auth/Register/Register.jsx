@@ -1,13 +1,19 @@
 import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 
 const Register = () => {
-  const { registerUser, signinGoogle, signinGithub } = useAuth();
+  const { registerUser, signinGoogle, signinGithub,user,loading } = useAuth();
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (user && !loading) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
