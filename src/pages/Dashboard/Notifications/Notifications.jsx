@@ -1,43 +1,66 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Container from "../../../components/SharedUi/Container";
-
-const notificationsData = [
-  {
-    id: 1,
-    type: "fraud",
-    title: "Suspicious Transaction",
-    description: "User: Rahim | Amount: $5000",
-    time: "10:30 AM",
-    read: false,
-  },
-  {
-    id: 2,
-    type: "transaction",
-    title: "Payment Received",
-    description: "User: Karim | Amount: $200",
-    time: "09:15 AM",
-    read: true,
-  },
-  {
-    id: 3,
-    type: "user",
-    title: "New User Registered",
-    description: "User: Hasan joined",
-    time: "Yesterday",
-    read: false,
-  },
-];
+import { AuthContext } from "../../../context/authContext/AuthContext";
+import useAxios from "../../../hooks/useAxios";
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState(notificationsData);
-  const [filter, setFilter] = useState("all");
+  const { user } = useContext(AuthContext);
+  const axiosInstance = useAxios();
 
-  const markAsRead = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
-    );
+  const [notifications, setNotifications] = useState([]);
+  const [filter, setFilter] = useState("all");
+  const [selectedNotification, setSelectedNotification] = useState(null);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    axiosInstance
+      .get(`/api/notifications/${user.uid}`)
+      .then((res) => {
+        console.log("Fetched Notifications:", res.data);
+
+        const formatted = res.data.map((item) => ({
+          _id: item._id,
+          type:
+            item.status === "BLOCKED"
+              ? "fraud"
+              : item.alert
+              ? "warning"
+              : "transaction",
+
+          title:
+            item.status === "BLOCKED"
+              ? "Blocked Transaction"
+              : item.alert
+              ? "Suspicious Activity"
+              : "Transaction Update",
+
+          description: `Amount: $${item.amount}`,
+          time: new Date(item.createdAt).toLocaleString(),
+          read: item.read ?? false,
+
+          // 🔥 extra fields
+          reason: item.reason,
+          status: item.status,
+        }));
+
+        setNotifications(formatted);
+      })
+      .catch((err) => console.log("Notification fetch error:", err));
+  }, [user, axiosInstance]);
+
+  const markAsRead = async (id) => {
+    try {
+      await axiosInstance.patch(`/api/notifications/read/${id}`);
+
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === id ? { ...n, read: true } : n))
+      );
+    } catch (err) {
+      console.log("Mark as read error:", err);
+    }
   };
 
   const filteredNotifications = notifications.filter((n) => {
@@ -51,121 +74,111 @@ const Notifications = () => {
   return (
     <div className="my-5 md:my-10">
       <Container>
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row justify-between items-end mb-10 gap-4 border-b border-emerald-50 pb-8"
-        >
+
+        {/* Header */}
+        <div className="flex justify-between items-end mb-10 border-b pb-6">
           <div>
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-              Notifications
-            </h2>
-            <p className="text-emerald-600 font-medium mt-1">
-              You have{" "}
-              <span className="bg-green-100 px-2 py-0.5 rounded text-emerald-800">
-                {unreadCount}
-              </span>{" "}
-              unread alerts
-            </p>
+            <h2 className="text-3xl font-bold">Notifications</h2>
+            <p>You have {unreadCount} unread alerts</p>
           </div>
 
-          <div className="relative">
-            <select
-              className="appearance-none bg-green-50 border-none px-6 py-3 rounded-2xl focus:ring-2 focus:ring-green-500 font-bold text-green-700 cursor-pointer pr-10"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="px-4 py-2 rounded border"
+          >
+            <option value="all">All</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+          </select>
+        </div>
+
+        {/* List */}
+        <div className="space-y-4">
+          {filteredNotifications.map((n) => (
+            <div
+              key={n._id}
+              className={`p-5 rounded-xl border ${
+                n.type === "fraud"
+                  ? "bg-red-50"
+                  : n.type === "warning"
+                  ? "bg-yellow-50"
+                  : "bg-white"
+              }`}
             >
-              <option value="all">View All</option>
-              <option value="unread">Unread Only</option>
-              <option value="read">Archived</option>
-            </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-green-600">
-              ▼
+              <h3 className="font-semibold">{n.title}</h3>
+              <p className="text-sm">{n.description}</p>
+              <p className="text-xs text-gray-400">{n.time}</p>
+
+              <div className="flex gap-3 mt-3">
+                {!n.read && (
+                  <button
+                    onClick={() => markAsRead(n._id)}
+                    className="px-3 py-1 bg-green-600 text-white rounded"
+                  >
+                    Mark Read
+                  </button>
+                )}
+
+                {/* 🔥 View Details */}
+                <button
+                  onClick={() => setSelectedNotification(n)}
+                  className="px-3 py-1 bg-blue-600 text-white rounded"
+                >
+                  View Details
+                </button>
+              </div>
             </div>
-          </div>
-        </motion.div>
-
-        {/* Notification List */}
-        <motion.div layout className="space-y-4">
-          <AnimatePresence mode="popLayout">
-            {filteredNotifications.map((n) => (
-              <motion.div
-                key={n.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, x: -20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className={`group relative bg-white border rounded-3xl p-6 transition-all hover:shadow-xl hover:shadow-green-900/5 ${
-                  !n.read
-                    ? "border-green-200 bg-green-50/30"
-                    : "border-slate-100"
-                }`}
-              >
-                <div className="flex flex-col md:flex-row justify-between md:items-center gap-6">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-bold text-slate-800">
-                        {n.title}
-                      </h3>
-                      {!n.read && (
-                        <motion.span
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="text-[10px] bg-green-600 text-white font-black px-2 py-1 rounded-md tracking-tighter"
-                        >
-                          NEW
-                        </motion.span>
-                      )}
-                    </div>
-                    <p className="text-slate-500 mt-1 font-medium">
-                      {n.description}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-3 font-bold uppercase tracking-widest">
-                      {n.time}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-6 py-2.5 text-sm font-bold rounded-xl bg-green-600 text-white shadow-lg shadow-green-600/20 cursor-pointer"
-                    >
-                      View Details
-                    </motion.button>
-
-                    {!n.read && (
-                      <motion.button
-                        whileHover={{
-                          backgroundColor: "rgba(16, 185, 129, 0.1)",
-                        }}
-                        onClick={() => markAsRead(n.id)}
-                        className="px-4 py-2.5 text-sm font-bold rounded-xl border-2 border-green-100 text-green-600 cursor-pointer transition-colors"
-                      >
-                        Mark Read
-                      </motion.button>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          ))}
 
           {filteredNotifications.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20 bg-slate-50 rounded-4xl border-2 border-dashed border-slate-200"
-            >
-              <p className="text-slate-400 font-bold">
-                Inbox Zero. No notifications found.
-              </p>
-            </motion.div>
+            <p className="text-center text-gray-400 py-10">
+              No notifications
+            </p>
           )}
-        </motion.div>
+        </div>
       </Container>
+
+      {/* 🔥 MODAL */}
+      {selectedNotification && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl w-[90%] max-w-md">
+
+            <h2 className="text-xl font-bold mb-4">
+              Transaction Details
+            </h2>
+
+            <p>
+              <strong>Status:</strong>{" "}
+              <span
+                className={`${
+                  selectedNotification.status === "HIGH_RISK"
+                    ? "text-red-500"
+                    : "text-green-600"
+                }`}
+              >
+                {selectedNotification.status}
+              </span>
+            </p>
+
+            <p className="mt-2">
+              <strong>Reason:</strong>{" "}
+              {selectedNotification.reason || "N/A"}
+            </p>
+
+            <p className="mt-2">
+              <strong>{selectedNotification.description}</strong>
+            </p>
+
+            <button
+              onClick={() => setSelectedNotification(null)}
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
