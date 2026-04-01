@@ -69,43 +69,46 @@ const Services = () => {
 
   const plans = [
     {
-      name: "Starter",
+      name: "Monthly",
       price: "49",
-      description: "Perfect for small startups and local payment gateways.",
+      duration: "month",
+      description: "Flexible protection for short-term projects.",
       features: [
-        "Up to 1,000 txns/mo",
-        "Real-time Risk Engine",
-        "Basic Dashboard",
-        "Email Support",
+        "Full Risk Engine Access",
+        "Real-time Monitoring",
+        "Standard Support",
+        "Cancel Anytime",
       ],
       isPopular: false,
+      savings: null,
     },
     {
-      name: "Pro",
-      price: "199",
-      description:
-        "Best for scaling fintech apps with high transaction volume.",
+      name: "Quarterly",
+      price: "129", // ~$43/mo
+      duration: "3 months",
+      description: "The perfect balance of commitment and value.",
       features: [
-        "Up to 50,000 txns/mo",
-        "Impossible Travel Logic",
-        "Redis Analytics",
-        "24/7 Support",
-        "API Integration",
+        "Priority Detection Speed",
+        "Redis Analytics Included",
+        "24/7 Email Support",
+        "Quarterly Risk Reports",
       ],
       isPopular: true,
+      savings: "Save 12%", // Incentive for 3 months
     },
     {
-      name: "Enterprise",
-      price: "299",
-      description: "Dedicated infrastructure for banks and large institutions.",
+      name: "Bi-Annually",
+      price: "229", // ~$38/mo
+      duration: "6 months",
+      description: "Deep security for established fintech operations.",
       features: [
-        "Unlimited Transactions",
-        "Custom Algorithms",
-        "Account Manager",
-        "On-premise Deployment",
-        "SLA Guarantee",
+        "Advanced API Access",
+        "Personal Account Manager",
+        "Dedicated Slack Channel",
+        "Custom Ruleset Tuning",
       ],
       isPopular: false,
+      savings: "Save 22%", // Incentive for 6 months
     },
   ];
 
@@ -296,7 +299,7 @@ const Services = () => {
               <span className="text-green-600">Pricing</span>
             </h2>
             <p className="text-slate-600 md:text-lg max-w-2xl font-medium">
-              Choose the plan that fits your transaction volume.
+              Choose the plan that fits the best.
             </p>
           </div>
 
@@ -333,15 +336,20 @@ const Services = () => {
                     {plan.name}
                   </h3>
 
+                  {plan.savings && (
+                    <span className="absolute top-4 left-26 bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider">
+                      {plan.savings}
+                    </span>
+                  )}
+
+                  {/* Update the price display to show the duration */}
                   <div className="flex items-baseline mb-4">
                     <span className="text-5xl font-extrabold text-slate-900 tracking-tight">
-                      {plan.price !== "Custom" ? `$${plan.price}` : plan.price}
+                      ${plan.price}
                     </span>
-                    {plan.price !== "Custom" && (
-                      <span className="text-slate-400 font-semibold ml-2 text-lg">
-                        /mo
-                      </span>
-                    )}
+                    <span className="text-slate-400 font-semibold ml-2 text-lg">
+                      /{plan.duration}
+                    </span>
                   </div>
 
                   <p className="text-slate-500 text-sm leading-relaxed mb-8 h-10">
