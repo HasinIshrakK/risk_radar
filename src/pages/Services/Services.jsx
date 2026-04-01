@@ -136,7 +136,7 @@ const Services = () => {
         plansId: plan.name.toLowerCase(),
         name: plan.name,
         email: user.email,
-        userId: user._id,
+        userId: user.uid,
       };
 
       const axiosInstance = useAxios();
