@@ -20,18 +20,21 @@ const MyPlan = () => {
 
   const { user } = useAuth(); // Or useContext(AuthContext)
   const [payment, setPayment] = useState(null);
+  const [payments, setPayments] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(true);
+  const [showAll, setShowAll] = useState(false);
   const axiosInstance = useAxios();
 
   useEffect(() => {
     if (user?.email) {
       setLoading(true);
-      // Fetching specifically by email
       axiosInstance
-        .get(`/api/payment?email=${user.email}`)
+        .get(`/api/payment?email=${user.email}&limit=1`)
         .then((res) => {
-          // Assuming res.data is the latest payment object
-          setPayment(res.data);
+          setPayment(res.data[0]);
+          console.log(res.data)
+
           setLoading(false);
         })
         .catch((error) => {
@@ -41,7 +44,24 @@ const MyPlan = () => {
     }
   }, [user?.email, axiosInstance]);
 
-  if (loading) return <div className="p-20 text-center font-bold text-emerald-600">Loading your plan...</div>;
+  useEffect(() => {
+    if (user?.email) {
+      setLoading2(true);
+      axiosInstance
+        .get(`/api/payment?email=${user.email}`)
+        .then((res) => {
+          setPayments(res.data);
+          console.log(res.data)
+          setLoading2(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching plan:", error);
+          setLoading2(false);
+        });
+    }
+  }, [user?.email, axiosInstance]);
+
+  if (loading || loading2) return <div className="p-20 text-center font-bold text-emerald-600">Loading your plan...</div>;
 
   if (!payment) return <div className="p-20 text-center font-bold text-slate-500">No active plan found.</div>;
 
@@ -73,6 +93,9 @@ const MyPlan = () => {
   };
 
   const timeline = getTimelineData();
+
+  // Determine which items to display
+  const displayedPayments = showAll ? payments : payments.slice(0, 5);
 
   const subscription = {
     currentPlan: {
@@ -145,13 +168,10 @@ const MyPlan = () => {
                 </div>
                 <div className="bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
                   <p className="text-slate-400 text-[10px] uppercase font-bold tracking-tighter">
-                    Current Cost
+                    Current Plan's Cost
                   </p>
                   <p className="text-xl font-black text-slate-900">
                     ${payment.price}
-                    <span className="text-sm text-slate-400 font-medium">
-                      /mo
-                    </span>
                   </p>
                 </div>
               </div>
@@ -227,7 +247,7 @@ const MyPlan = () => {
                   <thead className="bg-slate-50">
                     <tr>
                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        Invoice ID
+                        Plan Name
                       </th>
                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                         Date
@@ -238,25 +258,36 @@ const MyPlan = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
-                    {subscription.paymentHistory.map((history) => (
+                    {displayedPayments.map((pay) => (
                       <tr
-                        key={history.id}
+                        key={pay._id}
                         className="hover:bg-slate-50/50 transition-colors"
                       >
                         <td className="px-6 py-4 text-sm font-bold text-slate-700">
-                          {history.id}
+                          {pay.planName}
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-500">
-                          {history.date}
+                          {new Date(pay.createdAt).toISOString().split("T")[0]}
                         </td>
                         <td className="px-6 py-4 text-sm font-bold text-slate-900">
-                          ${history.amount}
+                          ${pay.price}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              {/* Show More / Show Less Button */}
+              {payments.length > 5 && (
+                <div className="p-4 bg-slate-50/50 border-t border-slate-100 text-center">
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="text-xs font-black text-emerald-600 hover:text-emerald-700 uppercase tracking-widest transition-all active:scale-95"
+                  >
+                    {showAll ? "↑ Show Less" : `↓ Show All History (${payments.length})`}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -274,7 +305,7 @@ const MyPlan = () => {
                       Renewal Date
                     </p>
                     <p className="text-lg font-bold">
-                      {new Date(payment.createdAt).toLocaleDateString()}
+                      {new Date(payment.createdAt).toISOString().split("T")[0]}
                     </p>
                   </div>
                   <div className="text-right">
