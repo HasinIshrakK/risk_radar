@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ShieldCheck,
   CalendarDays,
@@ -12,9 +12,69 @@ import {
   History,
 } from "lucide-react";
 import Container from "../../../components/SharedUi/Container";
+import useAxios from "../../../hooks/useAxios";
+import useAuth from "../../../hooks/useAuth"
+import { Link } from "react-router";
 
 const MyPlan = () => {
-  const [subscription, setSubscription] = useState({
+
+  const { user } = useAuth(); // Or useContext(AuthContext)
+  const [payment, setPayment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const axiosInstance = useAxios();
+
+  useEffect(() => {
+    if (user?.email) {
+      setLoading(true);
+      // Fetching specifically by email
+      axiosInstance
+        .get(`/api/payment?email=${user.email}`)
+        .then((res) => {
+          // Assuming res.data is the latest payment object
+          setPayment(res.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching plan:", error);
+          setLoading(false);
+        });
+    }
+  }, [user?.email, axiosInstance]);
+
+  if (loading) return <div className="p-20 text-center font-bold text-emerald-600">Loading your plan...</div>;
+
+  if (!payment) return <div className="p-20 text-center font-bold text-slate-500">No active plan found.</div>;
+
+  const getTimelineData = () => {
+    if (!payment?.createdAt) return { percentage: 0, daysLeft: 0 };
+
+    const start = new Date(payment.createdAt);
+    const now = new Date();
+
+    // 1. Determine total duration in days based on plan name
+    const planDurations = {
+      monthly: 30,
+      quarterly: 90,
+      "bi-annually": 180,
+      yearly: 365
+    };
+
+    const totalDays = planDurations[payment.planName?.toLowerCase()] || 30;
+
+    // 2. Calculate time difference
+    const diffInMs = now - start;
+    const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const daysLeft = Math.max(0, totalDays - daysPassed);
+
+    // 3. Calculate percentage (capped at 100%)
+    const percentage = Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
+
+    return { percentage, daysLeft, totalDays, daysPassed };
+  };
+
+  const timeline = getTimelineData();
+
+  const subscription = {
     currentPlan: {
       name: "Pro",
       price: 199,
@@ -39,7 +99,7 @@ const MyPlan = () => {
       { id: "INV-7540", date: "Jan 12, 2026", amount: 199, stroke: "Paid" },
       { id: "INV-6211", date: "Dec 12, 2025", amount: 49, status: "Paid" }, // আগের মাসে স্টার্টার ছিল হয়তো
     ],
-  });
+  };
 
   return (
     <div className="my-5 md:my-10">
@@ -54,9 +114,11 @@ const MyPlan = () => {
               Manage your subscription and view invoices.
             </p>
           </div>
-          <button className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-200 active:scale-95 text-sm">
-            <Zap size={18} fill="currentColor" /> Upgrade Plan
-          </button>
+          <Link to="/services">
+            <button className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-200 active:scale-95 text-sm">
+              <Zap size={18} fill="currentColor" /> Upgrade Plan
+            </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 mt-12 lg:grid-cols-3 gap-8 md:gap-18">
@@ -71,7 +133,7 @@ const MyPlan = () => {
                   </div>
                   <div>
                     <h3 className="text-2xl font-black text-slate-800">
-                      {subscription.currentPlan.name} Plan
+                      {payment.planName} Plan
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -86,7 +148,7 @@ const MyPlan = () => {
                     Current Cost
                   </p>
                   <p className="text-xl font-black text-slate-900">
-                    ${subscription.currentPlan.price}
+                    ${payment.price}
                     <span className="text-sm text-slate-400 font-medium">
                       /mo
                     </span>
@@ -94,40 +156,52 @@ const MyPlan = () => {
                 </div>
               </div>
 
-              {/* Usage Progress */}
+              {/* Subscription Timeline Progress */}
               <div className="mb-8">
                 <div className="flex justify-between items-end mb-3">
                   <div>
-                    <p className="text-sm font-bold text-slate-800">
-                      Monthly Usage
+                    <p className="text-sm font-black text-slate-800 uppercase tracking-tight">
+                      Subscription Timeline
                     </p>
-                    <p className="text-xs text-slate-500">
-                      Transactions processed this month
+                    <p className="text-xs text-slate-500 font-medium">
+                      Started on {new Date(payment.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <p className="text-sm font-black text-slate-900">
-                    {subscription.currentPlan.usage.used.toLocaleString()} /{" "}
-                    {subscription.currentPlan.usage.total.toLocaleString()}
-                  </p>
+                  <div className="text-right">
+                    <p className="text-sm font-black text-slate-900">
+                      {timeline.daysLeft} Days Left
+                    </p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase">
+                      Out of {timeline.totalDays} total
+                    </p>
+                  </div>
                 </div>
-                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden">
+
+                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-1 border border-slate-200/50">
                   <div
-                    className={`h-full rounded-full transition-all duration-1000 ${subscription.currentPlan.usage.percentage > 80 ? "bg-amber-500" : "bg-emerald-500"}`}
+                    className={`h-full rounded-full transition-all duration-1000 ease-out ${timeline.percentage > 90 ? "bg-rose-500" :
+                      timeline.percentage > 70 ? "bg-amber-500" : "bg-emerald-500"
+                      }`}
                     style={{
-                      width: `${subscription.currentPlan.usage.percentage}%`,
+                      width: `${timeline.percentage}%`,
                     }}
                   ></div>
                 </div>
-                {subscription.currentPlan.usage.percentage > 70 && (
-                  <p className="text-[11px] text-amber-600 font-bold mt-2 flex items-center gap-1">
-                    <Clock size={12} /> You've reached{" "}
-                    {subscription.currentPlan.usage.percentage}% of your limit.
+
+                <div className="flex justify-between mt-3">
+                  <p className="text-[11px] text-slate-400 font-bold">
+                    {timeline.daysPassed} {timeline.daysPassed === 1 ? 'day' : 'days'} passed
                   </p>
-                )}
+                  {timeline.daysLeft <= 5 && (
+                    <p className="text-[11px] text-rose-600 font-black animate-pulse flex items-center gap-1">
+                      <Clock size={12} /> ACTION REQUIRED: RENEWAL SOON
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Plan Features Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {subscription.currentPlan.features.map((feature, i) => (
                   <div
                     key={i}
@@ -139,7 +213,7 @@ const MyPlan = () => {
                     </span>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
 
             {/* Payment History Table */}
