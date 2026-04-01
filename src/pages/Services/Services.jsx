@@ -19,8 +19,6 @@ import useAxios from "../../hooks/useAxios";
 
 const Services = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
-  console.log("AuthContext user:", user);
 
   const services = [
     {

@@ -79,9 +79,8 @@ const TransactionFraudDashboard = () => {
   const axiosInstance = useAxios();
 
  useEffect(() => {
-  axiosInstance.get("/api/users-transaction").then((res) => {
-    console.log(res.data); // debug
-    setTransactions(res.data?.data || res.data || []);
+  axiosInstance.get("/api/transactions").then((res) => {
+    setTransactions(res.data);
     setLoading(false);
   });
 }, []);
@@ -105,22 +104,22 @@ const TransactionFraudDashboard = () => {
   : [];
 
   // Filter + Search
-  let filteredUsers = updatedTransactions
-    .filter((tx) => {
-      if (filter === "blocked") return tx.status === "Blocked";
-      if (filter === "fraud") return tx.status === "Fraud";
-      if (filter === "normal") return tx.status === "Normal";
-      return true;
-    })
-    .filter(
-      (tx) =>
-        tx.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tx.email.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+  // let filteredUsers = updatedTransactions
+  //   .filter((tx) => {
+  //     if (filter === "blocked") return tx.status === "Blocked";
+  //     if (filter === "fraud") return tx.status === "Fraud";
+  //     if (filter === "normal") return tx.status === "Normal";
+  //     return true;
+  //   })
+  //   .filter(
+  //     (tx) =>
+  //       tx.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       tx.email.toLowerCase().includes(searchTerm.toLowerCase()),
+  //   );
 
-  const totalPages = Math.ceil(filteredUsers.length / limit);
+  // const totalPages = Math.ceil(filteredUsers.length / limit);
 
-  const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
+  // const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
 
   // PDF export
   const exportPDF = () => {
@@ -229,8 +228,8 @@ const TransactionFraudDashboard = () => {
           <thead className="bg-green-500 text-white">
             <tr>
               <th>#</th>
-              <th>ID</th>
-              <th>User</th>
+              {/* <th>ID</th> */}
+              {/* <th>User</th> */}
               <th>Email</th>
               <th>Amount</th>
               <th>Risk Score</th>
@@ -239,21 +238,21 @@ const TransactionFraudDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedUsers.length === 0 ? (
+            {transactions.length === 0 ? (
               <tr>
                 <td colSpan="8" className="text-center py-6 text-gray-400">
                   No users found
                 </td>
               </tr>
             ) : (
-              paginatedUsers.map((transaction, idx) => (
+              transactions.map((transaction, idx) => (
                 <tr
                   key={transaction._id}
                   className="hover:bg-gray-50 transition"
                 >
                   <th>{idx + 1}</th>
-                  <td>{transaction.id}</td>
-                  <td>
+                  {/* <td>{transaction.userId}</td> */}
+                  {/* <td>
                     <div className="flex items-center gap-3">
                       <div className="avatar">
                         <div className="mask mask-squircle h-10 w-10 md:h-12 md:w-12">
@@ -270,16 +269,16 @@ const TransactionFraudDashboard = () => {
                         </div>
                       </div>
                     </div>
-                  </td>
-                  <td>{transaction.email}</td>
+                  </td> */}
+                  <td>{transaction.payment.email}</td>
                   <td>${transaction.amount}</td>
-                  <td>{transaction.risk} %</td>
+                  <td>{transaction.riskScore} %</td>
                   <th>
                     <div
                       className="tooltip tooltip-bottom"
                       data-tip={
-                        transaction.fraudCategories.length > 0
-                          ? transaction.fraudCategories.join(", ")
+                        transaction.reason
+                          ? transaction.reason
                           : "No Fraud"
                       }
                     >
@@ -344,7 +343,7 @@ const TransactionFraudDashboard = () => {
         >
           Previous
         </button>
-        <span className="flex items-center px-2">
+        {/* <span className="flex items-center px-2">
           {totalPages === 0 ? 0 : page} / {totalPages}
         </span>
         <button
@@ -353,7 +352,7 @@ const TransactionFraudDashboard = () => {
           onClick={() => setPage((p) => p + 1)}
         >
           Next
-        </button>
+        </button> */}
       </div>
 
       {/* Modals */}
