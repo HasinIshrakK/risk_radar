@@ -235,9 +235,6 @@ const MyPlan = () => {
                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                         Amount
                       </th>
-                      <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
-                        Action
-                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
@@ -254,11 +251,6 @@ const MyPlan = () => {
                         </td>
                         <td className="px-6 py-4 text-sm font-bold text-slate-900">
                           ${history.amount}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <button className="p-2 hover:bg-emerald-50 text-emerald-600 rounded-lg transition-colors">
-                            <Download size={18} />
-                          </button>
                         </td>
                       </tr>
                     ))}
@@ -282,7 +274,7 @@ const MyPlan = () => {
                       Renewal Date
                     </p>
                     <p className="text-lg font-bold">
-                      {subscription.currentPlan.renewsOn}
+                      {new Date(payment.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -290,32 +282,26 @@ const MyPlan = () => {
                       Billing Cycle
                     </p>
                     <p className="text-lg font-bold">
-                      {subscription.currentPlan.billingCycle}
+                      {payment.planName}
                     </p>
                   </div>
                 </div>
 
                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
                   <p className="text-white/60 text-xs mb-3 flex items-center gap-2">
-                    <CreditCard size={14} /> Default Payment Method
+                    <CreditCard size={14} /> Biller's Name
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-6 bg-slate-700 rounded flex items-center justify-center font-bold text-[8px]">
-                        VISA
-                      </div>
-                      <p className="text-sm font-medium">•••• 4242</p>
+                      <p className="text-sm font-medium">{user.displayName}</p>
                     </div>
-                    <button className="text-[10px] font-bold text-emerald-400 hover:underline">
-                      Edit
-                    </button>
                   </div>
                 </div>
               </div>
-
+              {/* 
               <button className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
                 Download Last Receipt
-              </button>
+              </button> */}
             </div>
 
             <div className="bg-emerald-50 border border-emerald-100 rounded-[2rem] p-6">
@@ -326,9 +312,11 @@ const MyPlan = () => {
                 Upgrade to the Enterprise plan for custom algorithms and
                 unlimited transaction monitoring.
               </p>
-              <button className="text-emerald-600 font-bold text-xs hover:underline">
-                Contact Sales →
-              </button>
+              <Link to="/contact-us">
+                <button className="text-emerald-600 font-bold text-xs hover:underline">
+                  Contact Sales →
+                </button>
+              </Link>
             </div>
           </div>
         </div>
