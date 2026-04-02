@@ -1,13 +1,19 @@
 import { House } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 
 const Register = () => {
-  const { registerUser, signinGoogle, signinGithub } = useAuth();
+  const { registerUser, signinGoogle, signinGithub,user,loading } = useAuth();
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (user && !loading) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -18,13 +24,11 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    // ১. ব্যাকেন্ডে পাঠানোর জন্য অবজেক্ট তৈরি
     const newUser = { name, email };
 
     try {
       const result = await registerUser(email, password);
       console.log(result.user);
-      // ============= হাইলাইটেড: ব্যাকেন্ডে ডেটা পাঠানো শুরু =============
       const response = await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: {
@@ -50,20 +54,17 @@ const Register = () => {
     try {
       const result = await signinGoogle();
       // -------
-      // ৩. গুগল লগইনের ক্ষেত্রেও ব্যাকেন্ডে ডেটা পাঠানো (যদি প্রয়োজন হয়)
       const googleUser = {
         name: result.user.displayName,
         email: result.user.email,
         photo: result.user.photoURL,
       };
       // ----------
-      // ============= হাইলাইটেড: গুগল ইউজার ব্যাকেন্ডে পাঠানো =============
       await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(googleUser),
       });
-      // =======
       navigate("/");
     } catch (err) {
       setError(err.message);

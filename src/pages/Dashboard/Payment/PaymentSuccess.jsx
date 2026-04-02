@@ -7,7 +7,9 @@ import {
   Home,
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
+
+const axiosInstance = useAxios();
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -15,20 +17,20 @@ const PaymentSuccess = () => {
   const [txnId, setTxnId] = useState("");
 
   useEffect(() => {
-  if (sessionId) {
-    // Call backend to update payment & get txnId
-    axios
-      .patch("http://localhost:3000/api/payment/payment-success", { sessionId })
-      .then((res) => {
-        console.log("Backend response:", res.data); 
-        setTxnId(res.data.txnId || sessionId); 
-      })
-      .catch((err) => {
-        console.error(err);
-        setTxnId(sessionId); // fallback
-      });
-  }
-}, [sessionId]);
+    if (sessionId) {
+      // Call backend to update payment & get txnId
+      axiosInstance
+        .patch("/api/payment/payment-success", { sessionId })
+        .then((res) => {
+          console.log("Backend response:", res.data);
+          setTxnId(res.data.txnId || sessionId);
+        })
+        .catch((err) => {
+          console.error(err);
+          setTxnId(sessionId); // fallback
+        });
+    }
+  }, [sessionId]);
   return (
     <div className="min-h-screen bg-[#f4faf7] flex items-center justify-center p-4">
       {/* Success Card */}

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/sheld.png";
+import logo from "../../assets/shield.png";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
 import { Link } from "react-router";
 import Container from "../SharedUi/Container";
@@ -9,8 +9,8 @@ const Footer = () => {
 
   const navLinks = [
     { name: "Dashboard", path: "/dashboard" },
-    { name: "Alerts", path: "/alerts" },
-    { name: "Reports", path: "/reports" },
+    { name: "Offers", path: "/offers" },
+    { name: "FAQ", path: "/faq" },
     { name: "Contact Us", path: "/contact-us" },
   ];
 
@@ -65,9 +65,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <button className="text-slate-500 hover:text-green-600 text-sm transition-colors font-medium">
-                    {link.name}
-                  </button>
+                  <Link to={`${link.path}`}>
+                    <button className="text-slate-500 hover:text-green-600 text-sm transition-colors font-medium">
+                      {link.name}
+                    </button>
+                  </Link>
                 </li>
               ))}
             </ul>

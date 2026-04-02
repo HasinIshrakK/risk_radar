@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ShieldCheck,
   CalendarDays,
@@ -12,9 +12,92 @@ import {
   History,
 } from "lucide-react";
 import Container from "../../../components/SharedUi/Container";
+import useAxios from "../../../hooks/useAxios";
+import useAuth from "../../../hooks/useAuth"
+import { Link } from "react-router";
 
 const MyPlan = () => {
-  const [subscription, setSubscription] = useState({
+
+  const { user } = useAuth(); // Or useContext(AuthContext)
+  const [payment, setPayment] = useState(null);
+  const [payments, setPayments] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+  const axiosInstance = useAxios();
+
+  useEffect(() => {
+    if (user?.email) {
+      setLoading(true);
+      axiosInstance
+        .get(`/api/payment?email=${user.email}&limit=1`)
+        .then((res) => {
+          setPayment(res.data[0]);
+          console.log(res.data)
+
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching plan:", error);
+          setLoading(false);
+        });
+    }
+  }, [user?.email, axiosInstance]);
+
+  useEffect(() => {
+    if (user?.email) {
+      setLoading2(true);
+      axiosInstance
+        .get(`/api/payment?email=${user.email}`)
+        .then((res) => {
+          setPayments(res.data);
+          console.log(res.data)
+          setLoading2(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching plan:", error);
+          setLoading2(false);
+        });
+    }
+  }, [user?.email, axiosInstance]);
+
+  if (loading || loading2) return <div className="p-20 text-center font-bold text-emerald-600">Loading your plan...</div>;
+
+  if (!payment) return <div className="p-20 text-center font-bold text-slate-500">No active plan found.</div>;
+
+  const getTimelineData = () => {
+    if (!payment?.createdAt) return { percentage: 0, daysLeft: 0 };
+
+    const start = new Date(payment.createdAt);
+    const now = new Date();
+
+    // 1. Determine total duration in days based on plan name
+    const planDurations = {
+      monthly: 30,
+      quarterly: 90,
+      "bi-annually": 180,
+      yearly: 365
+    };
+
+    const totalDays = planDurations[payment.planName?.toLowerCase()] || 30;
+
+    // 2. Calculate time difference
+    const diffInMs = now - start;
+    const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const daysLeft = Math.max(0, totalDays - daysPassed);
+
+    // 3. Calculate percentage (capped at 100%)
+    const percentage = Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
+
+    return { percentage, daysLeft, totalDays, daysPassed };
+  };
+
+  const timeline = getTimelineData();
+
+  // Determine which items to display
+  const displayedPayments = showAll ? payments : payments.slice(0, 5);
+
+  const subscription = {
     currentPlan: {
       name: "Pro",
       price: 199,
@@ -39,7 +122,7 @@ const MyPlan = () => {
       { id: "INV-7540", date: "Jan 12, 2026", amount: 199, stroke: "Paid" },
       { id: "INV-6211", date: "Dec 12, 2025", amount: 49, status: "Paid" }, // আগের মাসে স্টার্টার ছিল হয়তো
     ],
-  });
+  };
 
   return (
     <div className="my-5 md:my-10">
@@ -54,9 +137,11 @@ const MyPlan = () => {
               Manage your subscription and view invoices.
             </p>
           </div>
-          <button className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-200 active:scale-95 text-sm">
-            <Zap size={18} fill="currentColor" /> Upgrade Plan
-          </button>
+          <Link to="/services">
+            <button className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-200 active:scale-95 text-sm">
+              <Zap size={18} fill="currentColor" /> Upgrade Plan
+            </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 mt-12 lg:grid-cols-3 gap-8 md:gap-18">
@@ -71,7 +156,7 @@ const MyPlan = () => {
                   </div>
                   <div>
                     <h3 className="text-2xl font-black text-slate-800">
-                      {subscription.currentPlan.name} Plan
+                      {payment.planName} Plan
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -83,51 +168,60 @@ const MyPlan = () => {
                 </div>
                 <div className="bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
                   <p className="text-slate-400 text-[10px] uppercase font-bold tracking-tighter">
-                    Current Cost
+                    Current Plan's Cost
                   </p>
                   <p className="text-xl font-black text-slate-900">
-                    ${subscription.currentPlan.price}
-                    <span className="text-sm text-slate-400 font-medium">
-                      /mo
-                    </span>
+                    ${payment.price}
                   </p>
                 </div>
               </div>
 
-              {/* Usage Progress */}
+              {/* Subscription Timeline Progress */}
               <div className="mb-8">
                 <div className="flex justify-between items-end mb-3">
                   <div>
-                    <p className="text-sm font-bold text-slate-800">
-                      Monthly Usage
+                    <p className="text-sm font-black text-slate-800 uppercase tracking-tight">
+                      Subscription Timeline
                     </p>
-                    <p className="text-xs text-slate-500">
-                      Transactions processed this month
+                    <p className="text-xs text-slate-500 font-medium">
+                      Started on {new Date(payment.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <p className="text-sm font-black text-slate-900">
-                    {subscription.currentPlan.usage.used.toLocaleString()} /{" "}
-                    {subscription.currentPlan.usage.total.toLocaleString()}
-                  </p>
+                  <div className="text-right">
+                    <p className="text-sm font-black text-slate-900">
+                      {timeline.daysLeft} Days Left
+                    </p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase">
+                      Out of {timeline.totalDays} total
+                    </p>
+                  </div>
                 </div>
-                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden">
+
+                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-1 border border-slate-200/50">
                   <div
-                    className={`h-full rounded-full transition-all duration-1000 ${subscription.currentPlan.usage.percentage > 80 ? "bg-amber-500" : "bg-emerald-500"}`}
+                    className={`h-full rounded-full transition-all duration-1000 ease-out ${timeline.percentage > 90 ? "bg-rose-500" :
+                      timeline.percentage > 70 ? "bg-amber-500" : "bg-emerald-500"
+                      }`}
                     style={{
-                      width: `${subscription.currentPlan.usage.percentage}%`,
+                      width: `${timeline.percentage}%`,
                     }}
                   ></div>
                 </div>
-                {subscription.currentPlan.usage.percentage > 70 && (
-                  <p className="text-[11px] text-amber-600 font-bold mt-2 flex items-center gap-1">
-                    <Clock size={12} /> You've reached{" "}
-                    {subscription.currentPlan.usage.percentage}% of your limit.
+
+                <div className="flex justify-between mt-3">
+                  <p className="text-[11px] text-slate-400 font-bold">
+                    {timeline.daysPassed} {timeline.daysPassed === 1 ? 'day' : 'days'} passed
                   </p>
-                )}
+                  {timeline.daysLeft <= 5 && (
+                    <p className="text-[11px] text-rose-600 font-black animate-pulse flex items-center gap-1">
+                      <Clock size={12} /> ACTION REQUIRED: RENEWAL SOON
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Plan Features Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {subscription.currentPlan.features.map((feature, i) => (
                   <div
                     key={i}
@@ -139,7 +233,7 @@ const MyPlan = () => {
                     </span>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
 
             {/* Payment History Table */}
@@ -153,7 +247,7 @@ const MyPlan = () => {
                   <thead className="bg-slate-50">
                     <tr>
                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        Invoice ID
+                        Plan Name
                       </th>
                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                         Date
@@ -161,36 +255,39 @@ const MyPlan = () => {
                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                         Amount
                       </th>
-                      <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
-                        Action
-                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
-                    {subscription.paymentHistory.map((history) => (
+                    {displayedPayments.map((pay) => (
                       <tr
-                        key={history.id}
+                        key={pay._id}
                         className="hover:bg-slate-50/50 transition-colors"
                       >
                         <td className="px-6 py-4 text-sm font-bold text-slate-700">
-                          {history.id}
+                          {pay.planName}
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-500">
-                          {history.date}
+                          {new Date(pay.createdAt).toISOString().split("T")[0]}
                         </td>
                         <td className="px-6 py-4 text-sm font-bold text-slate-900">
-                          ${history.amount}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <button className="p-2 hover:bg-emerald-50 text-emerald-600 rounded-lg transition-colors">
-                            <Download size={18} />
-                          </button>
+                          ${pay.price}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              {/* Show More / Show Less Button */}
+              {payments.length > 5 && (
+                <div className="p-4 bg-slate-50/50 border-t border-slate-100 text-center">
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="text-xs font-black text-emerald-600 hover:text-emerald-700 uppercase tracking-widest transition-all active:scale-95"
+                  >
+                    {showAll ? "↑ Show Less" : `↓ Show All History (${payments.length})`}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -208,7 +305,7 @@ const MyPlan = () => {
                       Renewal Date
                     </p>
                     <p className="text-lg font-bold">
-                      {subscription.currentPlan.renewsOn}
+                      {new Date(payment.createdAt).toISOString().split("T")[0]}
                     </p>
                   </div>
                   <div className="text-right">
@@ -216,32 +313,26 @@ const MyPlan = () => {
                       Billing Cycle
                     </p>
                     <p className="text-lg font-bold">
-                      {subscription.currentPlan.billingCycle}
+                      {payment.planName}
                     </p>
                   </div>
                 </div>
 
                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
                   <p className="text-white/60 text-xs mb-3 flex items-center gap-2">
-                    <CreditCard size={14} /> Default Payment Method
+                    <CreditCard size={14} /> Biller's Name
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-6 bg-slate-700 rounded flex items-center justify-center font-bold text-[8px]">
-                        VISA
-                      </div>
-                      <p className="text-sm font-medium">•••• 4242</p>
+                      <p className="text-sm font-medium">{user.displayName}</p>
                     </div>
-                    <button className="text-[10px] font-bold text-emerald-400 hover:underline">
-                      Edit
-                    </button>
                   </div>
                 </div>
               </div>
-
+              {/* 
               <button className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
                 Download Last Receipt
-              </button>
+              </button> */}
             </div>
 
             <div className="bg-emerald-50 border border-emerald-100 rounded-[2rem] p-6">
@@ -252,9 +343,11 @@ const MyPlan = () => {
                 Upgrade to the Enterprise plan for custom algorithms and
                 unlimited transaction monitoring.
               </p>
-              <button className="text-emerald-600 font-bold text-xs hover:underline">
-                Contact Sales →
-              </button>
+              <Link to="/contact-us">
+                <button className="text-emerald-600 font-bold text-xs hover:underline">
+                  Contact Sales →
+                </button>
+              </Link>
             </div>
           </div>
         </div>

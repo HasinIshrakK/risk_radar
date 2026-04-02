@@ -9,6 +9,8 @@ import EditModal from "./EditModal";
 import AddModal from "./AddModal";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import useAxios from "../../../hooks/useAxios";
+
 
 //  Dynamic configuration for fraud detection
 const fraudConfig = {
@@ -62,24 +64,26 @@ function detectFraud(tx, config = fraudConfig) {
   return tx;
 }
 
+
+
 const TransactionFraudDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [filter, setFilter] = useState("all");
-  const [searchTerm, setSearchTerm] = useState(""); // <-- Search state
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  useEffect(() => {
-    fetch("http://localhost:3000/users-transaction")
-      .then((res) => res.json())
-      .then((data) => {
-        setTransactions(data);
-        setLoading(false);
-      });
-  }, []);
+  const axiosInstance = useAxios();
+
+ useEffect(() => {
+  axiosInstance.get("/api/transactions").then((res) => {
+    setTransactions(res.data);
+    setLoading(false);
+  });
+}, []);
 
   useEffect(() => {
     setPage(1);
@@ -93,39 +97,43 @@ const TransactionFraudDashboard = () => {
     );
   // Apply fraud detection dynamically
   // const updatedTransactions = transactions.map((tx) => detectFraud(tx));
-  const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
+  // const updatedTransactions = transactions.map((tx) => detectFraud({ ...tx }));
+
+  const updatedTransactions = Array.isArray(transactions)
+  ? transactions.map((tx) => detectFraud({ ...tx }))
+  : [];
 
   // Filter + Search
-  let filteredUsers = updatedTransactions
-    .filter((tx) => {
-      if (filter === "blocked") return tx.status === "Blocked";
-      if (filter === "fraud") return tx.status === "Fraud";
-      if (filter === "normal") return tx.status === "Normal";
-      return true;
-    })
-    .filter(
-      (tx) =>
-        tx.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tx.email.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+  // let filteredUsers = updatedTransactions
+  //   .filter((tx) => {
+  //     if (filter === "blocked") return tx.status === "Blocked";
+  //     if (filter === "fraud") return tx.status === "Fraud";
+  //     if (filter === "normal") return tx.status === "Normal";
+  //     return true;
+  //   })
+  //   .filter(
+  //     (tx) =>
+  //       tx.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       tx.email.toLowerCase().includes(searchTerm.toLowerCase()),
+  //   );
 
-  const totalPages = Math.ceil(filteredUsers.length / limit);
+  // const totalPages = Math.ceil(filteredUsers.length / limit);
 
-  const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
+  // const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
 
   // PDF export
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.text("Transaction Fraud Report", 14, 15);
 
-    const tableColumn = ["#", "User", "Email", "Amount", "Status", "Risk"];
-    const tableRows = filteredUsers.map((tx, index) => [
+    const tableColumn = ["#", "User Email", "Amount", "Status", "Risk"];
+    const tableRows = transactions.map((tx, index) => [
       index + 1,
-      tx.user,
-      tx.email,
+      // tx.user,
+      tx.payment.email,
       `$${tx.amount}`,
       tx.status,
-      `${tx.risk}%`,
+      `${tx.riskScore}%`,
     ]);
 
     autoTable(doc, {
@@ -163,51 +171,65 @@ const TransactionFraudDashboard = () => {
       {/* Filter Buttons */}
       <div className="flex md:flex-row flex-col justify-between gap-3 mb-6">
         <button
-          className="btn btn-outline text-gray-500 hover:bg-gray-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "all"
+              ? "bg-gray-500 text-white"
+              : "text-gray-500 hover:bg-gray-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("all");
             // setPage(1);
           }}
         >
-          Show All Users
+          Show All Transactions
         </button>
         <button
-          className="btn btn-outline text-green-500 hover:bg-green-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "normal"
+              ? "bg-green-500 text-white"
+              : "text-green-500 hover:bg-green-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("normal");
             // setPage(1);
           }}
         >
-          Show Normal Users
+          Show Safe Transactions
         </button>
         <button
-          className="btn btn-outline text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          className={`btn btn-outline ${
+            filter === "fraud"
+              ? "bg-yellow-500 text-white"
+              : "text-yellow-500 hover:bg-yellow-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("fraud");
             // setPage(1);
           }}
         >
-          Show Fraud Users
+          Show Risky Transactions
         </button>
         <button
-          className="btn btn-outline btn-error hover:text-white"
+          className={`btn btn-outline ${
+            filter === "blocked" ? "bg-red-500 text-white" : "text-red-500 hover:bg-red-500 hover:text-white"
+          }`}
           onClick={() => {
             setFilter("blocked");
             // setPage(1);
           }}
         >
-          Show Blocked Users
+          Show Fraud Transactions
         </button>
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto bg-white shadow-lg rounded-xl">
         <table className="table w-full">
-          <thead className="bg-green-500 text-white">
+          <thead className="bg-emerald-600 text-white">
             <tr>
               <th>#</th>
-              <th>ID</th>
-              <th>User</th>
+              {/* <th>ID</th> */}
+              {/* <th>User</th> */}
               <th>Email</th>
               <th>Amount</th>
               <th>Risk Score</th>
@@ -216,21 +238,21 @@ const TransactionFraudDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedUsers.length === 0 ? (
+            {transactions.length === 0 ? (
               <tr>
                 <td colSpan="8" className="text-center py-6 text-gray-400">
                   No users found
                 </td>
               </tr>
             ) : (
-              paginatedUsers.map((transaction, idx) => (
+              transactions.map((transaction, idx) => (
                 <tr
                   key={transaction._id}
                   className="hover:bg-gray-50 transition"
                 >
                   <th>{idx + 1}</th>
-                  <td>{transaction.id}</td>
-                  <td>
+                  {/* <td>{transaction.userId}</td> */}
+                  {/* <td>
                     <div className="flex items-center gap-3">
                       <div className="avatar">
                         <div className="mask mask-squircle h-10 w-10 md:h-12 md:w-12">
@@ -247,29 +269,28 @@ const TransactionFraudDashboard = () => {
                         </div>
                       </div>
                     </div>
-                  </td>
-                  <td>{transaction.email}</td>
+                  </td> */}
+                  <td>{transaction.payment.email}</td>
                   <td>${transaction.amount}</td>
-                  <td>{transaction.risk} %</td>
+                  <td>{transaction.riskScore} %</td>
                   <th>
                     <div
                       className="tooltip tooltip-bottom"
                       data-tip={
-                        transaction.fraudCategories.length > 0
-                          ? transaction.fraudCategories.join(", ")
+                        transaction.reason
+                          ? transaction.reason
                           : "No Fraud"
                       }
                     >
                       <button
-                        className={`btn btn-ghost btn-xs ${
-                          transaction.status === "Blocked"
-                            ? "bg-red-100 text-red-600"
-                            : transaction.status === "Fraud"
-                              ? "bg-yellow-100 text-yellow-600"
-                              : transaction.status === "Normal"
-                                ? "bg-green-100 text-green-600"
-                                : "Data Not Match"
-                        }`}
+                        className={`btn btn-ghost btn-xs ${transaction.status === "Blocked"
+                          ? "bg-red-100 text-red-600"
+                          : transaction.status === "Fraud"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : transaction.status === "Normal"
+                              ? "bg-green-100 text-green-600"
+                              : "Data Not Match"
+                          }`}
                       >
                         {transaction.status}
                       </button>
@@ -322,7 +343,7 @@ const TransactionFraudDashboard = () => {
         >
           Previous
         </button>
-        <span className="flex items-center px-2">
+        {/* <span className="flex items-center px-2">
           {totalPages === 0 ? 0 : page} / {totalPages}
         </span>
         <button
@@ -331,7 +352,7 @@ const TransactionFraudDashboard = () => {
           onClick={() => setPage((p) => p + 1)}
         >
           Next
-        </button>
+        </button> */}
       </div>
 
       {/* Modals */}

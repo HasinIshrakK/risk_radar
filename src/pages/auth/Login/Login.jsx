@@ -1,7 +1,7 @@
 import { House } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useState, useRef } from "react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -15,6 +15,7 @@ const Login = () => {
   } = useAuth();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState("");
   const emailRef = useRef();
 
@@ -48,7 +49,7 @@ const Login = () => {
       await trackLoginAttempt(email, true);
 
       toast.success("Login successful");
-      navigate("/");
+      navigate(location?.state || "/");
     } catch (err) {
       //  Failed login → track attempt
       const attemptData = await trackLoginAttempt(email, false);
@@ -61,18 +62,36 @@ const Login = () => {
       console.log("Login Error:", err.code || err.message);
     }
   };
-  const handleResetPassword = () => {
-    const email = emailRef.current.value;
-    if (!email) return toast.error("Please provide a valid email.");
 
-    resetPassword(email)
-      .then(() => {
-        alert("Password reset email sent! Check your inbox.");
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  };
+  const handleResetPassword = async () => {
+ 
+  const email = emailRef.current?.value;
+
+  
+  if (!email) {
+    return toast.error("To reset your password, please enter your email first.");
+  }
+
+  try {
+   
+    await resetPassword(email);
+    
+    
+    toast.success("Password reset link has been sent to your email. Check your inbox!");
+    
+  } catch (err) {
+   
+    console.error("Reset Error:", err.code);
+    
+    if (err.code === "auth/user-not-found") {
+      toast.error("No account has been opened with this email.");
+    } else if (err.code === "auth/invalid-email") {
+      toast.error("Please provide a valid email address.");
+    } else {
+      toast.error("There is a problem resetting your password. Please try again later.");
+    }
+  }
+};
 
   const handleGoogleLogin = async () => {
     try {
@@ -81,7 +100,7 @@ const Login = () => {
       const email = emailRef.current.value;
       if (email) await trackLoginAttempt(email, true);
 
-      navigate("/");
+      navigate(location?.state || "/");
     } catch (err) {
       setError(err.message);
     }
@@ -95,7 +114,7 @@ const Login = () => {
       const email = emailRef.current.value;
       if (email) await trackLoginAttempt(email, true);
 
-      navigate("/");
+      navigate(location?.state || "/");
     } catch (err) {
       setError(err.message);
     }
@@ -223,14 +242,14 @@ const Login = () => {
                 <label className="text-xs font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-emerald-500 transition-colors">
                   Secure Password
                 </label>
-                {/* NEW: Forgot Password */}
+               
                 <button
-                  type="button"
-                  onClick={handleResetPassword}
-                  className="text-xs font-bold text-emerald-600 hover:underline"
-                >
-                  Forgot Password?
-                </button>
+  type="button"
+  onClick={handleResetPassword} 
+  className="text-xs font-bold text-emerald-600 hover:underline"
+>
+  Forgot Password?
+</button>
               </div>
               <input
                 type="password"

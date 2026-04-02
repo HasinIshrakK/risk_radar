@@ -15,10 +15,10 @@ import {
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext/AuthContext";
+import useAxios from "../../hooks/useAxios";
 
 const Services = () => {
   const { user } = useContext(AuthContext);
-  console.log("AuthContext user:", user);
 
   const services = [
     {
@@ -67,94 +67,161 @@ const Services = () => {
 
   const plans = [
     {
-      name: "Starter",
+      name: "Monthly",
       price: "49",
-      description: "Perfect for small startups and local payment gateways.",
+      duration: "month",
+      description: "Flexible protection for short-term projects.",
       features: [
-        "Up to 1,000 txns/mo",
-        "Real-time Risk Engine",
-        "Basic Dashboard",
-        "Email Support",
+        "Full Risk Engine Access",
+        "Real-time Monitoring",
+        "Standard Support",
+        "Cancel Anytime",
       ],
       isPopular: false,
+      savings: null,
     },
     {
-      name: "Pro",
-      price: "199",
-      description:
-        "Best for scaling fintech apps with high transaction volume.",
+      name: "Quarterly",
+      price: "129", // ~$43/mo
+      duration: "3 months",
+      description: "The perfect balance of commitment and value.",
       features: [
-        "Up to 50,000 txns/mo",
-        "Impossible Travel Logic",
-        "Redis Analytics",
-        "24/7 Support",
-        "API Integration",
+        "Priority Detection Speed",
+        "Redis Analytics Included",
+        "24/7 Email Support",
+        "Quarterly Risk Reports",
       ],
       isPopular: true,
+      savings: "Save 12%", // Incentive for 3 months
     },
     {
-      name: "Enterprise",
-      price: "299",
-      description: "Dedicated infrastructure for banks and large institutions.",
+      name: "Bi-Annually",
+      price: "229", // ~$38/mo
+      duration: "6 months",
+      description: "Deep security for established fintech operations.",
       features: [
-        "Unlimited Transactions",
-        "Custom Algorithms",
-        "Account Manager",
-        "On-premise Deployment",
-        "SLA Guarantee",
+        "Advanced API Access",
+        "Personal Account Manager",
+        "Dedicated Slack Channel",
+        "Custom Ruleset Tuning",
       ],
       isPopular: false,
+      savings: "Save 22%", // Incentive for 6 months
     },
   ];
 
   const handlePayment = async (plan) => {
     if (!user) {
-      Swal.fire({
-        icon: "warning",
-
-        title: "Please Login First",
-      });
-
+      Swal.fire({ icon: "warning", title: "Login Required", text: "Please sign in to continue." });
       return;
     }
-    // Confirmation Modal
-    const result = await Swal.fire({
-      title: "Confirm Payment",
-      text: `You are going to pay $${plan.price} for ${plan.name} plan.`,
-      icon: "question",
+
+    // Initial price
+    let currentPrice = parseFloat(plan.price);
+
+    const { value: finalData } = await Swal.fire({
+      title: `<span class="text-2xl font-black text-slate-800">Checkout</span>`,
+      html: `
+      <div class="text-left mt-4 space-y-4">
+        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Selected Plan</p>
+            <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-slate-800">${plan.name}</span>
+                <span class="text-2xl font-black text-emerald-600">$<span id="display-price">${plan.price}</span></span>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Promo Code</label>
+            <div class="flex gap-2">
+                <input id="promo-input" type="text" placeholder="e.g. RISKFREE20" 
+                       class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none uppercase font-bold text-sm">
+                <button id="check-promo-btn" type="button" 
+                        class="px-4 py-3 bg-slate-900 text-white rounded-xl font-bold text-xs hover:bg-emerald-600 transition-all active:scale-95">
+                    Check
+                </button>
+            </div>
+            <p id="promo-msg" class="text-[11px] font-bold mt-1 ml-1 hidden"></p>
+        </div>
+      </div>
+    `,
       showCancelButton: true,
-      confirmButtonText: "Yes, Pay Now",
+      confirmButtonText: "Complete Payment",
+      confirmButtonColor: "#10b981",
+      customClass: { popup: "rounded-[2.5rem] p-8", confirmButton: "w-full py-4 rounded-xl font-black" },
+
+      // logic to handle the "Check" button click inside the modal
+      didOpen: () => {
+        const checkBtn = document.getElementById('check-promo-btn');
+        const promoInput = document.getElementById('promo-input');
+        const promoMsg = document.getElementById('promo-msg');
+        const displayPrice = document.getElementById('display-price');
+
+        checkBtn.addEventListener('click', () => {
+          const code = promoInput.value.toUpperCase().trim();
+
+          // Reset messages
+          promoMsg.classList.remove('hidden', 'text-emerald-600', 'text-rose-500');
+
+          if (code === "RISKFREE20") {
+            const discount = currentPrice * 0.2;
+            const newPrice = (currentPrice - discount).toFixed(2);
+            displayPrice.innerText = newPrice;
+            promoMsg.innerText = "✓ 20% Discount Applied!";
+            promoMsg.classList.add('text-emerald-600');
+            promoInput.disabled = true; // Lock it in
+            checkBtn.disabled = true;
+            checkBtn.classList.add('opacity-50');
+          }
+          else if (code === "RADAR14") {
+            promoMsg.innerText = "✕ Code 'RADAR14' has expired.";
+            promoMsg.classList.add('text-rose-500');
+          }
+          else if (code === "") {
+            promoMsg.innerText = "Please enter a code.";
+            promoMsg.classList.add('text-slate-400');
+          }
+          else {
+            promoMsg.innerText = "✕ Invalid promo code.";
+            promoMsg.classList.add('text-rose-500');
+          }
+        });
+      },
+      preConfirm: () => {
+        const displayPrice = document.getElementById('display-price').innerText;
+        const promoInput = document.getElementById('promo-input').value;
+        return {
+          finalAmount: displayPrice,
+          appliedCode: promoInput.toUpperCase()
+        };
+      }
     });
 
-    if (!result.isConfirmed) return;
+    if (!finalData) return;
 
     try {
       const paymentInfo = {
-        amount: plan.price,
+        amount: finalData.finalAmount,
         plansId: plan.name.toLowerCase(),
         name: plan.name,
         email: user.email,
         userId: user.uid,
-        ipAddress: "127.0.0.1",
       };
 
-      const res = await axios.post(
-        "http://localhost:3000/api/payment/checkout",
-        paymentInfo,
-      );
-
-      // Stripe redirect
+      const axiosInstance = useAxios();
+      const res = await axiosInstance.post("/api/payment/checkout", paymentInfo);
       window.location.assign(res.data.url);
-    } catch (error) {
-      console.log(error);
 
+    } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Payment Failed",
-        text: "Something went wrong!",
+        title: "Payment Error",
+        text: error.response?.data?.message || "Something went wrong during checkout.",
       });
     }
   };
+
+
 
   return (
     <div>
@@ -229,7 +296,7 @@ const Services = () => {
               <span className="text-green-600">Pricing</span>
             </h2>
             <p className="text-slate-600 md:text-lg max-w-2xl font-medium">
-              Choose the plan that fits your transaction volume.
+              Choose the plan that fits the best.
             </p>
           </div>
 
@@ -237,11 +304,10 @@ const Services = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`group relative p-8 rounded-[2.5rem] transition-all duration-500 flex flex-col overflow-hidden ${
-                  plan.isPopular
-                    ? "bg-white border-2 border-emerald-500/20 shadow-[0_20px_50px_rgba(16,185,129,0.15)] scale-105 z-10"
-                    : "bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1"
-                }`}
+                className={`group relative p-8 rounded-[2.5rem] transition-all duration-500 flex flex-col overflow-hidden ${plan.isPopular
+                  ? "bg-white border-2 border-emerald-500/20 shadow-[0_20px_50px_rgba(16,185,129,0.15)] scale-105 z-10"
+                  : "bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                  }`}
               >
                 {/* --- GRADIENT BLUR EFFECTS --- */}
                 {plan.isPopular ? (
@@ -267,15 +333,20 @@ const Services = () => {
                     {plan.name}
                   </h3>
 
+                  {plan.savings && (
+                    <span className="absolute top-4 left-26 bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider">
+                      {plan.savings}
+                    </span>
+                  )}
+
+                  {/* Update the price display to show the duration */}
                   <div className="flex items-baseline mb-4">
                     <span className="text-5xl font-extrabold text-slate-900 tracking-tight">
-                      {plan.price !== "Custom" ? `$${plan.price}` : plan.price}
+                      ${plan.price}
                     </span>
-                    {plan.price !== "Custom" && (
-                      <span className="text-slate-400 font-semibold ml-2 text-lg">
-                        /mo
-                      </span>
-                    )}
+                    <span className="text-slate-400 font-semibold ml-2 text-lg">
+                      /{plan.duration}
+                    </span>
                   </div>
 
                   <p className="text-slate-500 text-sm leading-relaxed mb-8 h-10">
@@ -301,11 +372,10 @@ const Services = () => {
 
                   <button
                     onClick={() => handlePayment(plan)}
-                    className={`w-full py-5 rounded-[1.5rem] font-bold text-sm transition-all duration-300 transform active:scale-95 ${
-                      plan.isPopular
-                        ? "bg-slate-900 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-100"
-                        : "bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100"
-                    }`}
+                    className={`w-full py-5 rounded-[1.5rem] font-bold text-sm transition-all duration-300 transform active:scale-95 ${plan.isPopular
+                      ? "bg-slate-900 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-100"
+                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-100"
+                      }`}
                   >
                     Pay Now
                   </button>
