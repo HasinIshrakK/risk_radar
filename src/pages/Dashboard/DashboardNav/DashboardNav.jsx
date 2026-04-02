@@ -81,11 +81,11 @@ const DashboardNav = ({ isDrawerOpen, setIsDrawerOpen }) => {
             <Bell size={20} />
 
             {unreadCount > 0 ? (
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white rounded-full">
+              <span className="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white rounded-full">
                 {unreadCount}
               </span>
             ) : (
-              <span className="absolute top-2 right-2.5 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white group-hover:animate-pulse"></span>
+              <span className="absolute top-2 right-2.5 bg-emerald-500 rounded-full border-2 border-white group-hover:animate-pulse"></span>
             )}
           </button>
         </Link>
@@ -123,17 +123,14 @@ const DashboardNav = ({ isDrawerOpen, setIsDrawerOpen }) => {
 
           {isUserMenuOpen && (
             <>
-              <div
-                className="fixed inset-0 z-40 bg-transparent"
-                onClick={() => setIsUserMenuOpen(false)}
-              ></div>
-              <div className="absolute right-0 mt-3 w-60 bg-white border border-emerald-50 rounded-[1.5rem] shadow-xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+              <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setIsUserMenuOpen(false)}></div>
+              <div className="absolute right-0 mt-3 w-60 bg-white border border-emerald-50 rounded-3xl shadow-xl py-2 z-50 animate-in fade-in zoom-in duration-200">
                 <div className="px-5 py-3 border-b border-slate-50">
                   <p className="text-sm font-black text-slate-900 truncate">
                     {user?.displayName || "Member"}
                   </p>
                   <p className="text-[10px] text-emerald-600 font-black uppercase tracking-wider">
-                    {user?.role || "Security Lead"}
+                    {user?.role || "user"}
                   </p>
                 </div>
 
