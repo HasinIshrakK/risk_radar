@@ -10,8 +10,8 @@ const DashboardNav = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
-const { user: authUser } = useContext(AuthContext);
-const axiosInstance = useAxios();
+  const { user: authUser } = useContext(AuthContext);
+  const axiosInstance = useAxios();
 
   const handleLogout = async () => {
     await logOut();
@@ -19,16 +19,16 @@ const axiosInstance = useAxios();
   };
 
   useEffect(() => {
-  if (!authUser?.uid) return;
+    if (!authUser?.uid) return;
 
-  axiosInstance
-    .get(`/api/notifications/${authUser.uid}`)
-    .then((res) => {
-      const unread = res.data.filter((n) => !n.read).length;
-      setUnreadCount(unread);
-    })
-    .catch((err) => console.log(err));
-}, [authUser]);
+    axiosInstance
+      .get(`/api/notifications/${authUser.uid}`)
+      .then((res) => {
+        const unread = res.data.filter((n) => !n.read).length;
+        setUnreadCount(unread);
+      })
+      .catch((err) => console.log(err));
+  }, [authUser]);
 
   return (
     <nav className="h-16 bg-white border-b border-slate-100 px-4 flex items-center justify-between sticky top-0 z-30 shadow-sm shrink-0">
@@ -68,18 +68,18 @@ const axiosInstance = useAxios();
       <div className="flex items-center gap-2">
         {/* Notifications */}
         <Link to="/dashboard/notifications">
-  <button className="p-2 rounded-full text-slate-400 hover:bg-emerald-50 hover:text-emerald-600 relative group transition-all">
-    <Bell size={20} />
+          <button className="p-2 rounded-full text-slate-400 hover:bg-emerald-50 hover:text-emerald-600 relative group transition-all">
+            <Bell size={20} />
 
-    {unreadCount > 0 ? (
-      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white rounded-full">
-        {unreadCount}
-      </span>
-    ) : (
-      <span className="absolute top-2 right-2.5 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white group-hover:animate-pulse"></span>
-    )}
-  </button>
-</Link>
+            {unreadCount > 0 ? (
+              <span className="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white rounded-full">
+                {unreadCount}
+              </span>
+            ) : (
+              <span className="absolute top-2 right-2.5 bg-emerald-500 rounded-full border-2 border-white group-hover:animate-pulse"></span>
+            )}
+          </button>
+        </Link>
 
         <div className="h-6 w-px bg-slate-200 mx-2 hidden sm:block"></div>
 
@@ -107,13 +107,13 @@ const axiosInstance = useAxios();
           {isUserMenuOpen && (
             <>
               <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setIsUserMenuOpen(false)}></div>
-              <div className="absolute right-0 mt-3 w-60 bg-white border border-emerald-50 rounded-[1.5rem] shadow-xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+              <div className="absolute right-0 mt-3 w-60 bg-white border border-emerald-50 rounded-3xl shadow-xl py-2 z-50 animate-in fade-in zoom-in duration-200">
                 <div className="px-5 py-3 border-b border-slate-50">
                   <p className="text-sm font-black text-slate-900 truncate">
                     {user?.displayName || "Member"}
                   </p>
                   <p className="text-[10px] text-emerald-600 font-black uppercase tracking-wider">
-                    {user?.role || "Security Lead"}
+                    {user?.role || "user"}
                   </p>
                 </div>
 
