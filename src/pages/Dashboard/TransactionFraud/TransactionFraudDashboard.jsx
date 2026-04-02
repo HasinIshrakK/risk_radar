@@ -126,14 +126,14 @@ const TransactionFraudDashboard = () => {
     const doc = new jsPDF();
     doc.text("Transaction Fraud Report", 14, 15);
 
-    const tableColumn = ["#", "User", "Email", "Amount", "Status", "Risk"];
-    const tableRows = filteredUsers.map((tx, index) => [
+    const tableColumn = ["#", "User Email", "Amount", "Status", "Risk"];
+    const tableRows = transactions.map((tx, index) => [
       index + 1,
-      tx.user,
-      tx.email,
+      // tx.user,
+      tx.payment.email,
       `$${tx.amount}`,
       tx.status,
-      `${tx.risk}%`,
+      `${tx.riskScore}%`,
     ]);
 
     autoTable(doc, {
@@ -181,7 +181,7 @@ const TransactionFraudDashboard = () => {
             // setPage(1);
           }}
         >
-          Show All Users
+          Show All Transactions
         </button>
         <button
           className={`btn btn-outline ${
@@ -194,7 +194,7 @@ const TransactionFraudDashboard = () => {
             // setPage(1);
           }}
         >
-          Show Normal Users
+          Show Safe Transactions
         </button>
         <button
           className={`btn btn-outline ${
@@ -207,7 +207,7 @@ const TransactionFraudDashboard = () => {
             // setPage(1);
           }}
         >
-          Show Fraud Users
+          Show Risky Transactions
         </button>
         <button
           className={`btn btn-outline ${
@@ -218,14 +218,14 @@ const TransactionFraudDashboard = () => {
             // setPage(1);
           }}
         >
-          Show Blocked Users
+          Show Fraud Transactions
         </button>
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto bg-white shadow-lg rounded-xl">
         <table className="table w-full">
-          <thead className="bg-green-500 text-white">
+          <thead className="bg-emerald-600 text-white">
             <tr>
               <th>#</th>
               {/* <th>ID</th> */}
