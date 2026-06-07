@@ -23,6 +23,7 @@ import MyPlan from "../pages/Dashboard/MyPlan/MyPlan";
 import Settings from "../pages/Dashboard/Settings/Settings";
 import TransactionFraudDashboard from "../pages/Dashboard/TransactionFraud/TransactionFraudDashboard";
 import PrivateRoute from "./PrivateRoute";
+import TrxnList from "../pages/Dashboard/TrxnList/TrxnList";
 
 export const router = createBrowserRouter([
   // RootLayout
@@ -86,7 +87,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/transaction-fraud",
-        Component: TransactionFraudDashboard,
+        Component: TrxnList,
       },
       {
         path: "/dashboard/blockedUser",

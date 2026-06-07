@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Container from "../../../components/SharedUi/Container";
 import useAxios from "../../../hooks/useAxios";
+import toast from "react-hot-toast";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
@@ -44,7 +45,7 @@ const AllUsers = () => {
       await axiosInstance.patch(`/api/users/${id}`, {
         role: role,
       });
-      alert("role update successfully");
+      toast("Role updated successfully");
     } catch (error) {
       console.log(error);
     }
